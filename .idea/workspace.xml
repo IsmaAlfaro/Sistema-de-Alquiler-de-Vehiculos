@@ -54,6 +54,7 @@
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/Usuario/IdeaProjects/Sistema-de-Alquiler-de-Vehiculos/src/Main.java",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -96,5 +97,16 @@
     <MESSAGE value="Src creado" />
     <MESSAGE value="Src creado (Prueba con main java)" />
     <option name="LAST_COMMIT_MESSAGE" value="Src creado (Prueba con main java)" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/App/Main.java</url>
+          <line>10</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
