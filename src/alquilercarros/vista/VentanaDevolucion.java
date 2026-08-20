@@ -1,8 +1,4 @@
-package alquilercarros.modelo;
+package alquilercarros.vista;
 
-public enum EstadoVehiculo {
-    DISPONIBLE,
-
-    AlQUILADO
+public class VentanaDevolucion {
 }
-

@@ -1,4 +1,9 @@
 package alquilercarros.modelo;
 
-public class EstadoVehiculo {
+public enum EstadoVehiculo {
+
+    DISPONIBLE,
+
+    ALQUILADO
+
 }
