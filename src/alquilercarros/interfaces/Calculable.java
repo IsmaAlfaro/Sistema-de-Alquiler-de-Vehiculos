@@ -1,4 +1,7 @@
 package alquilercarros.interfaces;
 
-public class Calculable {
+public interface Calculable {
+
+    double calcularTotal();
+
 }
