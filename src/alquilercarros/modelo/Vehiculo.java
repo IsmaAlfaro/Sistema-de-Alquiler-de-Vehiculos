@@ -5,14 +5,16 @@ public abstract class Vehiculo {
     private String placa;
     private String marca;
     private String modelo;
+    private int anio;
     private double tarifaDiaria;
     private EstadoVehiculo estado;
 
-    public Vehiculo (String placa, String marca, String modelo, double tarifaDiaria) {
+    public Vehiculo (String placa, String marca, String modelo, int anio, double tarifaDiaria) {
 
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
+        this.anio= anio;
         this.tarifaDiaria = tarifaDiaria;
         this.estado = EstadoVehiculo.DISPONIBLE;
 
@@ -43,6 +45,14 @@ public abstract class Vehiculo {
         return modelo;
     }
 
+    public int getAnio(){
+
+        return anio;
+    }
+    public void setAnio(int anio){
+
+        this.anio=anio;
+    }
     public void setModelo(String modelo) {
 
         this.modelo = modelo;
