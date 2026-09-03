@@ -23,12 +23,12 @@ public class VehiculoServicio {
         this.datosSistema = datosSistema;
         this.persistencia = persistencia;
         this.repositorioVehiculos = new Repositorio<>();
-        this.repositorioVehiculos.remplazarTodos(datosSistema.getVehiculos());
+        this.repositorioVehiculos.reemplazarTodos(datosSistema.getVehiculos());
     }
 
     private void guardarCambios() {
 
-        datosSistema.setVehiculos(repositorioVehiculos.obetenerTodos());
+        datosSistema.setVehiculos(repositorioVehiculos.obtenerTodos());
 
         persistencia.guardar(datosSistema);
 
@@ -57,7 +57,7 @@ public class VehiculoServicio {
             return null;
         }
 
-        for (Vehiculo vehiculo : repositorioVehiculos.obetenerTodos()) {
+        for (Vehiculo vehiculo : repositorioVehiculos.obtenerTodos()) {
 
             if (vehiculo.getPlaca().equalsIgnoreCase(placa.trim())) {
 
@@ -69,14 +69,14 @@ public class VehiculoServicio {
     }
 
     public List<Vehiculo> obtenerTodos() {
-        return repositorioVehiculos.obetenerTodos();
+        return repositorioVehiculos.obtenerTodos();
     }
 
     public List<Vehiculo> obtenerDisponibles() {
 
         List<Vehiculo> disponibles = new ArrayList<>();
 
-        for (Vehiculo vehiculo : repositorioVehiculos.obetenerTodos()) {
+        for (Vehiculo vehiculo : repositorioVehiculos.obtenerTodos()) {
 
             if (vehiculo.getEstado() == EstadoVehiculo.DISPONIBLE) {
                 disponibles.add(vehiculo);
@@ -108,7 +108,7 @@ public class VehiculoServicio {
 
         validarVehiculo(vehiculoModificado);
 
-        List<Vehiculo> vehiculos = repositorioVehiculos.obetenerTodos();
+        List<Vehiculo> vehiculos = repositorioVehiculos.obtenerTodos();
 
         int posicion = vehiculos.indexOf(vehiculoActual);
 
@@ -116,7 +116,7 @@ public class VehiculoServicio {
 
         vehiculos.set(posicion, vehiculoModificado);
 
-        repositorioVehiculos.remplazarTodos(vehiculos);
+        repositorioVehiculos.reemplazarTodos(vehiculos);
 
         guardarCambios();
     }

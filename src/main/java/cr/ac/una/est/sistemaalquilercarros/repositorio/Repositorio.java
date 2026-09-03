@@ -20,7 +20,7 @@ public boolean eliminar(T elemento) {
     return elementos.remove(elemento);
 }
 
-public List<T> obetenerTodos() {
+public List<T> obtenerTodos() {
     return new ArrayList<>(elementos);
 }
 
@@ -32,7 +32,7 @@ public boolean estaVacio(){
     return elementos.isEmpty();
 }
 
-public void remplazarTodos(List<T> nuevosElementos){
+public void reemplazarTodos(List<T> nuevosElementos){
     elementos.clear();
     elementos.addAll(nuevosElementos);
 }

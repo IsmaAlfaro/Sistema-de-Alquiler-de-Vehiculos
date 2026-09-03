@@ -41,7 +41,7 @@ public class DatosSistema implements Serializable {
         return alquileres;
     }
 
-    public void setAlquiler(List <Alquiler> alquileres) {
+    public void setAlquileres(List <Alquiler> alquileres) {
         this.alquileres = alquileres;
     }
 
