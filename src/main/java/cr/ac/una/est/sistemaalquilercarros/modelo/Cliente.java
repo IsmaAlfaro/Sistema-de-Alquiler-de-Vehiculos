@@ -9,9 +9,7 @@ public class Cliente implements Serializable {
     private String telefono;
     private String correo;
 
-    public Cliente(String cedula, String nombreCompleto,
-                   String telefono, String correo) {
-
+    public Cliente(String cedula, String nombreCompleto, String telefono, String correo) {
         this.cedula = cedula;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;

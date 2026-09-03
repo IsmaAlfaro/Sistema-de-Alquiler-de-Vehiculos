@@ -1,7 +1,6 @@
 package cr.ac.una.est.sistemaalquilercarros.modelo;
 
-import cr.ac.una.sistemaalquilercarros.interfaces.Calculable;
-
+import cr.ac.una.est.sistemaalquilercarros.interfaces.Calculable;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -19,12 +18,7 @@ public class Alquiler implements Calculable, Serializable {
     private double depositoGarantia;
     private EstadoAlquiler estado;
 
-    public Alquiler(int numeroAlquiler,
-                    Cliente cliente,
-                    Vehiculo vehiculo,
-                    LocalDate fechaInicio,
-                    int cantidadDias,
-                    double depositoGarantia) {
+    public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, double depositoGarantia) {
 
         this.numeroAlquiler = numeroAlquiler;
         this.cliente = cliente;
@@ -140,9 +134,6 @@ public class Alquiler implements Calculable, Serializable {
 
     @Override
     public String toString() {
-
-        return "Alquiler #" + numeroAlquiler
-                + " - " + cliente.getNombreCompleto()
-                + " - " + vehiculo.getPlaca();
+        return "Alquiler #" + numeroAlquiler + " - " + cliente.getNombreCompleto() + " - " + vehiculo.getPlaca();
     }
 }
