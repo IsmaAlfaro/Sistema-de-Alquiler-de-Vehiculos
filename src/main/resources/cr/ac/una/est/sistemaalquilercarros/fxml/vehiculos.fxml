@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.VehiculosController">
+   <top>
+      <Label text="Registro de Vehiculos" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+   </top>
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Placa" GridPane.halignment="CENTER" />
+            <TextField fx:id="txtPlaca" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Label text="Marca" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Modelo" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField fx:id="txtMarca" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="txtModelo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label text="Año del Vehiculo" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="txtAnio" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Label text="Tipo de Vehiculo" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <ComboBox fx:id="cmbTipo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Label text="Tarifa diaria" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="txtTarifa" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label text="Cantidad de pasajeros" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField fx:id="txtPasajeros" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label text="Capacidad de carga" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="txtCapacidadCarga" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Label text="Tipo de Traccion" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <ComboBox fx:id="cmbTraccion" prefWidth="150.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <DatePicker GridPane.rowIndex="4" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+   <bottom>
+      <TableView fx:id="tablaVehiculos" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colPlaca" prefWidth="75.0" text="Placa" />
+          <TableColumn fx:id="colMarca" prefWidth="75.0" text="Marca" />
+            <TableColumn fx:id="colModelo" prefWidth="75.0" text="Modelo" />
+            <TableColumn fx:id="colAnio" prefWidth="75.0" text="Año" />
+            <TableColumn fx:id="colTipo" prefWidth="75.0" text="Tipo" />
+            <TableColumn fx:id="colTarifa" prefWidth="75.0" text="Tarifa Diaria" />
+            <TableColumn fx:id="colEstado" prefWidth="75.0" text="Estado" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </bottom>
+   <right>
+      <VBox alignment="CENTER" prefHeight="154.0" prefWidth="160.0" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#registrarVehiculo" text="Registrar" />
+            <Button mnemonicParsing="false" onAction="#modificarVehiculo" text="Modificar" />
+            <Button mnemonicParsing="false" onAction="#eliminarVehiculo" text="Eliminar" />
+            <Button mnemonicParsing="false" onAction="#limpiarFormulario" text="Limpiar" />
+         </children></VBox>
+   </right>
+</BorderPane>

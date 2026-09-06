@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="panelPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.PrincipalController">
+   <top>
+      <Label text="Sistema Alquiler de Vehiculos" BorderPane.alignment="TOP_LEFT">
+         <font>
+            <Font size="30.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <left>
+      <VBox alignment="CENTER" prefHeight="335.0" prefWidth="147.0" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#mostrarInicio" text="Inicio" />
+            <Button mnemonicParsing="false" onAction="#mostrarVehiculos" text="Vehiculos" />
+            <Button mnemonicParsing="false" onAction="#mostrarClientes" text="Clientes" />
+            <Button mnemonicParsing="false" onAction="#mostrarAlquileres" text="Alquiler" />
+            <Button mnemonicParsing="false" onAction="#mostrarDevolucion" text="Devoluciones" />
+            <Button mnemonicParsing="false" text="Historial" />
+            <Button mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></VBox>
+   </left>
+   <center>
+      <Label text="Selecionar una opcion" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+   </center>
+</BorderPane>

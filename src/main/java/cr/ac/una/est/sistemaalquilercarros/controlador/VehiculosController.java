@@ -69,6 +69,7 @@ public class VehiculosController {
     @FXML
     private TableColumn<Vehiculo, String> colEstado;
 
+
     private VehiculoServicio vehiculoServicio;
 
     @FXML

@@ -15,7 +15,7 @@ public class Aplicacion extends Application {
 
         ContextoAplicacion contexto = new ContextoAplicacion();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Aplicacion.class.getResource("/cr/ac/una/sistemaalquilercarros/fxml/principal.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Aplicacion.class.getResource("/cr/ac/una/est/sistemaalquilercarros/fxml/principal.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1300, 700);
 
