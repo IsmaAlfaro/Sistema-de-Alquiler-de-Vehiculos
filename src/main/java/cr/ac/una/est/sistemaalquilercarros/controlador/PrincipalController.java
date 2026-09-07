@@ -46,7 +46,7 @@ public class PrincipalController {
     @FXML
     private void mostrarClientes() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/cr/ac/una/est/sistemaalquilercarros/fxml/clientes.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/cr/ac/una/est/sistemaalquilercarros/fxml/cliente.fxml"));
             Parent vista = loader.load();
             ClientesController controller = loader.getController();
             controller.setClienteServicio(contexto.getClienteServicio());
