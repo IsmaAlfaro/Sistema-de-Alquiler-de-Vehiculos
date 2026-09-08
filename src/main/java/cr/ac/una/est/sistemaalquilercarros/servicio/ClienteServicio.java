@@ -165,6 +165,12 @@ public class ClienteServicio {
             );
         }
 
+        if (!cliente.getCedula().matches("\\d{9}")) {
+            throw new IllegalArgumentException(
+                    "La cédula debe contener exactamente 9 números."
+            );
+        }
+
         if (cliente.getNombreCompleto() == null ||
                 cliente.getNombreCompleto().trim().isEmpty()) {
 
@@ -181,6 +187,12 @@ public class ClienteServicio {
             );
         }
 
+        if (!cliente.getTelefono().matches("\\d{8}")) {
+            throw new IllegalArgumentException(
+                    "El teléfono debe contener exactamente 8 números."
+            );
+        }
+
         if (cliente.getCorreo() == null ||
                 cliente.getCorreo().trim().isEmpty()) {
 
@@ -188,5 +200,14 @@ public class ClienteServicio {
                     "El correo es obligatorio."
             );
         }
+
+        if (!cliente.getCorreo().matches(
+                "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{3,}$"
+        )) {
+            throw new IllegalArgumentException(
+                    "El correo electrónico no tiene un formato válido."
+            );
+        }
+
     }
 }

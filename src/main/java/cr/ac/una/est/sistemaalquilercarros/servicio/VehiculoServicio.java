@@ -157,6 +157,12 @@ public class VehiculoServicio {
             throw new IllegalArgumentException("La placa es obligatoria");
         }
 
+        if (!vehiculo.getPlaca().matches("[A-Za-z0-9]{6}")) {
+            throw new IllegalArgumentException(
+                    "La placa debe contener exactamente 6 letras o números"
+            );
+        }
+
         if (vehiculo.getMarca() == null || vehiculo.getMarca().trim().isEmpty()) {
             throw new IllegalArgumentException("La marca es obligatoria");
         }
