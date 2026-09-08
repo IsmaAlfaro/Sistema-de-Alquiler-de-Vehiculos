@@ -24,7 +24,7 @@
             <Button mnemonicParsing="false" onAction="#mostrarClientes" text="Clientes" />
             <Button mnemonicParsing="false" onAction="#mostrarAlquileres" text="Alquiler" />
             <Button mnemonicParsing="false" onAction="#mostrarDevolucion" text="Devoluciones" />
-            <Button mnemonicParsing="false" text="Historial" />
+            <Button mnemonicParsing="false" onAction="#mostrarHistorial" text="Historial" />
             <Button mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" />
          </children>
          <BorderPane.margin>
