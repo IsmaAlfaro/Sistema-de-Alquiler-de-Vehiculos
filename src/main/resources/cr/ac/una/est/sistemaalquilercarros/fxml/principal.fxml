@@ -17,15 +17,16 @@
       </Label>
    </top>
    <left>
-      <VBox alignment="CENTER" prefHeight="335.0" prefWidth="147.0" spacing="15.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="335.0" prefWidth="183.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#mostrarInicio" text="Inicio" />
-            <Button mnemonicParsing="false" onAction="#mostrarVehiculos" text="Vehiculos" />
-            <Button mnemonicParsing="false" onAction="#mostrarClientes" text="Clientes" />
-            <Button mnemonicParsing="false" onAction="#mostrarAlquileres" text="Alquiler" />
-            <Button mnemonicParsing="false" onAction="#mostrarDevolucion" text="Devoluciones" />
-            <Button mnemonicParsing="false" onAction="#mostrarHistorial" text="Historial" />
-            <Button mnemonicParsing="false" onAction="#cerrarAplicacion" text="Salir" />
+            <Button mnemonicParsing="false" onAction="#mostrarInicio" prefHeight="25.0" prefWidth="122.0" text="Inicio" />
+            <Button mnemonicParsing="false" onAction="#mostrarVehiculos" prefHeight="25.0" prefWidth="122.0" text="Vehiculos" />
+            <Button mnemonicParsing="false" onAction="#mostrarTiposVehiculo" prefHeight="25.0" prefWidth="122.0" text="Tipos de Vehículos" />
+            <Button mnemonicParsing="false" onAction="#mostrarClientes" prefHeight="25.0" prefWidth="122.0" text="Clientes" />
+            <Button mnemonicParsing="false" onAction="#mostrarAlquileres" prefHeight="25.0" prefWidth="122.0" text="Alquiler" />
+            <Button mnemonicParsing="false" onAction="#mostrarDevolucion" prefHeight="25.0" prefWidth="122.0" text="Devoluciones" />
+            <Button mnemonicParsing="false" onAction="#mostrarHistorial" prefHeight="25.0" prefWidth="122.0" text="Historial" />
+            <Button mnemonicParsing="false" onAction="#cerrarAplicacion" prefHeight="25.0" prefWidth="122.0" text="Salir" />
          </children>
          <BorderPane.margin>
             <Insets />

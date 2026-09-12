@@ -1,15 +1,12 @@
 package cr.ac.una.est.sistemaalquilercarros.modelo;
 
-public class SUV extends Vehiculo {
+public class VehiculoPasajeros extends Vehiculo {
 
     private int cantidadPasajeros;
     private String tipoTraccion;
 
-    public SUV(String placa, String marca, String modelo,
-               int anio, double tarifaDiaria,
-               int cantidadPasajeros, String tipoTraccion) {
-
-        super(placa, marca, modelo, anio, tarifaDiaria);
+    public VehiculoPasajeros(String placa, String marca, String modelo, int anio, double tarifaDiaria, TipoVehiculo tipoVehiculo, int cantidadPasajeros, String tipoTraccion) {
+        super(placa, marca, modelo, anio, tarifaDiaria, tipoVehiculo);
 
         this.cantidadPasajeros = cantidadPasajeros;
         this.tipoTraccion = tipoTraccion;

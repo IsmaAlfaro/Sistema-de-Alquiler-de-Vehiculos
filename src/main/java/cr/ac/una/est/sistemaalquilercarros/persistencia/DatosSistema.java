@@ -1,5 +1,6 @@
 package cr.ac.una.est.sistemaalquilercarros.persistencia;
 
+import cr.ac.una.est.sistemaalquilercarros.modelo.TipoVehiculo;
 import cr.ac.una.est.sistemaalquilercarros.modelo.Vehiculo;
 import cr.ac.una.est.sistemaalquilercarros.modelo.Cliente;
 import cr.ac.una.est.sistemaalquilercarros.modelo.Alquiler;
@@ -8,47 +9,50 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class DatosSistema implements Serializable {
 
-    private List <Vehiculo> vehiculos;
-    private List <Cliente> clientes;
-    private List <Alquiler> alquileres;
+    private List<Vehiculo> vehiculos;
+    private List<TipoVehiculo> tiposVehiculo;
+    private List<Cliente> clientes;
+    private List<Alquiler> alquileres;
 
-  public DatosSistema() {
-      vehiculos = new ArrayList<>();
-      clientes = new ArrayList<>();
-      alquileres = new ArrayList<>();
-  }
+    public DatosSistema() {
+        vehiculos = new ArrayList<>();
+        tiposVehiculo = new ArrayList<>();
+        clientes = new ArrayList<>();
+        alquileres = new ArrayList<>();
+    }
 
-  public List <Vehiculo> getVehiculos() {
-      return vehiculos;
-  }
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
 
-  public void setVehiculos(List <Vehiculo> vehiculos) {
-      this.vehiculos = vehiculos;
-  }
+    public void setVehiculos(List<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
+    }
 
+    public List<TipoVehiculo> getTiposVehiculo() {
+        return tiposVehiculo;
+    }
 
-    public List <Cliente> getClientes() {
+    public void setTiposVehiculo(List<TipoVehiculo> tiposVehiculo) {
+        this.tiposVehiculo = tiposVehiculo;
+    }
+
+    public List<Cliente> getClientes() {
         return clientes;
     }
 
-    public void setClientes(List <Cliente> clientes) {
+    public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
     }
 
-    public List <Alquiler> getAlquileres() {
+    public List<Alquiler> getAlquileres() {
         return alquileres;
     }
 
-    public void setAlquileres(List <Alquiler> alquileres) {
+    public void setAlquileres(List<Alquiler> alquileres) {
         this.alquileres = alquileres;
     }
-
-
-
-
-
-
-
 }

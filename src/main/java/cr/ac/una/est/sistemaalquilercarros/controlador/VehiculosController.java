@@ -1,10 +1,12 @@
 package cr.ac.una.est.sistemaalquilercarros.controlador;
 
-import cr.ac.una.est.sistemaalquilercarros.modelo.Pickup;
-import cr.ac.una.est.sistemaalquilercarros.modelo.SUV;
-import cr.ac.una.est.sistemaalquilercarros.modelo.Sedan;
 import cr.ac.una.est.sistemaalquilercarros.modelo.Vehiculo;
 import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
+import cr.ac.una.est.sistemaalquilercarros.modelo.TipoVehiculo;
+import cr.ac.una.est.sistemaalquilercarros.modelo.CategoriaVehiculo;
+import cr.ac.una.est.sistemaalquilercarros.modelo.VehiculoPasajeros;
+import cr.ac.una.est.sistemaalquilercarros.modelo.VehiculoCarga;
+import cr.ac.una.est.sistemaalquilercarros.servicio.TipoVehiculoServicio;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,7 +42,7 @@ public class VehiculosController {
     private TextField txtCapacidadCarga;
 
     @FXML
-    private ComboBox<String> cmbTipo;
+    private ComboBox<TipoVehiculo> cmbTipo;
 
     @FXML
     private ComboBox<String> cmbTraccion;
@@ -69,13 +71,12 @@ public class VehiculosController {
     @FXML
     private TableColumn<Vehiculo, String> colEstado;
 
-
     private VehiculoServicio vehiculoServicio;
+
+    private TipoVehiculoServicio tipoVehiculoServicio;
 
     @FXML
     private void initialize() {
-
-        cmbTipo.setItems(FXCollections.observableArrayList("Sedán", "SUV", "Pickup"));
 
         cmbTraccion.setItems(FXCollections.observableArrayList("Delantera", "Trasera", "AWD", "4x4"));
 
@@ -87,7 +88,7 @@ public class VehiculosController {
 
         colAnio.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getAnio()));
 
-        colTipo.setCellValueFactory(dato -> new SimpleStringProperty(obtenerTipo(dato.getValue())));
+        colTipo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getTipoVehiculo().getNombre()));
 
         colTarifa.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().getTarifaDiaria())));
 
@@ -100,11 +101,29 @@ public class VehiculosController {
         actualizarCamposPorTipo();
     }
 
-    public void setVehiculoServicio(VehiculoServicio vehiculoServicio) {
+//    public void setVehiculoServicio(VehiculoServicio vehiculoServicio) {
+//
+//        this.vehiculoServicio = vehiculoServicio;
+//
+//        actualizarTabla();
+//    }
+
+    public void setServicios(VehiculoServicio vehiculoServicio, TipoVehiculoServicio tipoVehiculoServicio) {
 
         this.vehiculoServicio = vehiculoServicio;
+        this.tipoVehiculoServicio = tipoVehiculoServicio;
 
+        cargarTipos();
         actualizarTabla();
+    }
+
+    private void cargarTipos() {
+
+        cmbTipo.setItems(
+                FXCollections.observableArrayList(
+                        tipoVehiculoServicio.obtenerTodos()
+                )
+        );
     }
 
     @FXML
@@ -202,6 +221,7 @@ public class VehiculosController {
         tablaVehiculos.getSelectionModel().clearSelection();
 
         txtPlaca.setDisable(false);
+        cmbTipo.setDisable(false);
 
         actualizarCamposPorTipo();
     }
@@ -209,59 +229,44 @@ public class VehiculosController {
     private Vehiculo crearVehiculoDesdeFormulario() {
 
         String placa = txtPlaca.getText().trim();
-
         String marca = txtMarca.getText().trim();
-
         String modelo = txtModelo.getText().trim();
 
         int anio = Integer.parseInt(txtAnio.getText().trim());
 
         double tarifa = Double.parseDouble(txtTarifa.getText().trim());
 
-        String tipo = cmbTipo.getValue();
+        TipoVehiculo tipo = cmbTipo.getValue();
 
         if (tipo == null) {
             throw new IllegalArgumentException("Debe seleccionar un tipo de vehículo.");
         }
 
-        switch (tipo) {
+        String traccion = cmbTraccion.getValue();
 
-            case "Sedán" -> {
+        if (tipo.getCategoria() == CategoriaVehiculo.PASAJEROS) {
 
-                int pasajeros = Integer.parseInt(txtPasajeros.getText().trim());
+            int pasajeros = 0;
 
-                return new Sedan(placa, marca, modelo, anio, tarifa, pasajeros);
+            if (tipo.isRequierePasajeros()) {
+                pasajeros = Integer.parseInt(txtPasajeros.getText().trim());
             }
 
-            case "SUV" -> {
-
-                int pasajeros = Integer.parseInt(txtPasajeros.getText().trim());
-
-                String traccion = cmbTraccion.getValue();
-
-                if (traccion == null) {
-                    throw new IllegalArgumentException("Debe seleccionar el tipo de tracción.");
-                }
-
-                return new SUV(placa, marca, modelo, anio, tarifa, pasajeros, traccion
-                );
-            }
-
-            case "Pickup" -> {
-
-                double capacidad = Double.parseDouble(txtCapacidadCarga.getText().trim());
-
-                String traccion = cmbTraccion.getValue();
-
-                if (traccion == null) {
-                    throw new IllegalArgumentException("Debe seleccionar el tipo de tracción.");
-                }
-
-                return new Pickup(placa, marca, modelo, anio, tarifa, capacidad, traccion);
-            }
-
-            default -> throw new IllegalArgumentException("Tipo de vehículo no válido.");
+            return new VehiculoPasajeros(placa, marca, modelo, anio, tarifa, tipo, pasajeros, traccion);
         }
+
+        if (tipo.getCategoria() == CategoriaVehiculo.CARGA) {
+
+            double capacidad = 0;
+
+            if (tipo.isRequiereCapacidadCarga()) {
+                capacidad = Double.parseDouble(txtCapacidadCarga.getText().trim());
+            }
+
+            return new VehiculoCarga(placa, marca, modelo, anio, tarifa, tipo, capacidad, traccion);
+        }
+
+        throw new IllegalArgumentException("La categoría del vehículo no es válida.");
     }
 
     private void actualizarTabla() {
@@ -275,13 +280,21 @@ public class VehiculosController {
 
     private void actualizarCamposPorTipo() {
 
-        String tipo = cmbTipo.getValue();
+        TipoVehiculo tipo = cmbTipo.getValue();
 
-        txtPasajeros.setDisable(tipo == null || tipo.equals("Pickup"));
+        if (tipo == null) {
+            txtPasajeros.setDisable(true);
+            txtCapacidadCarga.setDisable(true);
+            cmbTraccion.setDisable(true);
 
-        txtCapacidadCarga.setDisable(tipo == null || !tipo.equals("Pickup"));
+            return;
+        }
 
-        cmbTraccion.setDisable(tipo == null || tipo.equals("Sedán"));
+        txtPasajeros.setDisable(!tipo.isRequierePasajeros());
+
+        txtCapacidadCarga.setDisable(!tipo.isRequiereCapacidadCarga());
+
+        cmbTraccion.setDisable(!tipo.isRequiereTraccion());
     }
 
     private void cargarVehiculoSeleccionado() {
@@ -293,58 +306,31 @@ public class VehiculosController {
         }
 
         txtPlaca.setText(vehiculo.getPlaca());
-
         txtMarca.setText(vehiculo.getMarca());
-
         txtModelo.setText(vehiculo.getModelo());
-
         txtAnio.setText(String.valueOf(vehiculo.getAnio()));
-
         txtTarifa.setText(String.valueOf(vehiculo.getTarifaDiaria()));
 
         txtPlaca.setDisable(true);
+        cmbTipo.setDisable(false);
 
-        if (vehiculo instanceof Sedan sedan) {
+        cmbTipo.setValue(vehiculo.getTipoVehiculo());
 
-            cmbTipo.setValue("Sedán");
+        if (vehiculo instanceof VehiculoPasajeros pasajeros) {
 
-            txtPasajeros.setText(String.valueOf(sedan.getCantidaPasajeros()));
+            txtPasajeros.setText(String.valueOf(pasajeros.getCantidadPasajeros()));
 
-        } else if (vehiculo instanceof SUV suv) {
+            cmbTraccion.setValue(pasajeros.getTipoTraccion());
+        }
 
-            cmbTipo.setValue("SUV");
+        if (vehiculo instanceof VehiculoCarga carga) {
 
-            txtPasajeros.setText(String.valueOf(suv.getCantidadPasajeros()));
+            txtCapacidadCarga.setText(String.valueOf(carga.getCapacidadCarga()));
 
-            cmbTraccion.setValue(suv.getTipoTraccion());
-
-        } else if (vehiculo instanceof Pickup pickup) {
-
-            cmbTipo.setValue("Pickup");
-
-            txtCapacidadCarga.setText(String.valueOf(pickup.getCapacidadCarga()));
-
-            cmbTraccion.setValue(pickup.getTipoTraccion());
+            cmbTraccion.setValue(carga.getTipoTraccion());
         }
 
         actualizarCamposPorTipo();
-    }
-
-    private String obtenerTipo(Vehiculo vehiculo) {
-
-        if (vehiculo instanceof Sedan) {
-            return "Sedán";
-        }
-
-        if (vehiculo instanceof SUV) {
-            return "SUV";
-        }
-
-        if (vehiculo instanceof Pickup) {
-            return "Pickup";
-        }
-
-        return "Desconocido";
     }
 
     private void mostrarError(String mensaje) {

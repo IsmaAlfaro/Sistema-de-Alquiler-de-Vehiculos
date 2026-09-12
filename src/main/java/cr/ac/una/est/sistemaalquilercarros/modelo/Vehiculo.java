@@ -10,13 +10,15 @@ public abstract class Vehiculo implements Serializable {
     private int anio;
     private double tarifaDiaria;
     private EstadoVehiculo estado;
+    private TipoVehiculo tipoVehiculo;
 
-    public Vehiculo(String placa, String marca, String modelo, int anio, double tarifaDiaria) {
+    public Vehiculo(String placa, String marca, String modelo, int anio, double tarifaDiaria, TipoVehiculo tipoVehiculo) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
         this.anio = anio;
         this.tarifaDiaria = tarifaDiaria;
+        this.tipoVehiculo = tipoVehiculo;
         this.estado = EstadoVehiculo.DISPONIBLE;
     }
 
@@ -68,4 +70,11 @@ public abstract class Vehiculo implements Serializable {
         this.estado = estado;
     }
 
+    public TipoVehiculo getTipoVehiculo() {
+        return tipoVehiculo;
+    }
+
+    public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
+        this.tipoVehiculo = tipoVehiculo;
+    }
 }

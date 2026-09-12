@@ -29,6 +29,9 @@ public class AlquileresController {
     private TextField txtCantidadDias;
 
     @FXML
+    private Label lblTarifaDiaria;
+
+    @FXML
     private Label lblSubtotal;
 
     @FXML
@@ -73,6 +76,7 @@ public class AlquileresController {
 
         dpFechaInicio.setValue(LocalDate.now());
 
+        lblTarifaDiaria.setText("₡0.00");
         lblSubtotal.setText("₡0.00");
         lblDeposito.setText("₡0.00");
         lblTotal.setText("₡0.00");
@@ -92,15 +96,18 @@ public class AlquileresController {
         colTotal.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().calcularTotal())));
 
         colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
+
+        cmbVehiculo.valueProperty().addListener((observable, vehiculoAnterior, vehiculoNuevo) -> {actualizarTarifaDiaria();});
+
     }
 
-public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehiculoServicio, AlquilerServicio alquilerServicio) {
+    public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehiculoServicio, AlquilerServicio alquilerServicio) {
         this.clienteServicio = clienteServicio;
         this.vehiculoServicio = vehiculoServicio;
         this.alquilerServicio = alquilerServicio;
 
         cargarDatos();
-}
+    }
 
     private void cargarDatos() {
         cmbCliente.setItems(FXCollections.observableArrayList(clienteServicio.obtenerTodos()));
@@ -111,6 +118,19 @@ public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehic
 
         lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
     }
+
+    private void actualizarTarifaDiaria() {
+
+        Vehiculo vehiculo = cmbVehiculo.getValue();
+
+        if (vehiculo == null) {
+            lblTarifaDiaria.setText("₡0.00");
+            return;
+        }
+
+        lblTarifaDiaria.setText(String.format("₡%,.2f", vehiculo.getTarifaDiaria()));
+    }
+
 
     @FXML
     private void calcularAlquiler(){
