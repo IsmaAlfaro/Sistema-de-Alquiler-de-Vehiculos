@@ -24,6 +24,11 @@ public class AlquilerServicio {
     private final VehiculoServicio vehiculoServicio;
     private final ClienteServicio clienteServicio;
 
+    /*
+     * Qué hace: Inicializa el servicio encargado de administrar los alquileres, enlazando los datos generales del sistema, la persistencia y los servicios de vehículos y clientes, además carga en el repositorio los alquileres que ya estaban guardados
+     * Recibe: El objeto DatosSistema, el servicio de persistencia, el servicio de vehículos y el servicio de clientes
+     * Retorna: No retorna ningún valor
+     */
     public AlquilerServicio(DatosSistema datosSistema,
                             PersistenciaDatos persistencia,
                             VehiculoServicio vehiculoServicio,
@@ -41,6 +46,11 @@ public class AlquilerServicio {
         );
     }
 
+    /*
+     * Qué hace: Actualiza en DatosSistema las listas actuales de alquileres, vehículos y clientes, y posteriormente guarda toda la información utilizando el mecanismo de persistencia
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void guardarCambios() {
 
         datosSistema.setAlquileres(
@@ -58,6 +68,11 @@ public class AlquilerServicio {
         persistencia.guardar(datosSistema);
     }
 
+    /*
+     * Qué hace: Crea un nuevo alquiler después de validar que el cliente y el vehículo existan, que el vehículo esté disponible, que la fecha sea válida y que la cantidad de días sea correcta, luego cambia el vehículo a estado alquilado y guarda los cambios
+     * Recibe: La cédula del cliente, la placa del vehículo, la fecha de inicio y la cantidad de días del alquiler
+     * Retorna: El objeto Alquiler que fue creado y registrado en el sistema
+     */
     public Alquiler crearAlquiler(String cedulaCliente,
                                   String placaVehiculo,
                                   LocalDate fechaInicio,
@@ -123,6 +138,11 @@ public class AlquilerServicio {
         return alquiler;
     }
 
+    /*
+     * Qué hace: Procesa la devolución de un alquiler activo, valida la fecha de devolución, calcula los días de atraso, la multa, el depósito a devolver y cualquier saldo pendiente, finaliza el alquiler y vuelve a marcar el vehículo como disponible
+     * Recibe: El número identificador del alquiler y la fecha en la que se devuelve el vehículo
+     * Retorna: Un objeto ResultadoDevolucion con los resultados calculados durante la devolución
+     */
     public ResultadoDevolucion devolverAlquiler(
             int numeroAlquiler,
             LocalDate fechaDevolucion) {
@@ -183,6 +203,11 @@ public class AlquilerServicio {
         );
     }
 
+    /*
+     * Qué hace: Busca dentro del repositorio de alquileres un registro cuyo número identificador coincida con el número proporcionado
+     * Recibe: El número de alquiler que se desea buscar
+     * Retorna: El alquiler encontrado o null si no existe un alquiler con ese número
+     */
     public Alquiler buscarPorNumero(int numeroAlquiler) {
 
         for (Alquiler alquiler :
@@ -196,11 +221,21 @@ public class AlquilerServicio {
         return null;
     }
 
+    /*
+     * Qué hace: Obtiene todos los alquileres almacenados actualmente dentro del repositorio del sistema
+     * Recibe: No recibe parámetros
+     * Retorna: La lista completa de alquileres registrados
+     */
     public List<Alquiler> obtenerTodos() {
 
         return repositorioAlquileres.obtenerTodos();
     }
 
+    /*
+     * Qué hace: Recorre todos los alquileres registrados y construye una lista que contiene únicamente aquellos cuyo estado actual es ACTIVO
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista con todos los alquileres que todavía se encuentran activos
+     */
     public List<Alquiler> obtenerActivos() {
 
         List<Alquiler> activos = new ArrayList<>();
@@ -216,16 +251,31 @@ public class AlquilerServicio {
         return activos;
     }
 
+    /*
+     * Qué hace: Determina cuántos alquileres se encuentran actualmente activos utilizando la lista generada por el método obtenerActivos
+     * Recibe: No recibe parámetros
+     * Retorna: La cantidad total de alquileres activos
+     */
     public int cantidadAlquileresActivos() {
 
         return obtenerActivos().size();
     }
 
+    /*
+     * Qué hace: Obtiene el monto fijo establecido por el sistema como depósito de garantía para cada nuevo alquiler
+     * Recibe: No recibe parámetros
+     * Retorna: El monto utilizado como depósito de garantía
+     */
     public double getDepositoGarantia() {
 
         return DEPOSITO_GARANTIA;
     }
 
+    /*
+     * Qué hace: Genera automáticamente el siguiente número de alquiler buscando el número más alto registrado actualmente y aumentando ese valor en uno
+     * Recibe: No recibe parámetros
+     * Retorna: El siguiente número disponible que debe asignarse a un nuevo alquiler
+     */
     private int generarNumeroAlquiler() {
 
         int mayorNumero = 0;

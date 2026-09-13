@@ -14,6 +14,11 @@ public class TipoVehiculoServicio {
     private final DatosSistema datosSistema;
     private final PersistenciaDatos persistencia;
 
+    /*
+     * Qué hace: Inicializa el servicio encargado de administrar los tipos de vehículo, carga los tipos previamente almacenados y, si todavía no existe ninguno, crea automáticamente los tipos iniciales definidos por el sistema
+     * Recibe: El objeto DatosSistema y el servicio encargado de guardar la información
+     * Retorna: No retorna ningún valor
+     */
     public TipoVehiculoServicio(DatosSistema datosSistema, PersistenciaDatos persistencia) {
 
         this.datosSistema = datosSistema;
@@ -32,6 +37,11 @@ public class TipoVehiculoServicio {
         }
     }
 
+    /*
+     * Qué hace: Registra un nuevo tipo de vehículo después de validar sus datos y comprobar que no exista otro tipo registrado con el mismo nombre
+     * Recibe: El objeto TipoVehiculo que se desea registrar
+     * Retorna: No retorna ningún valor
+     */
     public void registrarTipo(TipoVehiculo tipo) {
 
         validarTipo(tipo);
@@ -45,6 +55,11 @@ public class TipoVehiculoServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Busca dentro del repositorio un tipo de vehículo utilizando su nombre como criterio de identificación
+     * Recibe: El nombre del tipo de vehículo que se desea buscar
+     * Retorna: El tipo de vehículo encontrado o null si no existe uno con ese nombre
+     */
     public TipoVehiculo buscarPorNombre(String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -61,10 +76,20 @@ public class TipoVehiculoServicio {
         return null;
     }
 
+    /*
+     * Qué hace: Obtiene todos los tipos de vehículo que se encuentran registrados actualmente dentro del sistema
+     * Recibe: No recibe parámetros
+     * Retorna: La lista completa de tipos de vehículo registrados
+     */
     public List<TipoVehiculo> obtenerTodos() {
         return repositorioTipos.obtenerTodos();
     }
 
+    /*
+     * Qué hace: Busca un tipo de vehículo por su nombre y, si existe, lo elimina del repositorio y guarda posteriormente los cambios realizados
+     * Recibe: El nombre del tipo de vehículo que se desea eliminar
+     * Retorna: No retorna ningún valor
+     */
     public void eliminarTipo(String nombre) {
 
         TipoVehiculo tipo = buscarPorNombre(nombre);
@@ -78,6 +103,11 @@ public class TipoVehiculoServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Verifica que el tipo de vehículo proporcionado sea válido, comprobando que exista, que tenga un nombre definido y que tenga asignada una categoría
+     * Recibe: El objeto TipoVehiculo cuyos datos se desean validar
+     * Retorna: No retorna ningún valor
+     */
     private void validarTipo(TipoVehiculo tipo) {
 
         if (tipo == null) {
@@ -91,6 +121,11 @@ public class TipoVehiculoServicio {
         if (tipo.getCategoria() == null) {
             throw new IllegalArgumentException("La categoría del vehículo es obligatoria");}}
 
+    /*
+     * Qué hace: Crea y registra automáticamente los tipos de vehículo iniciales del sistema, incluyendo Sedán, SUV, Minivan, CUV, Deportivo y Pickup, con sus respectivas categorías y características requeridas
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void crearTiposIniciales() {
 
         repositorioTipos.agregar(new TipoVehiculo("Sedán", CategoriaVehiculo.PASAJEROS, true, false, false));
@@ -108,6 +143,11 @@ public class TipoVehiculoServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Actualiza en DatosSistema la lista actual de tipos de vehículo y posteriormente guarda toda la información mediante el mecanismo de persistencia
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void guardarCambios() {
 
         datosSistema.setTiposVehiculo(repositorioTipos.obtenerTodos());

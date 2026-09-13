@@ -51,6 +51,11 @@ public class TiposVehiculoController {
 
     private TipoVehiculoServicio tipoVehiculoServicio;
 
+    /*
+     * Qué hace: Inicializa la pantalla de tipos de vehículo cargando las categorías disponibles y configurando las columnas de la tabla para mostrar las características de cada tipo registrado
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void initialize() {
 
@@ -67,6 +72,11 @@ public class TiposVehiculoController {
         colCarga.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().isRequiereCapacidadCarga() ? "Sí" : "No"));
     }
 
+    /*
+     * Qué hace: Asigna el servicio encargado de administrar los tipos de vehículo y actualiza inmediatamente la tabla con la información disponible
+     * Recibe: El servicio de tipos de vehículo que utilizará el controlador
+     * Retorna: No retorna ningún valor
+     */
     public void setTipoVehiculoServicio(TipoVehiculoServicio tipoVehiculoServicio) {
 
         this.tipoVehiculoServicio = tipoVehiculoServicio;
@@ -74,6 +84,11 @@ public class TiposVehiculoController {
         actualizarTabla();
     }
 
+    /*
+     * Qué hace: Crea un nuevo tipo de vehículo utilizando el nombre, la categoría y las características seleccionadas en la pantalla, y solicita su registro al servicio correspondiente
+     * Recibe: No recibe parámetros directamente, utiliza los valores ingresados y seleccionados en el formulario
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void registrarTipo() {
 
@@ -97,6 +112,11 @@ public class TiposVehiculoController {
         }
     }
 
+    /*
+     * Qué hace: Elimina del sistema el tipo de vehículo seleccionado en la tabla después de comprobar que exista una selección válida
+     * Recibe: No recibe parámetros directamente, utiliza el tipo seleccionado en la tabla
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void eliminarTipo() {
 
@@ -123,6 +143,11 @@ public class TiposVehiculoController {
         }
     }
 
+    /*
+     * Qué hace: Limpia el nombre, la categoría, las características seleccionadas y cualquier selección existente en la tabla de tipos de vehículo
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void limpiarFormulario() {
 
@@ -137,6 +162,11 @@ public class TiposVehiculoController {
         tablaTipos.getSelectionModel().clearSelection();
     }
 
+    /*
+     * Qué hace: Actualiza la tabla de tipos de vehículo cargando todos los registros disponibles actualmente desde el servicio correspondiente
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void actualizarTabla() {
 
         if (tipoVehiculoServicio == null) {
@@ -146,6 +176,11 @@ public class TiposVehiculoController {
         tablaTipos.setItems(FXCollections.observableArrayList(tipoVehiculoServicio.obtenerTodos()));
     }
 
+    /*
+     * Qué hace: Muestra una ventana de alerta de tipo error para informar al usuario sobre un problema ocurrido durante una operación con tipos de vehículo
+     * Recibe: El mensaje de error que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarError(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);
@@ -157,6 +192,11 @@ public class TiposVehiculoController {
         alerta.showAndWait();
     }
 
+    /*
+     * Qué hace: Muestra una ventana informativa para comunicar al usuario que una operación relacionada con los tipos de vehículo finalizó correctamente
+     * Recibe: El mensaje informativo que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarInformacion(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);

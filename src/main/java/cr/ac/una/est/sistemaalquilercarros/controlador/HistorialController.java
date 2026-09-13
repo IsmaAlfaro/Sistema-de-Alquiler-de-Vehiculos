@@ -30,6 +30,12 @@ public class HistorialController {
     @FXML
     private TableColumn<Alquiler, String> colEstado;
     private AlquilerServicio alquilerServicio;
+
+    /*
+     * Qué hace: Inicializa la tabla del historial configurando cada columna para mostrar los datos correspondientes de los alquileres registrados
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void initialize() {
         colNumero.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getNumeroAlquiler()));
@@ -42,10 +48,22 @@ public class HistorialController {
         colTotal.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().calcularTotal())));
         colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
     }
+
+    /*
+     * Qué hace: Asigna el servicio encargado de administrar los alquileres y actualiza inmediatamente la tabla del historial
+     * Recibe: El servicio de alquileres que utilizará el controlador
+     * Retorna: No retorna ningún valor
+     */
     public void setAlquilerServicio(AlquilerServicio alquilerServicio) {
         this.alquilerServicio = alquilerServicio;
         actualizarTabla();
     }
+
+    /*
+     * Qué hace: Actualiza la tabla del historial cargando todos los alquileres registrados actualmente en el sistema
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void actualizarTabla() {
         tablaHistorial.setItems(FXCollections.observableArrayList(alquilerServicio.obtenerTodos()));
     }

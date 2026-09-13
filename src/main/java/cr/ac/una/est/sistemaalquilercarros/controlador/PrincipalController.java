@@ -15,6 +15,11 @@ public class PrincipalController {
 
     private ContextoAplicacion contexto;
 
+    /*
+     * Qué hace: Asigna el contexto general de la aplicación al controlador principal y carga automáticamente la pantalla de inicio como vista inicial
+     * Recibe: El contexto general de la aplicación con acceso a todos los servicios
+     * Retorna: No retorna ningún valor
+     */
     public void setContexto(ContextoAplicacion contexto) {
 
         this.contexto = contexto;
@@ -26,6 +31,11 @@ public class PrincipalController {
     @FXML
     private BorderPane panelPrincipal;
 
+    /*
+     * Qué hace: Carga el archivo FXML correspondiente a la pantalla de inicio, asigna su controlador y coloca la vista resultante en el centro de la ventana principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarInicio() {
 
@@ -47,6 +57,11 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Carga la pantalla de gestión de vehículos, conecta los servicios de vehículos y tipos de vehículo con su controlador y muestra la vista en la ventana principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarVehiculos() {
 
@@ -67,6 +82,11 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Carga la pantalla utilizada para administrar los tipos de vehículo, asigna su servicio correspondiente y muestra la vista dentro del panel principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarTiposVehiculo() {
 
@@ -88,6 +108,11 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Carga la pantalla de gestión de clientes, asigna el servicio de clientes a su controlador y muestra la vista dentro de la ventana principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarClientes() {
         try {
@@ -108,6 +133,11 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Carga la pantalla de alquileres, conecta los servicios de clientes, vehículos y alquileres con su controlador y muestra la vista en el panel principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarAlquileres() {
 
@@ -129,6 +159,11 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Carga la pantalla de devolución de vehículos, asigna el servicio de alquileres a su controlador y muestra la vista dentro del panel principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarDevolucion() {
 
@@ -150,6 +185,11 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Carga la pantalla del historial de alquileres, asigna el servicio correspondiente a su controlador y muestra la vista dentro de la ventana principal
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void mostrarHistorial() {
 
@@ -171,11 +211,21 @@ public class PrincipalController {
         }
     }
 
+    /*
+     * Qué hace: Finaliza completamente la ejecución de la aplicación JavaFX cuando el usuario selecciona la opción de cerrar el sistema
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void cerrarAplicacion() {
         Platform.exit();
     }
 
+    /*
+     * Qué hace: Muestra un mensaje directamente en el centro de la ventana principal cuando no es posible cargar alguna de las pantallas del sistema
+     * Recibe: El mensaje que se desea mostrar al usuario
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarMensaje(String mensaje) {
 
         Label label = new Label(mensaje);
