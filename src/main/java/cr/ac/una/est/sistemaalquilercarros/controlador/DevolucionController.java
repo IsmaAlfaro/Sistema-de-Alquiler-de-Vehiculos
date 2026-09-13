@@ -30,6 +30,12 @@ public class DevolucionController {
     @FXML     private TableColumn<Alquiler, LocalDate> colFechaEsperada;
     @FXML     private TableColumn<Alquiler, String> colEstado;
     private AlquilerServicio alquilerServicio;
+
+    /*
+     * Qué hace: Inicializa la pantalla de devoluciones configurando la fecha actual, las columnas de la tabla y los eventos que permiten seleccionar alquileres tanto desde el ComboBox como desde la tabla
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML     private void initialize() {
         dpFechaDevolucion.setValue(LocalDate.now());
         colNumero.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getNumeroAlquiler()));
@@ -40,15 +46,33 @@ public class DevolucionController {
         colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
         cmbAlquiler.setOnAction(evento -> cargarAlquilerSeleccionado());          tablaAlquileresActivos.setOnMouseClicked(evento -> cargarDesdeTabla());
     }
+
+    /*
+     * Qué hace: Asigna el servicio encargado de administrar los alquileres y carga inmediatamente los alquileres activos disponibles para devolución
+     * Recibe: El servicio de alquileres que utilizará el controlador
+     * Retorna: No retorna ningún valor
+     */
     public void setAlquilerServicio(AlquilerServicio alquilerServicio) {
         this.alquilerServicio = alquilerServicio;
         cargarDatos();
     }
+
+    /*
+     * Qué hace: Obtiene todos los alquileres activos y los carga tanto en el ComboBox como en la tabla para que puedan ser seleccionados por el usuario
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void cargarDatos() {
         var activos = alquilerServicio.obtenerActivos();
         cmbAlquiler.setItems(FXCollections.observableArrayList(activos));
         tablaAlquileresActivos.setItems(FXCollections.observableArrayList(activos));
     }
+
+    /*
+     * Qué hace: Obtiene el alquiler seleccionado en el ComboBox y muestra sus datos principales en la pantalla de devolución
+     * Recibe: No recibe parámetros directamente, utiliza el alquiler seleccionado en el ComboBox
+     * Retorna: No retorna ningún valor
+     */
     private void cargarAlquilerSeleccionado() {
         Alquiler alquiler = cmbAlquiler.getValue();
         if (alquiler == null) {
@@ -56,6 +80,12 @@ public class DevolucionController {
         }
         mostrarDatosAlquiler(alquiler);
     }
+
+    /*
+     * Qué hace: Obtiene el alquiler seleccionado directamente desde la tabla, lo coloca también en el ComboBox y muestra sus datos correspondientes
+     * Recibe: No recibe parámetros directamente, utiliza la selección actual de la tabla
+     * Retorna: No retorna ningún valor
+     */
     private void cargarDesdeTabla() {
         Alquiler alquiler = tablaAlquileresActivos.getSelectionModel().getSelectedItem();
         if (alquiler == null) {
@@ -64,12 +94,24 @@ public class DevolucionController {
         cmbAlquiler.setValue(alquiler);
         mostrarDatosAlquiler(alquiler);
     }
+
+    /*
+     * Qué hace: Muestra en los labels de la pantalla la información principal del alquiler seleccionado y reinicia los resultados de los cálculos de devolución
+     * Recibe: El alquiler cuya información se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarDatosAlquiler(Alquiler alquiler) {
         lblCliente.setText(alquiler.getCliente().getNombreCompleto());
         lblVehiculo.setText(alquiler.getVehiculo().toString());
         lblFechaEsperada.setText(alquiler.getFechaDevolucionEsperada().toString());
         reiniciarResultados();
     }
+
+    /*
+     * Qué hace: Calcula de forma previa los días de atraso, la multa, el depósito que debe devolverse y cualquier saldo pendiente utilizando la fecha de devolución seleccionada
+     * Recibe: No recibe parámetros directamente, utiliza el alquiler y la fecha seleccionados en la pantalla
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void calcularDevolucion() {
         try {
@@ -96,6 +138,12 @@ public class DevolucionController {
             mostrarError(e.getMessage());
         }
     }
+
+    /*
+     * Qué hace: Registra definitivamente la devolución del alquiler seleccionado, obtiene los resultados calculados por el servicio y muestra al usuario el resumen completo de la devolución
+     * Recibe: No recibe parámetros directamente, utiliza el alquiler y la fecha seleccionados
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void confirmarDevolucion() {
         try {
@@ -113,6 +161,12 @@ public class DevolucionController {
             mostrarError(e.getMessage());
         }
     }
+
+    /*
+     * Qué hace: Limpia las selecciones y datos mostrados en la pantalla de devolución, restablece la fecha actual y reinicia todos los resultados calculados
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void limpiarFormulario() {
         cmbAlquiler.getSelectionModel().clearSelection();
@@ -123,12 +177,24 @@ public class DevolucionController {
         lblFechaEsperada.setText("-");
         reiniciarResultados();
     }
+
+    /*
+     * Qué hace: Restablece los valores visuales correspondientes a atraso, multa, depósito devuelto y saldo pendiente a sus valores iniciales
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void reiniciarResultados() {
         lblDiasAtraso.setText("0");
         lblMulta.setText("₡0.00");
         lblDepositoDevuelto.setText("₡0.00");
         lblSaldoPendiente.setText("₡0.00");
     }
+
+    /*
+     * Qué hace: Muestra una ventana de alerta de tipo error para informar al usuario sobre un problema ocurrido durante el proceso de devolución
+     * Recibe: El mensaje de error que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarError(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
         alerta.setTitle("Error");
@@ -136,6 +202,12 @@ public class DevolucionController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
+
+    /*
+     * Qué hace: Muestra una ventana informativa para comunicar al usuario el resultado o la confirmación de una operación de devolución
+     * Recibe: El mensaje informativo que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarInformacion(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 

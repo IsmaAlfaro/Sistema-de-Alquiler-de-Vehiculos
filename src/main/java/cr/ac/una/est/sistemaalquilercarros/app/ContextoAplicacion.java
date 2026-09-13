@@ -16,6 +16,11 @@ public class ContextoAplicacion {
     private final AlquilerServicio alquilerServicio;
     private final TipoVehiculoServicio tipoVehiculoServicio;
 
+    /*
+     * Qué hace: Inicializa el contexto general de la aplicación creando el sistema de persistencia, cargando los datos previamente almacenados y construyendo los diferentes servicios que serán compartidos por las pantallas del programa
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     public ContextoAplicacion() {
 
         persistencia = new PersistenciaDatos();
@@ -31,19 +36,40 @@ public class ContextoAplicacion {
         alquilerServicio = new AlquilerServicio(datosSistema, persistencia, vehiculoServicio, clienteServicio);
     }
 
+    /*
+     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los tipos de vehículo utilizada de forma compartida dentro de la aplicación
+     * Recibe: No recibe parámetros
+     * Retorna: La instancia de TipoVehiculoServicio utilizada por el sistema
+     */
     public TipoVehiculoServicio getTipoVehiculoServicio() {
         return tipoVehiculoServicio;
     }
 
+    /*
+     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los vehículos utilizada de forma compartida dentro de la aplicación
+     * Recibe: No recibe parámetros
+     * Retorna: La instancia de VehiculoServicio utilizada por el sistema
+     */
     public VehiculoServicio getVehiculoServicio() {
         return vehiculoServicio;
     }
 
+    /*
+     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los clientes utilizada de forma compartida dentro de la aplicación
+     * Recibe: No recibe parámetros
+     * Retorna: La instancia de ClienteServicio utilizada por el sistema
+     */
     public ClienteServicio getClienteServicio() {
         return clienteServicio;
     }
 
+    /*
+     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los alquileres y devoluciones utilizada de forma compartida dentro de la aplicación
+     * Recibe: No recibe parámetros
+     * Retorna: La instancia de AlquilerServicio utilizada por el sistema
+     */
     public AlquilerServicio getAlquilerServicio() {
         return alquilerServicio;
     }
+
 }

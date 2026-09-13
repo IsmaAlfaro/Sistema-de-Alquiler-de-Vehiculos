@@ -15,6 +15,11 @@ public class ClienteServicio {
     private final DatosSistema datosSistema;
     private final PersistenciaDatos persistencia;
 
+    /*
+     * Qué hace: Inicializa el servicio encargado de administrar los clientes, enlaza los datos generales y la persistencia, y carga en el repositorio los clientes previamente almacenados
+     * Recibe: El objeto DatosSistema y el servicio encargado de guardar la información
+     * Retorna: No retorna ningún valor
+     */
     public ClienteServicio(DatosSistema datosSistema,
                            PersistenciaDatos persistencia) {
 
@@ -28,6 +33,11 @@ public class ClienteServicio {
         );
     }
 
+    /*
+     * Qué hace: Actualiza en DatosSistema la lista actual de clientes y posteriormente guarda toda la información utilizando el mecanismo de persistencia
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void guardarCambios() {
 
         datosSistema.setClientes(
@@ -37,6 +47,11 @@ public class ClienteServicio {
         persistencia.guardar(datosSistema);
     }
 
+    /*
+     * Qué hace: Registra un nuevo cliente después de validar que el objeto sea correcto, que sus datos cumplan con las reglas establecidas y que no exista otro cliente con la misma cédula
+     * Recibe: El objeto Cliente que se desea registrar
+     * Retorna: No retorna ningún valor
+     */
     public void registrarCliente(Cliente cliente) {
 
         if (cliente == null) {
@@ -58,6 +73,11 @@ public class ClienteServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Busca un cliente dentro del repositorio utilizando su número de cédula como identificador principal
+     * Recibe: La cédula del cliente que se desea localizar
+     * Retorna: El cliente encontrado o null si no existe ningún cliente con esa cédula
+     */
     public Cliente buscarPorCedula(String cedula) {
 
         if (cedula == null || cedula.trim().isEmpty()) {
@@ -74,11 +94,21 @@ public class ClienteServicio {
         return null;
     }
 
+    /*
+     * Qué hace: Obtiene todos los clientes registrados actualmente dentro del repositorio del sistema
+     * Recibe: No recibe parámetros
+     * Retorna: La lista completa de clientes registrados
+     */
     public List<Cliente> obtenerTodos() {
 
         return repositorioClientes.obtenerTodos();
     }
 
+    /*
+     * Qué hace: Modifica los datos de un cliente existente después de verificar que el cliente exista, que los nuevos datos sean válidos y que su cédula original no haya sido modificada
+     * Recibe: La cédula del cliente que se desea modificar y el objeto Cliente que contiene los nuevos datos
+     * Retorna: No retorna ningún valor
+     */
     public void modificarCliente(String cedula,
                                  Cliente clienteModificado) {
 
@@ -122,6 +152,11 @@ public class ClienteServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Elimina un cliente del sistema después de verificar que exista y que no tenga ningún alquiler activo asociado que impida su eliminación
+     * Recibe: La cédula del cliente que se desea eliminar
+     * Retorna: No retorna ningún valor
+     */
     public void eliminarCliente(String cedula) {
 
         Cliente cliente = buscarPorCedula(cedula);
@@ -150,11 +185,21 @@ public class ClienteServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Obtiene la cantidad total de clientes que se encuentran registrados actualmente dentro del repositorio
+     * Recibe: No recibe parámetros
+     * Retorna: La cantidad total de clientes registrados
+     */
     public int cantidadClientes() {
 
         return repositorioClientes.cantidad();
     }
 
+    /*
+     * Qué hace: Verifica que los datos principales de un cliente cumplan con las reglas establecidas, incluyendo cédula, nombre, teléfono y formato del correo electrónico, y genera una excepción si encuentra algún dato inválido
+     * Recibe: El objeto Cliente cuyos datos se desean validar
+     * Retorna: No retorna ningún valor
+     */
     private void validarCliente(Cliente cliente) {
 
         if (cliente.getCedula() == null ||

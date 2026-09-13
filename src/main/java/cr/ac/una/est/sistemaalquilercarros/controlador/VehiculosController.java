@@ -75,6 +75,11 @@ public class VehiculosController {
 
     private TipoVehiculoServicio tipoVehiculoServicio;
 
+    /*
+     * Qué hace: Inicializa la pantalla de vehículos configurando las opciones de tracción, las columnas de la tabla y los eventos que permiten actualizar los campos según el tipo de vehículo y cargar los datos del vehículo seleccionado
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void initialize() {
 
@@ -101,13 +106,11 @@ public class VehiculosController {
         actualizarCamposPorTipo();
     }
 
-//    public void setVehiculoServicio(VehiculoServicio vehiculoServicio) {
-//
-//        this.vehiculoServicio = vehiculoServicio;
-//
-//        actualizarTabla();
-//    }
-
+    /*
+     * Qué hace: Asigna los servicios necesarios para administrar vehículos y tipos de vehículo, y posteriormente carga los tipos disponibles y actualiza la tabla principal
+     * Recibe: El servicio de vehículos y el servicio de tipos de vehículo
+     * Retorna: No retorna ningún valor
+     */
     public void setServicios(VehiculoServicio vehiculoServicio, TipoVehiculoServicio tipoVehiculoServicio) {
 
         this.vehiculoServicio = vehiculoServicio;
@@ -117,6 +120,11 @@ public class VehiculosController {
         actualizarTabla();
     }
 
+    /*
+     * Qué hace: Obtiene todos los tipos de vehículo registrados en el sistema y los carga en el ComboBox utilizado para seleccionar el tipo al registrar o modificar un vehículo
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void cargarTipos() {
 
         cmbTipo.setItems(
@@ -126,6 +134,11 @@ public class VehiculosController {
         );
     }
 
+    /*
+     * Qué hace: Crea un nuevo vehículo utilizando los datos ingresados en el formulario, solicita su registro al servicio correspondiente y luego actualiza la tabla y limpia la pantalla
+     * Recibe: No recibe parámetros directamente, utiliza los valores ingresados y seleccionados en el formulario
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void registrarVehiculo() {
 
@@ -147,6 +160,11 @@ public class VehiculosController {
         }
     }
 
+    /*
+     * Qué hace: Modifica el vehículo seleccionado en la tabla utilizando los datos actuales del formulario, conservando la placa como identificador principal y validando la información antes de guardar los cambios
+     * Recibe: No recibe parámetros directamente, utiliza el vehículo seleccionado y los datos ingresados en el formulario
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void modificarVehiculo() {
 
@@ -178,6 +196,11 @@ public class VehiculosController {
         }
     }
 
+    /*
+     * Qué hace: Elimina del sistema el vehículo seleccionado en la tabla después de comprobar que exista una selección válida y que el servicio permita realizar la eliminación
+     * Recibe: No recibe parámetros directamente, utiliza el vehículo seleccionado en la tabla
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void eliminarVehiculo() {
 
@@ -204,6 +227,11 @@ public class VehiculosController {
         }
     }
 
+    /*
+     * Qué hace: Limpia todos los campos y selecciones del formulario de vehículos, vuelve a habilitar los controles correspondientes y restablece el estado visual según el tipo seleccionado
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void limpiarFormulario() {
 
@@ -226,6 +254,11 @@ public class VehiculosController {
         actualizarCamposPorTipo();
     }
 
+    /*
+     * Qué hace: Construye un objeto de tipo VehiculoPasajeros o VehiculoCarga utilizando los datos del formulario y la categoría del tipo de vehículo seleccionado
+     * Recibe: No recibe parámetros directamente, obtiene los datos desde los campos y ComboBox de la pantalla
+     * Retorna: Un objeto Vehiculo creado con la información correspondiente al tipo seleccionado
+     */
     private Vehiculo crearVehiculoDesdeFormulario() {
 
         String placa = txtPlaca.getText().trim();
@@ -269,6 +302,11 @@ public class VehiculosController {
         throw new IllegalArgumentException("La categoría del vehículo no es válida.");
     }
 
+    /*
+     * Qué hace: Actualiza la tabla principal de vehículos cargando todos los registros disponibles actualmente desde el servicio de vehículos
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void actualizarTabla() {
 
         if (vehiculoServicio == null) {
@@ -278,6 +316,11 @@ public class VehiculosController {
         tablaVehiculos.setItems(FXCollections.observableArrayList(vehiculoServicio.obtenerTodos()));
     }
 
+    /*
+     * Qué hace: Habilita o deshabilita dinámicamente los campos de pasajeros, capacidad de carga y tipo de tracción según las características requeridas por el tipo de vehículo seleccionado
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void actualizarCamposPorTipo() {
 
         TipoVehiculo tipo = cmbTipo.getValue();
@@ -297,6 +340,11 @@ public class VehiculosController {
         cmbTraccion.setDisable(!tipo.isRequiereTraccion());
     }
 
+    /*
+     * Qué hace: Obtiene el vehículo seleccionado en la tabla y carga todos sus datos generales y específicos en el formulario para permitir su consulta o modificación
+     * Recibe: No recibe parámetros directamente, utiliza la selección actual de la tabla
+     * Retorna: No retorna ningún valor
+     */
     private void cargarVehiculoSeleccionado() {
 
         Vehiculo vehiculo = tablaVehiculos.getSelectionModel().getSelectedItem();
@@ -333,6 +381,11 @@ public class VehiculosController {
         actualizarCamposPorTipo();
     }
 
+    /*
+     * Qué hace: Muestra una ventana de alerta de tipo error para informar al usuario sobre un problema ocurrido durante una operación con vehículos
+     * Recibe: El mensaje de error que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarError(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);
@@ -344,6 +397,11 @@ public class VehiculosController {
         alerta.showAndWait();
     }
 
+    /*
+     * Qué hace: Muestra una ventana informativa para comunicar al usuario que una operación relacionada con vehículos se realizó correctamente
+     * Recibe: El mensaje informativo que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarInformacion(String mensaje) {
 
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);

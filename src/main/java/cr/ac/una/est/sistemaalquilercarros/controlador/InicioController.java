@@ -20,6 +20,11 @@ public class InicioController {
 
     private ContextoAplicacion contexto;
 
+    /*
+     * Qué hace: Recibe y almacena el contexto general de la aplicación para poder acceder a los distintos servicios y actualizar los datos mostrados en la pantalla de inicio
+     * Recibe: El contexto general de la aplicación
+     * Retorna: No retorna ningún valor
+     */
     public void setContexto(ContextoAplicacion contexto) {
 
         this.contexto = contexto;
@@ -27,6 +32,11 @@ public class InicioController {
         actualizarDatos();
     }
 
+    /*
+     * Qué hace: Consulta los servicios del sistema y actualiza los indicadores de cantidad de vehículos, vehículos disponibles, clientes registrados y alquileres activos
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void actualizarDatos() {
 
         lblCantidadVehiculos.setText(String.valueOf(contexto.getVehiculoServicio().cantidadVehiculos()));

@@ -71,6 +71,11 @@ public class AlquileresController {
     private VehiculoServicio vehiculoServicio;
     private AlquilerServicio alquilerServicio;
 
+    /*
+     * Qué hace: Inicializa la pantalla de alquileres configurando la fecha actual, los valores iniciales de los labels, las columnas de la tabla y el evento que actualiza automáticamente la tarifa diaria cuando se selecciona un vehículo
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void initialize() {
 
@@ -101,6 +106,11 @@ public class AlquileresController {
 
     }
 
+    /*
+     * Qué hace: Recibe y almacena los servicios necesarios para trabajar con clientes, vehículos y alquileres, y posteriormente carga en la pantalla la información disponible
+     * Recibe: El servicio de clientes, el servicio de vehículos y el servicio de alquileres
+     * Retorna: No retorna ningún valor
+     */
     public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehiculoServicio, AlquilerServicio alquilerServicio) {
         this.clienteServicio = clienteServicio;
         this.vehiculoServicio = vehiculoServicio;
@@ -109,6 +119,11 @@ public class AlquileresController {
         cargarDatos();
     }
 
+    /*
+     * Qué hace: Carga en los ComboBox los clientes y vehículos disponibles, actualiza la tabla con los alquileres registrados y muestra el depósito de garantía establecido por el sistema
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void cargarDatos() {
         cmbCliente.setItems(FXCollections.observableArrayList(clienteServicio.obtenerTodos()));
 
@@ -119,6 +134,11 @@ public class AlquileresController {
         lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
     }
 
+    /*
+     * Qué hace: Actualiza el label que muestra la tarifa diaria del vehículo seleccionado para que el usuario pueda conocer su precio antes de realizar el cálculo del alquiler
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void actualizarTarifaDiaria() {
 
         Vehiculo vehiculo = cmbVehiculo.getValue();
@@ -132,6 +152,11 @@ public class AlquileresController {
     }
 
 
+    /*
+     * Qué hace: Calcula de manera previa el subtotal, el depósito de garantía y el monto total del alquiler utilizando el vehículo seleccionado y la cantidad de días indicada por el usuario
+     * Recibe: No recibe parámetros directamente, utiliza los datos ingresados y seleccionados en el formulario
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void calcularAlquiler(){
 
@@ -169,6 +194,11 @@ public class AlquileresController {
 
     }
 
+    /*
+     * Qué hace: Registra definitivamente un nuevo alquiler utilizando el cliente, vehículo, fecha y cantidad de días seleccionados, y después limpia y actualiza la pantalla
+     * Recibe: No recibe parámetros directamente, utiliza los datos ingresados y seleccionados en el formulario
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void confirmarAlquiler(){
         try {
@@ -204,6 +234,11 @@ public class AlquileresController {
 
     }
 
+    /*
+     * Qué hace: Limpia todos los campos y selecciones del formulario de alquiler, restablece la fecha actual y devuelve los valores mostrados a su estado inicial
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     @FXML
     private void limpiarFormulario(){
 
@@ -226,6 +261,11 @@ public class AlquileresController {
         lblTotal.setText("₡0.00");
     }
 
+    /*
+     * Qué hace: Muestra una ventana de alerta de tipo error para informar al usuario sobre un problema ocurrido durante alguna operación de alquiler
+     * Recibe: El mensaje de error que se desea mostrar en pantalla
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarError(String mensaje){
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
@@ -235,6 +275,11 @@ public class AlquileresController {
         alerta.showAndWait();
     }
 
+    /*
+     * Qué hace: Muestra una ventana informativa para comunicar al usuario que una operación relacionada con los alquileres se realizó correctamente
+     * Recibe: El mensaje informativo que se desea mostrar en pantalla
+     * Retorna: No retorna ningún valor
+     */
     private void mostrarInformacion(String mensaje){
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 

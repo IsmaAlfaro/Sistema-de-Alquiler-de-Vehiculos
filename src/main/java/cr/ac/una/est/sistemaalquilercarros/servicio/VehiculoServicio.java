@@ -19,6 +19,11 @@ public class VehiculoServicio {
     private final DatosSistema datosSistema;
     private final PersistenciaDatos persistencia;
 
+    /*
+     * Qué hace: Inicializa el servicio encargado de administrar los vehículos, enlaza los datos generales y la persistencia, y carga en el repositorio los vehículos previamente registrados
+     * Recibe: El objeto DatosSistema y el servicio encargado de guardar la información
+     * Retorna: No retorna ningún valor
+     */
     public VehiculoServicio(DatosSistema datosSistema, PersistenciaDatos persistencia) {
         this.datosSistema = datosSistema;
         this.persistencia = persistencia;
@@ -27,6 +32,11 @@ public class VehiculoServicio {
         this.repositorioVehiculos.reemplazarTodos(datosSistema.getVehiculos());
     }
 
+    /*
+     * Qué hace: Actualiza en DatosSistema la lista actual de vehículos almacenados en el repositorio y posteriormente guarda toda la información mediante el mecanismo de persistencia
+     * Recibe: No recibe parámetros
+     * Retorna: No retorna ningún valor
+     */
     private void guardarCambios() {
 
         datosSistema.setVehiculos(repositorioVehiculos.obtenerTodos());
@@ -34,6 +44,11 @@ public class VehiculoServicio {
         persistencia.guardar(datosSistema);
     }
 
+    /*
+     * Qué hace: Registra un nuevo vehículo después de comprobar que el objeto no sea nulo, validar todos sus datos y verificar que no exista otro vehículo con la misma placa
+     * Recibe: El objeto Vehiculo que se desea registrar
+     * Retorna: No retorna ningún valor
+     */
     public void registrarVehiculo(Vehiculo vehiculo) {
 
         if (vehiculo == null) {
@@ -51,6 +66,11 @@ public class VehiculoServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Busca dentro del repositorio un vehículo utilizando la placa como identificador principal y comparando el valor sin distinguir entre mayúsculas y minúsculas
+     * Recibe: La placa del vehículo que se desea localizar
+     * Retorna: El vehículo encontrado o null si no existe ninguno con esa placa
+     */
     public Vehiculo buscarPorPlaca(String placa) {
 
         if (placa == null || placa.trim().isEmpty()) {
@@ -68,10 +88,20 @@ public class VehiculoServicio {
         return null;
     }
 
+    /*
+     * Qué hace: Obtiene todos los vehículos registrados actualmente dentro del repositorio del sistema
+     * Recibe: No recibe parámetros
+     * Retorna: La lista completa de vehículos registrados
+     */
     public List<Vehiculo> obtenerTodos() {
         return repositorioVehiculos.obtenerTodos();
     }
 
+    /*
+     * Qué hace: Recorre todos los vehículos registrados y construye una lista que contiene únicamente aquellos cuyo estado actual es DISPONIBLE
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista con todos los vehículos que se encuentran disponibles para alquiler
+     */
     public List<Vehiculo> obtenerDisponibles() {
 
         List<Vehiculo> disponibles = new ArrayList<>();
@@ -86,6 +116,11 @@ public class VehiculoServicio {
         return disponibles;
     }
 
+    /*
+     * Qué hace: Modifica la información de un vehículo existente después de verificar que exista, que no se encuentre alquilado, que los nuevos datos sean válidos y que la placa original no haya sido cambiada
+     * Recibe: La placa del vehículo que se desea modificar y el objeto Vehiculo que contiene los nuevos datos
+     * Retorna: No retorna ningún valor
+     */
     public void modificarVehiculo(String placa, Vehiculo vehiculoModificado) {
 
         Vehiculo vehiculoActual = buscarPorPlaca(placa);
@@ -121,6 +156,11 @@ public class VehiculoServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Elimina un vehículo del sistema después de comprobar que exista y que actualmente no se encuentre alquilado
+     * Recibe: La placa del vehículo que se desea eliminar
+     * Retorna: No retorna ningún valor
+     */
     public void eliminarVehiculo(String placa) {
 
         Vehiculo vehiculo = buscarPorPlaca(placa);
@@ -139,18 +179,38 @@ public class VehiculoServicio {
         guardarCambios();
     }
 
+    /*
+     * Qué hace: Obtiene la cantidad total de vehículos registrados actualmente dentro del repositorio
+     * Recibe: No recibe parámetros
+     * Retorna: La cantidad total de vehículos registrados
+     */
     public int cantidadVehiculos() {
         return repositorioVehiculos.cantidad();
     }
 
+    /*
+     * Qué hace: Calcula cuántos vehículos registrados se encuentran actualmente disponibles para realizar un nuevo alquiler
+     * Recibe: No recibe parámetros
+     * Retorna: La cantidad de vehículos disponibles
+     */
     public int cantidadDisponibles() {
         return obtenerDisponibles().size();
     }
 
+    /*
+     * Qué hace: Calcula cuántos vehículos se encuentran actualmente alquilados restando los vehículos disponibles de la cantidad total registrada
+     * Recibe: No recibe parámetros
+     * Retorna: La cantidad de vehículos que se encuentran alquilados
+     */
     public int cantidadAlquilados() {
         return cantidadVehiculos() - cantidadDisponibles();
     }
 
+    /*
+     * Qué hace: Verifica que la información general y específica de un vehículo cumpla con las reglas del sistema, incluyendo placa, marca, modelo, año, tarifa, cantidad de pasajeros, capacidad de carga y tipo de tracción según corresponda
+     * Recibe: El objeto Vehiculo cuyos datos se desean validar antes de registrarlo o modificarlo
+     * Retorna: No retorna ningún valor
+     */
     private void validarVehiculo(Vehiculo vehiculo) {
 
         if (vehiculo.getPlaca() == null || vehiculo.getPlaca().trim().isEmpty()) {
