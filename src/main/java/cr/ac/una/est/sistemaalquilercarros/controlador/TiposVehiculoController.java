@@ -109,6 +109,8 @@ public class TiposVehiculoController {
 
         } catch (IllegalArgumentException e) {
             mostrarError(e.getMessage());
+        } catch (RuntimeException e) {
+            mostrarError(e.getMessage());
         }
     }
 
@@ -139,6 +141,8 @@ public class TiposVehiculoController {
             mostrarInformacion("Tipo de vehículo eliminado correctamente.");
 
         } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        } catch (RuntimeException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -173,7 +177,11 @@ public class TiposVehiculoController {
             return;
         }
 
-        tablaTipos.setItems(FXCollections.observableArrayList(tipoVehiculoServicio.obtenerTodos()));
+       try {
+           tablaTipos.setItems(FXCollections.observableArrayList(tipoVehiculoServicio.obtenerTodos()));
+       } catch (RuntimeException e) {
+           mostrarError(e.getMessage());
+       }
     }
 
     /*
