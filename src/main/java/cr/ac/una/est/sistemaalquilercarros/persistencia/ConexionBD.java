@@ -10,7 +10,7 @@ public class ConexionBD {
 
     private static final String USUARIO = "root";
 
-    private static final String CONTRASENA = "1I2s3m4a5e6l";
+    private static final String CONTRASENA = "admin";
 
     public Connection obtenerConexion() throws SQLException {
 
