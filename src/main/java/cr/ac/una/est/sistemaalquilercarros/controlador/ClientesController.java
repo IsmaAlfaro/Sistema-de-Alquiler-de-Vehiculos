@@ -2,7 +2,6 @@ package cr.ac.una.est.sistemaalquilercarros.controlador;
 
 import cr.ac.una.est.sistemaalquilercarros.modelo.Cliente;
 import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -40,7 +39,6 @@ public class ClientesController {
     @FXML
     private TableColumn<Cliente, String> colCorreo;
 
-
     private ClienteServicio clienteServicio;
 
     /*
@@ -51,15 +49,23 @@ public class ClientesController {
     @FXML
     private void initialize() {
 
-       colCedula.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCedula()));
+        colCedula.setCellValueFactory(
+                dato -> new SimpleStringProperty(dato.getValue().getCedula())
+        );
 
-       colNombre.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getNombreCompleto()));
+        colNombre.setCellValueFactory(
+                dato -> new SimpleStringProperty(dato.getValue().getNombreCompleto())
+        );
 
-       colTelefono.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getTelefono()));
+        colTelefono.setCellValueFactory(
+                dato -> new SimpleStringProperty(dato.getValue().getTelefono())
+        );
 
-       colCorreo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCorreo()));
+        colCorreo.setCellValueFactory(
+                dato -> new SimpleStringProperty(dato.getValue().getCorreo())
+        );
 
-       tablaClientes.setOnMouseClicked(evento -> cargarClienteSeleccionado());
+        tablaClientes.setOnMouseClicked(evento -> cargarClienteSeleccionado());
     }
 
     /*
@@ -72,7 +78,6 @@ public class ClientesController {
         this.clienteServicio = clienteServicio;
 
         actualizarTabla();
-
     }
 
     /*
@@ -86,13 +91,17 @@ public class ClientesController {
         try {
 
             Cliente cliente = crearClienteDesdeFormulario();
+
             clienteServicio.registrarCliente(cliente);
 
             actualizarTabla();
             limpiarFormulario();
 
             mostrarInformacion("Cliente registrado correctamente");
+
         } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        } catch (RuntimeException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -108,7 +117,9 @@ public class ClientesController {
         Cliente seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
+
             mostrarError("Debe seleccionar un cliente.");
+
             return;
         }
 
@@ -121,8 +132,11 @@ public class ClientesController {
             actualizarTabla();
             limpiarFormulario();
 
-            mostrarInformacion("Cliente modificado correctamente");
-        }catch (IllegalArgumentException e){
+            mostrarInformacion("Cliente modificado correctamente.");
+
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        } catch (RuntimeException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -134,10 +148,13 @@ public class ClientesController {
      */
     @FXML
     private void eliminarCliente() {
+
         Cliente seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
+
             mostrarError("Debe seleccionar un cliente.");
+
             return;
         }
 
@@ -148,11 +165,13 @@ public class ClientesController {
             actualizarTabla();
             limpiarFormulario();
 
-            mostrarInformacion("Cliente eliminado con correctamente.");
-        }catch (IllegalArgumentException e){
+            mostrarInformacion("Cliente eliminado correctamente.");
+
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        } catch (RuntimeException e) {
             mostrarError(e.getMessage());
         }
-
     }
 
     /*
@@ -171,7 +190,6 @@ public class ClientesController {
         txtCedula.setDisable(false);
 
         tablaClientes.getSelectionModel().clearSelection();
-
     }
 
     /*
@@ -181,8 +199,12 @@ public class ClientesController {
      */
     private Cliente crearClienteDesdeFormulario() {
 
-        return new Cliente(txtCedula.getText().trim(), txtNombre.getText().trim(), txtTelefono.getText().trim(), txtCorreo.getText().trim());
-
+        return new Cliente(
+                txtCedula.getText().trim(),
+                txtNombre.getText().trim(),
+                txtTelefono.getText().trim(),
+                txtCorreo.getText().trim()
+        );
     }
 
     /*
@@ -191,6 +213,7 @@ public class ClientesController {
      * Retorna: No retorna ningún valor
      */
     private void cargarClienteSeleccionado() {
+
         Cliente cliente = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (cliente == null) {
@@ -206,7 +229,6 @@ public class ClientesController {
         txtCorreo.setText(cliente.getCorreo());
 
         txtCedula.setDisable(true);
-
     }
 
     /*
@@ -216,12 +238,21 @@ public class ClientesController {
      */
     private void actualizarTabla() {
 
-        if(clienteServicio == null) {
+        if (clienteServicio == null) {
             return;
         }
 
-        tablaClientes.setItems(FXCollections.observableArrayList(clienteServicio.obtenerTodos()));
+        try {
 
+            tablaClientes.setItems(
+                    FXCollections.observableArrayList(
+                            clienteServicio.obtenerTodos()
+                    )
+            );
+
+        } catch (RuntimeException e) {
+            mostrarError(e.getMessage());
+        }
     }
 
     /*
@@ -230,6 +261,7 @@ public class ClientesController {
      * Retorna: No retorna ningún valor
      */
     private void mostrarError(String mensaje) {
+
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
         alerta.setTitle("Error");
@@ -254,5 +286,4 @@ public class ClientesController {
 
         alerta.showAndWait();
     }
-
 }
