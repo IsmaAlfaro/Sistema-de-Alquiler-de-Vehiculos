@@ -1,15 +1,16 @@
-
 package cr.ac.una.est.sistemaalquilercarros.app;
 
 import cr.ac.una.est.sistemaalquilercarros.persistencia.ConexionBD;
 import cr.ac.una.est.sistemaalquilercarros.persistencia.DatosSistema;
 import cr.ac.una.est.sistemaalquilercarros.persistencia.PersistenciaDatos;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.ClienteRepositorio;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.TipoVehiculoRepositorio;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.ClienteRepositorioJdbc;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.TipoVehiculoRepositorioJdbc;
 import cr.ac.una.est.sistemaalquilercarros.servicio.AlquilerServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
-import cr.ac.una.est.sistemaalquilercarros.servicio.TipoVehiculoServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
+import cr.ac.una.est.sistemaalquilercarros.servicio.TipoVehiculoServicio;
 
 public class ContextoAplicacion {
 
@@ -17,6 +18,7 @@ public class ContextoAplicacion {
     private final DatosSistema datosSistema;
     private final ConexionBD conexionBD;
     private final ClienteRepositorio clienteRepositorio;
+    private final TipoVehiculoRepositorio tipoVehiculoRepositorio;
     private final VehiculoServicio vehiculoServicio;
     private final ClienteServicio clienteServicio;
     private final AlquilerServicio alquilerServicio;
@@ -30,32 +32,22 @@ public class ContextoAplicacion {
     public ContextoAplicacion() {
 
         persistencia = new PersistenciaDatos();
+
         datosSistema = persistencia.cargar();
 
         conexionBD = new ConexionBD();
+
         clienteRepositorio = new ClienteRepositorioJdbc(conexionBD);
 
-        tipoVehiculoServicio = new TipoVehiculoServicio(
-                datosSistema,
-                persistencia
-        );
+        tipoVehiculoRepositorio = new TipoVehiculoRepositorioJdbc(conexionBD);
 
-        vehiculoServicio = new VehiculoServicio(
-                datosSistema,
-                persistencia
-        );
+        tipoVehiculoServicio = new TipoVehiculoServicio(datosSistema, persistencia);
 
-        clienteServicio = new ClienteServicio(
-                clienteRepositorio,
-                datosSistema
-        );
+        vehiculoServicio = new VehiculoServicio(datosSistema, persistencia);
 
-        alquilerServicio = new AlquilerServicio(
-                datosSistema,
-                persistencia,
-                vehiculoServicio,
-                clienteServicio
-        );
+        clienteServicio = new ClienteServicio(datosSistema, persistencia);
+
+        alquilerServicio = new AlquilerServicio(datosSistema, persistencia, vehiculoServicio, clienteServicio);
     }
 
     /*
@@ -93,4 +85,5 @@ public class ContextoAplicacion {
     public AlquilerServicio getAlquilerServicio() {
         return alquilerServicio;
     }
+
 }
