@@ -1,3 +1,4 @@
+
 package cr.ac.una.est.sistemaalquilercarros.app;
 
 import cr.ac.una.est.sistemaalquilercarros.persistencia.ConexionBD;
@@ -25,7 +26,7 @@ public class ContextoAplicacion {
     private final TipoVehiculoServicio tipoVehiculoServicio;
 
     /*
-     * Qué hace: Inicializa el contexto general de la aplicación creando el sistema de persistencia, cargando los datos previamente almacenados y construyendo los diferentes servicios que serán compartidos por las pantallas del programa
+     * Qué hace: Inicializa el contexto general de la aplicación creando el sistema de persistencia, cargando los datos previamente almacenados, estableciendo la conexión con MySQL y construyendo los diferentes repositorios y servicios que serán compartidos por las pantallas del programa
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
@@ -41,49 +42,49 @@ public class ContextoAplicacion {
 
         tipoVehiculoRepositorio = new TipoVehiculoRepositorioJdbc(conexionBD);
 
-        tipoVehiculoServicio = new TipoVehiculoServicio(datosSistema, persistencia);
+        tipoVehiculoServicio = new TipoVehiculoServicio(tipoVehiculoRepositorio);
 
         vehiculoServicio = new VehiculoServicio(datosSistema, persistencia);
 
-        clienteServicio = new ClienteServicio(datosSistema, persistencia);
+        clienteServicio = new ClienteServicio(clienteRepositorio, datosSistema);
 
         alquilerServicio = new AlquilerServicio(datosSistema, persistencia, vehiculoServicio, clienteServicio);
     }
 
     /*
-     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los tipos de vehículo utilizada de forma compartida dentro de la aplicación
+     * Qué hace: Obtiene el servicio encargado de administrar los tipos de vehículo del sistema
      * Recibe: No recibe parámetros
-     * Retorna: La instancia de TipoVehiculoServicio utilizada por el sistema
+     * Retorna: El objeto TipoVehiculoServicio
      */
     public TipoVehiculoServicio getTipoVehiculoServicio() {
         return tipoVehiculoServicio;
     }
 
     /*
-     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los vehículos utilizada de forma compartida dentro de la aplicación
+     * Qué hace: Obtiene el servicio encargado de administrar los vehículos del sistema
      * Recibe: No recibe parámetros
-     * Retorna: La instancia de VehiculoServicio utilizada por el sistema
+     * Retorna: El objeto VehiculoServicio
      */
     public VehiculoServicio getVehiculoServicio() {
         return vehiculoServicio;
     }
 
     /*
-     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los clientes utilizada de forma compartida dentro de la aplicación
+     * Qué hace: Obtiene el servicio encargado de administrar los clientes del sistema
      * Recibe: No recibe parámetros
-     * Retorna: La instancia de ClienteServicio utilizada por el sistema
+     * Retorna: El objeto ClienteServicio
      */
     public ClienteServicio getClienteServicio() {
         return clienteServicio;
     }
 
     /*
-     * Qué hace: Permite acceder a la instancia del servicio encargado de administrar los alquileres y devoluciones utilizada de forma compartida dentro de la aplicación
+     * Qué hace: Obtiene el servicio encargado de administrar los alquileres del sistema
      * Recibe: No recibe parámetros
-     * Retorna: La instancia de AlquilerServicio utilizada por el sistema
+     * Retorna: El objeto AlquilerServicio
      */
     public AlquilerServicio getAlquilerServicio() {
         return alquilerServicio;
     }
-
 }
+
