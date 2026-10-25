@@ -1,17 +1,20 @@
-
 package cr.ac.una.est.sistemaalquilercarros.app;
 
 import cr.ac.una.est.sistemaalquilercarros.persistencia.ConexionBD;
 import cr.ac.una.est.sistemaalquilercarros.persistencia.DatosSistema;
 import cr.ac.una.est.sistemaalquilercarros.persistencia.PersistenciaDatos;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.AlquilerRepositorio;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.ClienteRepositorio;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.TipoVehiculoRepositorio;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.VehiculoRepositorio;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.AlquilerRepositorioJdbc;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.ClienteRepositorioJdbc;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.TipoVehiculoRepositorioJdbc;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.VehiculoRepositorioJdbc;
 import cr.ac.una.est.sistemaalquilercarros.servicio.AlquilerServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
-import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.TipoVehiculoServicio;
+import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
 
 public class ContextoAplicacion {
 
@@ -20,6 +23,8 @@ public class ContextoAplicacion {
     private final ConexionBD conexionBD;
     private final ClienteRepositorio clienteRepositorio;
     private final TipoVehiculoRepositorio tipoVehiculoRepositorio;
+    private final VehiculoRepositorio vehiculoRepositorio;
+    private final AlquilerRepositorio alquilerRepositorio;
     private final VehiculoServicio vehiculoServicio;
     private final ClienteServicio clienteServicio;
     private final AlquilerServicio alquilerServicio;
@@ -33,7 +38,6 @@ public class ContextoAplicacion {
     public ContextoAplicacion() {
 
         persistencia = new PersistenciaDatos();
-
         datosSistema = persistencia.cargar();
 
         conexionBD = new ConexionBD();
@@ -42,13 +46,18 @@ public class ContextoAplicacion {
 
         tipoVehiculoRepositorio = new TipoVehiculoRepositorioJdbc(conexionBD);
 
+        vehiculoRepositorio = new VehiculoRepositorioJdbc(conexionBD);
+
+        alquilerRepositorio = new AlquilerRepositorioJdbc(conexionBD, clienteRepositorio, vehiculoRepositorio);
+
         tipoVehiculoServicio = new TipoVehiculoServicio(tipoVehiculoRepositorio);
 
-        vehiculoServicio = new VehiculoServicio(datosSistema, persistencia);
+        vehiculoServicio = new VehiculoServicio(vehiculoRepositorio);
 
         clienteServicio = new ClienteServicio(clienteRepositorio, datosSistema);
 
-        alquilerServicio = new AlquilerServicio(datosSistema, persistencia, vehiculoServicio, clienteServicio);
+        alquilerServicio = new AlquilerServicio(alquilerRepositorio, vehiculoServicio, clienteServicio);
+
     }
 
     /*
@@ -87,4 +96,3 @@ public class ContextoAplicacion {
         return alquilerServicio;
     }
 }
-

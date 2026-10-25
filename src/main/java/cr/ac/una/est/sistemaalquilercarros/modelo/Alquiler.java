@@ -25,21 +25,28 @@ public class Alquiler implements Calculable, Serializable {
      */
     public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, double depositoGarantia) {
 
+        this(numeroAlquiler, cliente, vehiculo, fechaInicio, cantidadDias, null, vehiculo.getTarifaDiaria(), depositoGarantia, EstadoAlquiler.ACTIVO);
+
+    }
+
+    /*
+     * Qué hace: Reconstruye un alquiler utilizando todos sus datos guardados, incluyendo la fecha real de devolución, la tarifa diaria aplicada originalmente, el depósito de garantía y el estado del alquiler
+     * Recibe: El número de alquiler, el cliente, el vehículo, la fecha de inicio, la cantidad de días, la fecha real de devolución, la tarifa diaria aplicada, el depósito de garantía y el estado del alquiler
+     * Retorna: No retorna ningún valor
+     */
+    public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, LocalDate fechaDevolucionReal, double tarifaDiariaAplicada, double depositoGarantia, EstadoAlquiler estado) {
+
         this.numeroAlquiler = numeroAlquiler;
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.fechaInicio = fechaInicio;
         this.cantidadDias = cantidadDias;
-
-        this.fechaDevolucionEsperada =
-                fechaInicio.plusDays(cantidadDias);
-
-        this.tarifaDiariaAplicada =
-                vehiculo.getTarifaDiaria();
-
+        this.fechaDevolucionEsperada = fechaInicio.plusDays(cantidadDias);
+        this.fechaDevolucionReal = fechaDevolucionReal;
+        this.tarifaDiariaAplicada = tarifaDiariaAplicada;
         this.depositoGarantia = depositoGarantia;
+        this.estado = estado;
 
-        this.estado = EstadoAlquiler.ACTIVO;
     }
 
     /*
@@ -72,10 +79,8 @@ public class Alquiler implements Calculable, Serializable {
             return 0;
         }
 
-        return ChronoUnit.DAYS.between(
-                fechaDevolucionEsperada,
-                fechaDevolucion
-        );
+        return ChronoUnit.DAYS.between(fechaDevolucionEsperada, fechaDevolucion);
+
     }
 
     /*

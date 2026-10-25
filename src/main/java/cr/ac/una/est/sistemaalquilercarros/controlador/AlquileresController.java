@@ -59,7 +59,7 @@ public class AlquileresController {
     private TableColumn<Alquiler, LocalDate> colFechaEsperada;
 
     @FXML
-   private TableColumn<Alquiler, Integer> colDias;
+    private TableColumn<Alquiler, Integer> colDias;
 
     @FXML
     private TableColumn<Alquiler, String> colTotal;
@@ -112,11 +112,13 @@ public class AlquileresController {
      * Retorna: No retorna ningún valor
      */
     public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehiculoServicio, AlquilerServicio alquilerServicio) {
+
         this.clienteServicio = clienteServicio;
         this.vehiculoServicio = vehiculoServicio;
         this.alquilerServicio = alquilerServicio;
 
         cargarDatos();
+
     }
 
     /*
@@ -125,6 +127,7 @@ public class AlquileresController {
      * Retorna: No retorna ningún valor
      */
     private void cargarDatos() {
+
         cmbCliente.setItems(FXCollections.observableArrayList(clienteServicio.obtenerTodos()));
 
         cmbVehiculo.setItems(FXCollections.observableArrayList(vehiculoServicio.obtenerDisponibles()));
@@ -132,6 +135,7 @@ public class AlquileresController {
         tablaAlquileres.setItems(FXCollections.observableArrayList(alquilerServicio.obtenerTodos()));
 
         lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
+
     }
 
     /*
@@ -144,13 +148,16 @@ public class AlquileresController {
         Vehiculo vehiculo = cmbVehiculo.getValue();
 
         if (vehiculo == null) {
+
             lblTarifaDiaria.setText("₡0.00");
+
             return;
+
         }
 
         lblTarifaDiaria.setText(String.format("₡%,.2f", vehiculo.getTarifaDiaria()));
-    }
 
+    }
 
     /*
      * Qué hace: Calcula de manera previa el subtotal, el depósito de garantía y el monto total del alquiler utilizando el vehículo seleccionado y la cantidad de días indicada por el usuario
@@ -158,40 +165,42 @@ public class AlquileresController {
      * Retorna: No retorna ningún valor
      */
     @FXML
-    private void calcularAlquiler(){
+    private void calcularAlquiler() {
 
         try {
 
             Vehiculo vehiculo = cmbVehiculo.getValue();
 
-            if(vehiculo == null){
+            if (vehiculo == null) {
                 throw new IllegalArgumentException("Debe seleccionar un vehículo.");
             }
 
             int dias = Integer.parseInt(txtCantidadDias.getText().trim());
 
-            if(dias <= 0){
+            if (dias <= 0) {
                 throw new IllegalArgumentException("La cantidad de días debe ser mayor a cero.");
             }
 
-            double subtotal = vehiculo.getTarifaDiaria()*dias;
+            double subtotal = vehiculo.getTarifaDiaria() * dias;
 
             double deposito = alquilerServicio.getDepositoGarantia();
 
             double total = subtotal + deposito;
 
-            lblSubtotal.setText(String.format("₡%,.2f",subtotal));
+            lblSubtotal.setText(String.format("₡%,.2f", subtotal));
 
-            lblDeposito.setText(String.format("₡%,.2f",deposito));
+            lblDeposito.setText(String.format("₡%,.2f", deposito));
 
-            lblTotal.setText(String.format("₡%,.2f",total));
-        }catch(NumberFormatException e){
+            lblTotal.setText(String.format("₡%,.2f", total));
+
+        } catch (NumberFormatException e) {
 
             mostrarError("La cantidad de días debe de ser un numero entero.");
+
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
         }
-
     }
 
     /*
@@ -200,7 +209,8 @@ public class AlquileresController {
      * Retorna: No retorna ningún valor
      */
     @FXML
-    private void confirmarAlquiler(){
+    private void confirmarAlquiler() {
+
         try {
 
             Cliente cliente = cmbCliente.getValue();
@@ -224,14 +234,22 @@ public class AlquileresController {
             mostrarInformacion("Alquiler #" + alquiler.getNumeroAlquiler() + " registrado correctamente.");
 
             limpiarFormulario();
+
             cargarDatos();
 
-        }catch (NumberFormatException e){
-            mostrarError("La cantidad de dias debe de ser un número entero.");
-        }catch (IllegalArgumentException e){
-            mostrarError(e.getMessage());
-        }
+        } catch (NumberFormatException e) {
 
+            mostrarError("La cantidad de dias debe de ser un número entero.");
+
+        } catch (IllegalArgumentException e) {
+
+            mostrarError(e.getMessage());
+
+        } catch (RuntimeException e) {
+
+            mostrarError(e.getMessage());
+
+        }
     }
 
     /*
@@ -240,9 +258,10 @@ public class AlquileresController {
      * Retorna: No retorna ningún valor
      */
     @FXML
-    private void limpiarFormulario(){
+    private void limpiarFormulario() {
 
         cmbCliente.getSelectionModel().clearSelection();
+
         cmbVehiculo.getSelectionModel().clearSelection();
 
         dpFechaInicio.setValue(LocalDate.now());
@@ -254,11 +273,15 @@ public class AlquileresController {
         if (alquilerServicio != null) {
 
             lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
-        }else {
+
+        } else {
+
             lblDeposito.setText("₡0.00");
+
         }
 
         lblTotal.setText("₡0.00");
+
     }
 
     /*
@@ -266,13 +289,15 @@ public class AlquileresController {
      * Recibe: El mensaje de error que se desea mostrar en pantalla
      * Retorna: No retorna ningún valor
      */
-    private void mostrarError(String mensaje){
+    private void mostrarError(String mensaje) {
+
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
         alerta.setTitle("Error");
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
+
     }
 
     /*
@@ -280,13 +305,14 @@ public class AlquileresController {
      * Recibe: El mensaje informativo que se desea mostrar en pantalla
      * Retorna: No retorna ningún valor
      */
-    private void mostrarInformacion(String mensaje){
+    private void mostrarInformacion(String mensaje) {
+
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
         alerta.setTitle("Información");
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
-    }
 
+    }
 }

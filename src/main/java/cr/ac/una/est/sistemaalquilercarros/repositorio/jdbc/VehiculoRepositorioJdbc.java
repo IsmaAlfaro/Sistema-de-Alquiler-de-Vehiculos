@@ -33,6 +33,7 @@ public class VehiculoRepositorioJdbc implements VehiculoRepositorio {
         String sql = "INSERT INTO vehiculo " + "(placa, marca, modelo, anio, tarifa_diaria, estado, " + "tipo_nombre, cantidad_pasajeros, tipo_traccion, capacidad_carga) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
+
             ps.setString(1, vehiculo.getPlaca());
             ps.setString(2, vehiculo.getMarca());
             ps.setString(3, vehiculo.getModelo());
@@ -58,7 +59,9 @@ public class VehiculoRepositorioJdbc implements VehiculoRepositorio {
             ps.executeUpdate();
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo registrar el vehículo.", e);
+
         }
     }
 
@@ -91,7 +94,6 @@ public class VehiculoRepositorioJdbc implements VehiculoRepositorio {
 
     @Override
     public List<Vehiculo> obtenerTodos() {
-
         String sql = "SELECT v.placa, v.marca, v.modelo, v.anio, " + "v.tarifa_diaria, v.estado, v.tipo_nombre, " + "v.cantidad_pasajeros, v.tipo_traccion, v.capacidad_carga, " + "t.categoria, t.requiere_pasajeros, t.requiere_traccion, " + "t.requiere_capacidad_carga " + "FROM vehiculo v " + "INNER JOIN tipo_vehiculo t ON v.tipo_nombre = t.nombre";
 
         List<Vehiculo> vehiculos = new ArrayList<>();
@@ -198,6 +200,23 @@ public class VehiculoRepositorioJdbc implements VehiculoRepositorio {
         }
     }
 
+    @Override
+    public void cambiarEstado(String placa, EstadoVehiculo estado) {
+
+        String sql ="UPDATE vehiculo SET estado = ? WHERE placa = ?";
+
+        try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, estado.name());
+            ps.setString(2, placa);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudo cambiar el estado del vehículo.", e);
+
+        }
+    }
     private Vehiculo crearVehiculo(ResultSet rs) throws SQLException {
 
         TipoVehiculo tipo = new TipoVehiculo(rs.getString("tipo_nombre"), CategoriaVehiculo.valueOf(rs.getString("categoria")), rs.getBoolean("requiere_pasajeros"), rs.getBoolean("requiere_traccion"), rs.getBoolean("requiere_capacidad_carga"));
@@ -217,5 +236,6 @@ public class VehiculoRepositorioJdbc implements VehiculoRepositorio {
         vehiculo.setEstado(EstadoVehiculo.valueOf(rs.getString("estado")));
 
         return vehiculo;
+
     }
 }
