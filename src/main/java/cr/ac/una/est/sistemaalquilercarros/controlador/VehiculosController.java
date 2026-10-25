@@ -157,6 +157,8 @@ public class VehiculosController {
             mostrarError("Año, tarifa, pasajeros y capacidad deben contener valores numéricos válidos.");
         } catch (IllegalArgumentException e) {
             mostrarError(e.getMessage());
+        } catch (RuntimeException e) {
+            mostrarError(e.getMessage());
         }
     }
 
@@ -193,6 +195,8 @@ public class VehiculosController {
 
         } catch (IllegalArgumentException e) {
             mostrarError(e.getMessage());
+        }catch (RuntimeException e) {
+            mostrarError(e.getMessage());
         }
     }
 
@@ -223,6 +227,8 @@ public class VehiculosController {
             mostrarInformacion("Vehículo eliminado correctamente.");
 
         } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+        }catch (RuntimeException e) {
             mostrarError(e.getMessage());
         }
     }
@@ -313,7 +319,13 @@ public class VehiculosController {
             return;
         }
 
+         try {
+
         tablaVehiculos.setItems(FXCollections.observableArrayList(vehiculoServicio.obtenerTodos()));
+
+    } catch (RuntimeException e) {
+        mostrarError(e.getMessage());
+     }
     }
 
     /*
