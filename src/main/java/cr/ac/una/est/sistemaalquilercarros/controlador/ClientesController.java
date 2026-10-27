@@ -2,8 +2,11 @@ package cr.ac.una.est.sistemaalquilercarros.controlador;
 
 import cr.ac.una.est.sistemaalquilercarros.modelo.Cliente;
 import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -25,6 +28,9 @@ public class ClientesController {
     private TextField txtCorreo;
 
     @FXML
+    private TextField txtBuscar;
+
+    @FXML
     private TableView<Cliente> tablaClientes;
 
     @FXML
@@ -40,6 +46,10 @@ public class ClientesController {
     private TableColumn<Cliente, String> colCorreo;
 
     private ClienteServicio clienteServicio;
+
+    private ObservableList<Cliente> listaClientes;
+
+    private FilteredList<Cliente> clientesFiltrados;
 
     /*
      * Qué hace: Inicializa la pantalla de clientes configurando las columnas de la tabla y el evento que permite cargar automáticamente en el formulario los datos del cliente seleccionado
@@ -66,6 +76,10 @@ public class ClientesController {
         );
 
         tablaClientes.setOnMouseClicked(evento -> cargarClienteSeleccionado());
+
+        txtBuscar.textProperty().addListener(
+                (observable, textoAnterior, textoNuevo) -> filtrarClientes(textoNuevo)
+        );
     }
 
     /*
@@ -127,7 +141,10 @@ public class ClientesController {
 
             Cliente modificado = crearClienteDesdeFormulario();
 
-            clienteServicio.modificarCliente(seleccionado.getCedula(), modificado);
+            clienteServicio.modificarCliente(
+                    seleccionado.getCedula(),
+                    modificado
+            );
 
             actualizarTabla();
             limpiarFormulario();
@@ -221,18 +238,15 @@ public class ClientesController {
         }
 
         txtCedula.setText(cliente.getCedula());
-
         txtNombre.setText(cliente.getNombreCompleto());
-
         txtTelefono.setText(cliente.getTelefono());
-
         txtCorreo.setText(cliente.getCorreo());
 
         txtCedula.setDisable(true);
     }
 
     /*
-     * Qué hace: Actualiza la tabla de clientes cargando todos los registros disponibles actualmente desde el servicio de clientes
+     * Qué hace: Actualiza la tabla de clientes cargando todos los registros disponibles actualmente desde el servicio de clientes y prepara la lista utilizada por el buscador
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
@@ -244,15 +258,48 @@ public class ClientesController {
 
         try {
 
-            tablaClientes.setItems(
-                    FXCollections.observableArrayList(
-                            clienteServicio.obtenerTodos()
-                    )
+            listaClientes = FXCollections.observableArrayList(
+                    clienteServicio.obtenerTodos()
             );
+
+            clientesFiltrados = new FilteredList<>(
+                    listaClientes,
+                    cliente -> true
+            );
+
+            tablaClientes.setItems(clientesFiltrados);
+
+            filtrarClientes(txtBuscar.getText());
 
         } catch (RuntimeException e) {
             mostrarError(e.getMessage());
         }
+    }
+
+    /*
+     * Qué hace: Filtra los clientes mostrados en la tabla utilizando la cédula, nombre, teléfono o correo según el texto escrito en el campo de búsqueda
+     * Recibe: El texto que el usuario desea buscar
+     * Retorna: No retorna ningún valor
+     */
+    private void filtrarClientes(String textoBusqueda) {
+
+        if (clientesFiltrados == null) {
+            return;
+        }
+
+        clientesFiltrados.setPredicate(cliente -> {
+
+            if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
+                return true;
+            }
+
+            String busqueda = textoBusqueda.toLowerCase().trim();
+
+            return cliente.getCedula().toLowerCase().contains(busqueda)
+                    || cliente.getNombreCompleto().toLowerCase().contains(busqueda)
+                    || cliente.getTelefono().toLowerCase().contains(busqueda)
+                    || cliente.getCorreo().toLowerCase().contains(busqueda);
+        });
     }
 
     /*
