@@ -3,40 +3,178 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<BorderPane fx:id="panelPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.PrincipalController">
+<BorderPane fx:id="panelPrincipal"
+            prefHeight="700.0"
+            prefWidth="1100.0"
+            styleClass="main-root"
+            stylesheets="@../css/styles.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.PrincipalController">
+
+   <!-- =========================
+        BARRA SUPERIOR
+        ========================= -->
+
    <top>
-      <Label text="Sistema Alquiler de Vehiculos" BorderPane.alignment="TOP_LEFT">
-         <font>
-            <Font size="30.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
-      </Label>
+
+      <HBox alignment="CENTER_LEFT"
+            prefHeight="58.0"
+            styleClass="main-topbar">
+
+         <padding>
+            <Insets left="22.0"
+                    right="22.0" />
+         </padding>
+
+         <Label text="Sistema Alquiler de Vehículos"
+                styleClass="main-system-title" />
+
+      </HBox>
+
    </top>
+
+
+   <!-- =========================
+        MENÚ LATERAL
+        ========================= -->
+
    <left>
-      <VBox alignment="CENTER" prefHeight="335.0" prefWidth="183.0" spacing="15.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" onAction="#mostrarInicio" prefHeight="25.0" prefWidth="122.0" text="Inicio" />
-            <Button mnemonicParsing="false" onAction="#mostrarVehiculos" prefHeight="25.0" prefWidth="122.0" text="Vehiculos" />
-            <Button mnemonicParsing="false" onAction="#mostrarTiposVehiculo" prefHeight="25.0" prefWidth="122.0" text="Tipos de Vehículos" />
-            <Button mnemonicParsing="false" onAction="#mostrarClientes" prefHeight="25.0" prefWidth="122.0" text="Clientes" />
-            <Button mnemonicParsing="false" onAction="#mostrarAlquileres" prefHeight="25.0" prefWidth="122.0" text="Alquiler" />
-            <Button mnemonicParsing="false" onAction="#mostrarDevolucion" prefHeight="25.0" prefWidth="122.0" text="Devoluciones" />
-            <Button mnemonicParsing="false" onAction="#mostrarHistorial" prefHeight="25.0" prefWidth="122.0" text="Historial" />
-            <Button mnemonicParsing="false" onAction="#cerrarAplicacion" prefHeight="25.0" prefWidth="122.0" text="Salir" />
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin></VBox>
+
+      <VBox prefWidth="210.0"
+            spacing="6.0"
+            styleClass="sidebar">
+
+         <padding>
+            <Insets top="18.0"
+                    right="12.0"
+                    bottom="18.0"
+                    left="12.0" />
+         </padding>
+
+
+         <!-- TÍTULO DEL MENÚ -->
+
+         <VBox spacing="2.0"
+               styleClass="sidebar-header">
+
+            <Label text="Menú principal"
+                   styleClass="sidebar-title" />
+
+            <Label text="Gestión del sistema"
+                   styleClass="sidebar-subtitle" />
+
+         </VBox>
+
+
+         <Separator />
+
+
+         <!-- BOTONES DE NAVEGACIÓN -->
+
+         <Button text="Inicio"
+                 mnemonicParsing="false"
+                 onAction="#mostrarInicio"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+         <Button text="Vehículos"
+                 mnemonicParsing="false"
+                 onAction="#mostrarVehiculos"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+         <Button text="Tipos de Vehículos"
+                 mnemonicParsing="false"
+                 onAction="#mostrarTiposVehiculo"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+         <Button text="Clientes"
+                 mnemonicParsing="false"
+                 onAction="#mostrarClientes"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+         <Button text="Alquileres"
+                 mnemonicParsing="false"
+                 onAction="#mostrarAlquileres"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+         <Button text="Devoluciones"
+                 mnemonicParsing="false"
+                 onAction="#mostrarDevolucion"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+         <Button text="Historial"
+                 mnemonicParsing="false"
+                 onAction="#mostrarHistorial"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button" />
+
+
+         <!-- EMPUJA SALIR HACIA ABAJO -->
+
+         <Region VBox.vgrow="ALWAYS" />
+
+
+         <Separator />
+
+
+         <!-- BOTÓN SALIR -->
+
+         <Button text="Salir"
+                 mnemonicParsing="false"
+                 onAction="#cerrarAplicacion"
+                 maxWidth="Infinity"
+                 prefHeight="40.0"
+                 styleClass="nav-button-exit" />
+
+      </VBox>
+
    </left>
+
+
+   <!-- =========================
+        CONTENIDO CENTRAL INICIAL
+        ========================= -->
+
    <center>
-      <Label text="Selecionar una opcion" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
+
+      <StackPane styleClass="main-content">
+
+         <VBox alignment="CENTER"
+               spacing="10.0"
+               maxWidth="520.0"
+               styleClass="welcome-card">
+
+            <Label text="Sistema de Alquiler de Vehículos"
+                   styleClass="welcome-title" />
+
+            <Label text="Seleccione una opción del menú lateral para comenzar"
+                   wrapText="true"
+                   styleClass="welcome-subtitle" />
+
+            <Separator />
+
+            <Label text="Administre vehículos, clientes, alquileres, devoluciones e historial desde un solo lugar"
+                   wrapText="true"
+                   styleClass="welcome-description" />
+
+         </VBox>
+
+      </StackPane>
+
    </center>
+
 </BorderPane>

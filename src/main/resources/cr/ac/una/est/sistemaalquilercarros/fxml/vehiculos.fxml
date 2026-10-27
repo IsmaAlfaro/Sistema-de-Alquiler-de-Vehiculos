@@ -3,297 +3,328 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="480.0"
-            prefWidth="800.0"
+<BorderPane prefHeight="650.0"
+            prefWidth="1000.0"
+            styleClass="page"
+            stylesheets="@../css/styles.css"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.VehiculosController">
 
+    <!-- =========================
+         ENCABEZADO
+         ========================= -->
+
     <top>
 
-        <Label text="Registro de Vehiculos"
-               BorderPane.alignment="CENTER">
+        <VBox spacing="3.0"
+              styleClass="page-header">
 
-            <font>
-                <Font size="31.0" />
-            </font>
+            <Label text="Vehículos"
+                   styleClass="page-title" />
 
-        </Label>
+            <Label text="Registro y gestión de vehículos del sistema"
+                   styleClass="page-subtitle" />
+
+        </VBox>
 
     </top>
 
+
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+         ========================= -->
+
     <center>
 
-        <GridPane BorderPane.alignment="CENTER">
-
-            <columnConstraints>
-
-                <ColumnConstraints hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0" />
-
-                <ColumnConstraints hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0" />
-
-                <ColumnConstraints hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0" />
-
-                <ColumnConstraints hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0" />
-
-            </columnConstraints>
-
-            <rowConstraints>
-
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-
-            </rowConstraints>
-
-            <children>
-
-                <Label text="Placa"
-                       GridPane.halignment="CENTER" />
-
-                <TextField fx:id="txtPlaca"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER" />
-
-                <Label text="Marca"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="1" />
-
-                <TextField fx:id="txtMarca"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="1" />
-
-                <Label text="Modelo"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="2" />
-
-                <TextField fx:id="txtModelo"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="2" />
-
-                <Label text="Año del Vehiculo"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="3" />
-
-                <TextField fx:id="txtAnio"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="3" />
-
-                <Label text="Buscar tipo"
-                       GridPane.columnIndex="2"
-                       GridPane.halignment="CENTER" />
-
-                <TextField fx:id="txtBuscarTipo"
-                           promptText="Buscar tipo..."
-                           GridPane.columnIndex="3"
-                           GridPane.halignment="CENTER" />
-
-                <Label text="Tipo de Vehiculo"
-                       GridPane.columnIndex="2"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="1" />
-
-                <ComboBox fx:id="cmbTipo"
-                          prefWidth="150.0"
-                          promptText="Seleccione..."
-                          GridPane.columnIndex="3"
-                          GridPane.halignment="CENTER"
-                          GridPane.rowIndex="1" />
-
-                <Label text="Tarifa diaria"
-                       GridPane.columnIndex="2"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="2" />
-
-                <TextField fx:id="txtTarifa"
-                           GridPane.columnIndex="3"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="2" />
-
-                <Label text="Cantidad de pasajeros"
-                       GridPane.columnIndex="2"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="3" />
-
-                <TextField fx:id="txtPasajeros"
-                           GridPane.columnIndex="3"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="3" />
-
-                <Label text="Capacidad de carga"
-                       GridPane.columnIndex="2"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="4" />
-
-                <TextField fx:id="txtCapacidadCarga"
-                           GridPane.columnIndex="3"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="4" />
-
-                <Label text="Tipo de Traccion"
-                       GridPane.columnIndex="2"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="5" />
-
-                <ComboBox fx:id="cmbTraccion"
-                          prefWidth="150.0"
-                          GridPane.columnIndex="3"
-                          GridPane.halignment="CENTER"
-                          GridPane.rowIndex="5" />
-
-            </children>
-
-            <BorderPane.margin>
-
-                <Insets left="10.0"
-                        right="10.0" />
-
-            </BorderPane.margin>
-
-        </GridPane>
-
-    </center>
-
-    <bottom>
-
-        <VBox spacing="8.0">
+        <VBox spacing="14.0">
 
             <padding>
-
-                <Insets top="5.0"
-                        right="10.0"
-                        bottom="10.0"
-                        left="10.0" />
-
+                <Insets top="16.0"
+                        right="20.0"
+                        bottom="20.0"
+                        left="20.0" />
             </padding>
 
-            <HBox spacing="10.0">
+
+            <!-- =========================
+                 BUSCADOR Y FILTROS
+                 ========================= -->
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="12.0"
+                  styleClass="filter-card">
 
                 <TextField fx:id="txtBuscar"
                            promptText="Buscar por placa, marca, modelo o tipo..."
+                           prefHeight="35.0"
+                           styleClass="search-field"
                            HBox.hgrow="ALWAYS" />
 
-                <Label text="Estado:"
-                       HBox.hgrow="NEVER" />
+                <VBox spacing="3.0">
 
-                <ComboBox fx:id="cmbFiltroEstado"
-                          prefWidth="130.0" />
+                    <Label text="Estado"
+                           styleClass="form-label" />
+
+                    <ComboBox fx:id="cmbFiltroEstado"
+                              prefWidth="150.0"
+                              prefHeight="35.0" />
+
+                </VBox>
 
             </HBox>
 
-            <TableView fx:id="tablaVehiculos"
-                       prefHeight="200.0"
-                       prefWidth="200.0">
 
-                <columns>
+            <!-- =========================
+                 FORMULARIO
+                 ========================= -->
 
-                    <TableColumn fx:id="colPlaca"
-                                 prefWidth="75.0"
-                                 text="Placa" />
+            <HBox spacing="18.0"
+                  styleClass="card">
 
-                    <TableColumn fx:id="colMarca"
-                                 prefWidth="75.0"
-                                 text="Marca" />
+                <GridPane hgap="12.0"
+                          vgap="10.0"
+                          HBox.hgrow="ALWAYS">
 
-                    <TableColumn fx:id="colModelo"
-                                 prefWidth="75.0"
-                                 text="Modelo" />
+                    <columnConstraints>
 
-                    <TableColumn fx:id="colAnio"
-                                 prefWidth="75.0"
-                                 text="Año" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="25.0" />
 
-                    <TableColumn fx:id="colTipo"
-                                 prefWidth="75.0"
-                                 text="Tipo" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="25.0" />
 
-                    <TableColumn fx:id="colTarifa"
-                                 prefWidth="75.0"
-                                 text="Tarifa Diaria" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="25.0" />
 
-                    <TableColumn fx:id="colEstado"
-                                 prefWidth="75.0"
-                                 text="Estado" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="25.0" />
 
-                </columns>
+                    </columnConstraints>
 
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                </columnResizePolicy>
 
-            </TableView>
+                    <!-- FILA DE LABELS -->
+
+                    <Label text="Placa"
+                           styleClass="form-label"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="0" />
+
+                    <Label text="Marca"
+                           styleClass="form-label"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="0" />
+
+                    <Label text="Modelo"
+                           styleClass="form-label"
+                           GridPane.columnIndex="2"
+                           GridPane.rowIndex="0" />
+
+                    <Label text="Año"
+                           styleClass="form-label"
+                           GridPane.columnIndex="3"
+                           GridPane.rowIndex="0" />
+
+
+                    <!-- FILA DE CAMPOS -->
+
+                    <TextField fx:id="txtPlaca"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="1" />
+
+                    <TextField fx:id="txtMarca"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="1" />
+
+                    <TextField fx:id="txtModelo"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="2"
+                               GridPane.rowIndex="1" />
+
+                    <TextField fx:id="txtAnio"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="3"
+                               GridPane.rowIndex="1" />
+
+
+                    <!-- SEGUNDA FILA DE LABELS -->
+
+                    <Label text="Buscar tipo"
+                           styleClass="form-label"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="2" />
+
+                    <Label text="Tipo de Vehículo"
+                           styleClass="form-label"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2" />
+
+                    <Label text="Tarifa diaria"
+                           styleClass="form-label"
+                           GridPane.columnIndex="2"
+                           GridPane.rowIndex="2" />
+
+                    <Label text="Cantidad de pasajeros"
+                           styleClass="form-label"
+                           GridPane.columnIndex="3"
+                           GridPane.rowIndex="2" />
+
+
+                    <!-- SEGUNDA FILA DE CAMPOS -->
+
+                    <TextField fx:id="txtBuscarTipo"
+                               promptText="Buscar tipo..."
+                               prefHeight="34.0"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="3" />
+
+                    <ComboBox fx:id="cmbTipo"
+                              promptText="Seleccione..."
+                              prefHeight="34.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="3" />
+
+                    <TextField fx:id="txtTarifa"
+                               promptText="Ejemplo: 35000"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="2"
+                               GridPane.rowIndex="3" />
+
+                    <TextField fx:id="txtPasajeros"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="3"
+                               GridPane.rowIndex="3" />
+
+
+                    <!-- TERCERA FILA -->
+
+                    <Label text="Tipo de tracción"
+                           styleClass="form-label"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="4" />
+
+                    <Label text="Capacidad de carga"
+                           styleClass="form-label"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="4" />
+
+                    <ComboBox fx:id="cmbTraccion"
+                              prefHeight="34.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="0"
+                              GridPane.rowIndex="5" />
+
+                    <TextField fx:id="txtCapacidadCarga"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="5" />
+
+                </GridPane>
+
+
+                <!-- =========================
+                     BOTONES
+                     ========================= -->
+
+                <VBox alignment="TOP_CENTER"
+                      spacing="9.0"
+                      prefWidth="125.0"
+                      styleClass="action-panel">
+
+                    <Button text="Registrar"
+                            mnemonicParsing="false"
+                            onAction="#registrarVehiculo"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-primary" />
+
+                    <Button text="Modificar"
+                            mnemonicParsing="false"
+                            onAction="#modificarVehiculo"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-secondary" />
+
+                    <Button text="Eliminar"
+                            mnemonicParsing="false"
+                            onAction="#eliminarVehiculo"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-danger" />
+
+                    <Button text="Limpiar"
+                            mnemonicParsing="false"
+                            onAction="#limpiarFormulario"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-secondary" />
+
+                </VBox>
+
+            </HBox>
+
+
+            <!-- =========================
+                 TABLA
+                 ========================= -->
+
+            <VBox spacing="8.0"
+                  styleClass="card"
+                  VBox.vgrow="ALWAYS">
+
+                <Label text="Vehículos registrados"
+                       styleClass="section-title" />
+
+                <TableView fx:id="tablaVehiculos"
+                           prefHeight="300.0"
+                           VBox.vgrow="ALWAYS">
+
+                    <columns>
+
+                        <TableColumn fx:id="colPlaca"
+                                     prefWidth="100.0"
+                                     text="Placa" />
+
+                        <TableColumn fx:id="colMarca"
+                                     prefWidth="120.0"
+                                     text="Marca" />
+
+                        <TableColumn fx:id="colModelo"
+                                     prefWidth="130.0"
+                                     text="Modelo" />
+
+                        <TableColumn fx:id="colAnio"
+                                     prefWidth="80.0"
+                                     text="Año" />
+
+                        <TableColumn fx:id="colTipo"
+                                     prefWidth="130.0"
+                                     text="Tipo" />
+
+                        <TableColumn fx:id="colTarifa"
+                                     prefWidth="150.0"
+                                     text="Tarifa Diaria" />
+
+                        <TableColumn fx:id="colEstado"
+                                     prefWidth="120.0"
+                                     text="Estado" />
+
+                    </columns>
+
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+
+                </TableView>
+
+            </VBox>
 
         </VBox>
 
-    </bottom>
-
-    <right>
-
-        <VBox alignment="CENTER"
-              prefHeight="154.0"
-              prefWidth="160.0"
-              spacing="15.0"
-              BorderPane.alignment="CENTER">
-
-            <children>
-
-                <Button mnemonicParsing="false"
-                        onAction="#registrarVehiculo"
-                        text="Registrar" />
-
-                <Button mnemonicParsing="false"
-                        onAction="#modificarVehiculo"
-                        text="Modificar" />
-
-                <Button mnemonicParsing="false"
-                        onAction="#eliminarVehiculo"
-                        text="Eliminar" />
-
-                <Button mnemonicParsing="false"
-                        onAction="#limpiarFormulario"
-                        text="Limpiar" />
-
-            </children>
-
-        </VBox>
-
-    </right>
+    </center>
 
 </BorderPane>

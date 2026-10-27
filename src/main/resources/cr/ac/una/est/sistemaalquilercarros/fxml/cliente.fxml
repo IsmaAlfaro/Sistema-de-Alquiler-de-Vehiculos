@@ -3,181 +3,214 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="450.0"
-            prefWidth="800.0"
+<BorderPane prefHeight="650.0"
+            prefWidth="1000.0"
+            styleClass="page"
+            stylesheets="@../css/styles.css"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.ClientesController">
 
     <top>
-        <Label text="Registro de Clientes"
-               BorderPane.alignment="CENTER">
-            <font>
-                <Font size="31.0" />
-            </font>
-        </Label>
+
+        <VBox spacing="3.0"
+              styleClass="page-header">
+
+            <Label text="Clientes"
+                   styleClass="page-title" />
+
+            <Label text="Registro y gestión de clientes del sistema"
+                   styleClass="page-subtitle" />
+
+        </VBox>
+
     </top>
 
     <center>
 
-        <GridPane BorderPane.alignment="CENTER">
-
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES"
-                                   minWidth="10.0"
-                                   prefWidth="100.0" />
-            </columnConstraints>
-
-            <rowConstraints>
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0"
-                                prefHeight="30.0"
-                                vgrow="SOMETIMES" />
-            </rowConstraints>
-
-            <children>
-
-                <Label text="Cedula"
-                       GridPane.halignment="CENTER" />
-
-                <TextField fx:id="txtCedula"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER" />
-
-                <Label text="Nombre"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="1" />
-
-                <TextField fx:id="txtNombre"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="1" />
-
-                <Label text="Telefono"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="2" />
-
-                <TextField fx:id="txtTelefono"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="2" />
-
-                <Label text="Correo"
-                       GridPane.halignment="CENTER"
-                       GridPane.rowIndex="3" />
-
-                <TextField fx:id="txtCorreo"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER"
-                           GridPane.rowIndex="3" />
-
-            </children>
-
-            <BorderPane.margin>
-                <Insets left="10.0"
-                        right="10.0" />
-            </BorderPane.margin>
-
-        </GridPane>
-
-    </center>
-
-    <bottom>
-
-        <VBox spacing="8.0">
+        <VBox spacing="14.0">
 
             <padding>
-                <Insets top="5.0"
-                        right="10.0"
-                        bottom="10.0"
-                        left="10.0" />
+                <Insets top="16.0"
+                        right="20.0"
+                        bottom="20.0"
+                        left="20.0" />
             </padding>
 
-            <TextField fx:id="txtBuscar"
-                       promptText="Buscar por cédula, nombre, teléfono o correo..."
-                       prefHeight="30.0" />
+            <!-- =========================
+                 FORMULARIO
+                 ========================= -->
 
-            <TableView fx:id="tablaClientes"
-                       prefHeight="200.0"
-                       prefWidth="200.0">
+            <HBox spacing="18.0"
+                  styleClass="card">
 
-                <columns>
+                <GridPane hgap="16.0"
+                          vgap="12.0"
+                          HBox.hgrow="ALWAYS">
 
-                    <TableColumn fx:id="colCedula"
-                                 prefWidth="75.0"
-                                 text="Cedula" />
+                    <columnConstraints>
 
-                    <TableColumn fx:id="colNombre"
-                                 prefWidth="75.0"
-                                 text="Nombre" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="50.0" />
 
-                    <TableColumn fx:id="colTelefono"
-                                 prefWidth="75.0"
-                                 text="Telefono" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="50.0" />
 
-                    <TableColumn fx:id="colCorreo"
-                                 prefWidth="75.0"
-                                 text="Correo" />
+                    </columnConstraints>
 
-                </columns>
+                    <!-- FILA 1 -->
 
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                </columnResizePolicy>
+                    <Label text="Cédula"
+                           styleClass="form-label"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="0" />
 
-            </TableView>
+                    <Label text="Nombre completo"
+                           styleClass="form-label"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="0" />
+
+                    <TextField fx:id="txtCedula"
+                               promptText="Ingrese la cédula"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="1" />
+
+                    <TextField fx:id="txtNombre"
+                               promptText="Ingrese el nombre completo"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="1" />
+
+                    <!-- FILA 2 -->
+
+                    <Label text="Teléfono"
+                           styleClass="form-label"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="2" />
+
+                    <Label text="Correo"
+                           styleClass="form-label"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="2" />
+
+                    <TextField fx:id="txtTelefono"
+                               promptText="Ingrese el teléfono"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="3" />
+
+                    <TextField fx:id="txtCorreo"
+                               promptText="Ingrese el correo electrónico"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="3" />
+
+                </GridPane>
+
+                <!-- =========================
+                     BOTONES
+                     ========================= -->
+
+                <VBox alignment="TOP_CENTER"
+                      spacing="9.0"
+                      prefWidth="125.0"
+                      styleClass="action-panel">
+
+                    <Button text="Registrar"
+                            mnemonicParsing="false"
+                            onAction="#registrarCliente"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-primary" />
+
+                    <Button text="Modificar"
+                            mnemonicParsing="false"
+                            onAction="#modificarCliente"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-secondary" />
+
+                    <Button text="Eliminar"
+                            mnemonicParsing="false"
+                            onAction="#eliminarCliente"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-danger" />
+
+                    <Button text="Limpiar"
+                            mnemonicParsing="false"
+                            onAction="#limpiarFormulario"
+                            maxWidth="Infinity"
+                            prefHeight="35.0"
+                            styleClass="button-secondary" />
+
+                </VBox>
+
+            </HBox>
+
+            <!-- =========================
+                 BUSCADOR
+                 ========================= -->
+
+            <HBox alignment="CENTER_LEFT"
+                  spacing="12.0"
+                  styleClass="filter-card">
+
+                <TextField fx:id="txtBuscar"
+                           promptText="Buscar por cédula, nombre, teléfono o correo..."
+                           prefHeight="35.0"
+                           styleClass="search-field"
+                           HBox.hgrow="ALWAYS" />
+
+            </HBox>
+
+            <!-- =========================
+                 TABLA
+                 ========================= -->
+
+            <VBox spacing="8.0"
+                  styleClass="card"
+                  VBox.vgrow="ALWAYS">
+
+                <Label text="Clientes registrados"
+                       styleClass="section-title" />
+
+                <TableView fx:id="tablaClientes"
+                           prefHeight="300.0"
+                           VBox.vgrow="ALWAYS">
+
+                    <columns>
+
+                        <TableColumn fx:id="colCedula"
+                                     prefWidth="140.0"
+                                     text="Cédula" />
+
+                        <TableColumn fx:id="colNombre"
+                                     prefWidth="260.0"
+                                     text="Nombre" />
+
+                        <TableColumn fx:id="colTelefono"
+                                     prefWidth="150.0"
+                                     text="Teléfono" />
+
+                        <TableColumn fx:id="colCorreo"
+                                     prefWidth="260.0"
+                                     text="Correo" />
+
+                    </columns>
+
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+
+                </TableView>
+
+            </VBox>
 
         </VBox>
 
-    </bottom>
-
-    <right>
-
-        <VBox alignment="CENTER"
-              prefHeight="154.0"
-              prefWidth="160.0"
-              spacing="15.0"
-              BorderPane.alignment="CENTER">
-
-            <children>
-
-                <Button mnemonicParsing="false"
-                        onAction="#registrarCliente"
-                        text="Registrar" />
-
-                <Button mnemonicParsing="false"
-                        onAction="#modificarCliente"
-                        text="Modificar" />
-
-                <Button mnemonicParsing="false"
-                        onAction="#eliminarCliente"
-                        text="Eliminar" />
-
-                <Button mnemonicParsing="false"
-                        onAction="#limpiarFormulario"
-                        text="Limpiar" />
-
-            </children>
-
-        </VBox>
-
-    </right>
+    </center>
 
 </BorderPane>

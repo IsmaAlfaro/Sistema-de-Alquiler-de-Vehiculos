@@ -3,75 +3,165 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.InicioController">
+<BorderPane prefHeight="650.0"
+            prefWidth="1000.0"
+            styleClass="page"
+            stylesheets="@../css/styles.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.InicioController">
+
    <top>
-      <Label text="Inicio" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="29.0" />
-         </font>
-      </Label>
+
+      <VBox spacing="3.0"
+            styleClass="page-header">
+
+         <Label text="Inicio"
+                styleClass="page-title" />
+
+         <Label text="Resumen general del sistema de alquiler de vehículos"
+                styleClass="page-subtitle" />
+
+      </VBox>
+
    </top>
+
    <center>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <BorderPane.margin>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-         </BorderPane.margin>
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label text="Cantidad de Vehiculos">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-                  <Label fx:id="lblCantidadVehiculos">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-               </children></VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-               <children>
-                  <Label text="Vehiculos Disponibles">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-                  <Label fx:id="lblVehiculosDisponibles">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-               </children></VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-               <children>
-                  <Label text="Clientes Registrados">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-                  <Label fx:id="lblCantidadClientes">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-               </children></VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <Label text="Alquileres Activos">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-                  <Label fx:id="lblAlquileresActivos">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-               </children></VBox>
-         </children>
-      </GridPane>
+
+      <VBox spacing="18.0">
+
+         <padding>
+            <Insets top="22.0"
+                    right="24.0"
+                    bottom="24.0"
+                    left="24.0" />
+         </padding>
+
+         <Label text="Resumen del sistema"
+                styleClass="section-title" />
+
+         <GridPane hgap="18.0"
+                   vgap="18.0">
+
+            <columnConstraints>
+
+               <ColumnConstraints hgrow="ALWAYS"
+                                  percentWidth="50.0" />
+
+               <ColumnConstraints hgrow="ALWAYS"
+                                  percentWidth="50.0" />
+
+            </columnConstraints>
+
+            <rowConstraints>
+
+               <RowConstraints vgrow="ALWAYS" />
+
+               <RowConstraints vgrow="ALWAYS" />
+
+            </rowConstraints>
+
+
+            <!-- TARJETA VEHÍCULOS -->
+
+            <VBox alignment="CENTER_LEFT"
+                  spacing="8.0"
+                  styleClass="dashboard-card"
+                  GridPane.columnIndex="0"
+                  GridPane.rowIndex="0">
+
+               <Label text="Cantidad de Vehículos"
+                      styleClass="dashboard-card-title" />
+
+               <Label fx:id="lblCantidadVehiculos"
+                      text="0"
+                      styleClass="dashboard-card-value" />
+
+               <Label text="Vehículos registrados actualmente"
+                      styleClass="dashboard-card-description" />
+
+            </VBox>
+
+
+            <!-- TARJETA DISPONIBLES -->
+
+            <VBox alignment="CENTER_LEFT"
+                  spacing="8.0"
+                  styleClass="dashboard-card"
+                  GridPane.columnIndex="1"
+                  GridPane.rowIndex="0">
+
+               <Label text="Vehículos Disponibles"
+                      styleClass="dashboard-card-title" />
+
+               <Label fx:id="lblVehiculosDisponibles"
+                      text="0"
+                      styleClass="dashboard-card-value, dashboard-value-success" />
+
+               <Label text="Vehículos disponibles para alquiler"
+                      styleClass="dashboard-card-description" />
+
+            </VBox>
+
+
+            <!-- TARJETA CLIENTES -->
+
+            <VBox alignment="CENTER_LEFT"
+                  spacing="8.0"
+                  styleClass="dashboard-card"
+                  GridPane.columnIndex="0"
+                  GridPane.rowIndex="1">
+
+               <Label text="Clientes Registrados"
+                      styleClass="dashboard-card-title" />
+
+               <Label fx:id="lblCantidadClientes"
+                      text="0"
+                      styleClass="dashboard-card-value, dashboard-value-info" />
+
+               <Label text="Clientes registrados en el sistema"
+                      styleClass="dashboard-card-description" />
+
+            </VBox>
+
+
+            <!-- TARJETA ALQUILERES -->
+
+            <VBox alignment="CENTER_LEFT"
+                  spacing="8.0"
+                  styleClass="dashboard-card"
+                  GridPane.columnIndex="1"
+                  GridPane.rowIndex="1">
+
+               <Label text="Alquileres Activos"
+                      styleClass="dashboard-card-title" />
+
+               <Label fx:id="lblAlquileresActivos"
+                      text="0"
+                      styleClass="dashboard-card-value, dashboard-value-warning" />
+
+               <Label text="Alquileres que se encuentran actualmente activos"
+                      styleClass="dashboard-card-description" />
+
+            </VBox>
+
+         </GridPane>
+
+         <VBox spacing="7.0"
+               styleClass="dashboard-info-card">
+
+            <Label text="Panel principal"
+                   styleClass="section-title" />
+
+            <Label text="Desde el menú lateral puede administrar vehículos, tipos de vehículos, clientes, alquileres, devoluciones e historial."
+                   wrapText="true"
+                   styleClass="page-subtitle" />
+
+         </VBox>
+
+      </VBox>
+
    </center>
+
 </BorderPane>
