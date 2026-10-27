@@ -10,8 +10,11 @@ import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
 import java.time.LocalDate;
 
 public class AlquileresController {
@@ -21,6 +24,18 @@ public class AlquileresController {
 
     @FXML
     private ComboBox<Vehiculo> cmbVehiculo;
+
+    @FXML
+    private TextField txtBuscarCliente;
+
+    @FXML
+    private TextField txtBuscarVehiculo;
+
+    @FXML
+    private TextField txtBuscarAlquiler;
+
+    @FXML
+    private ComboBox<String> cmbFiltroEstado;
 
     @FXML
     private DatePicker dpFechaInicio;
@@ -68,11 +83,25 @@ public class AlquileresController {
     private TableColumn<Alquiler, String> colEstado;
 
     private ClienteServicio clienteServicio;
+
     private VehiculoServicio vehiculoServicio;
+
     private AlquilerServicio alquilerServicio;
 
+    private ObservableList<Cliente> listaClientes;
+
+    private FilteredList<Cliente> clientesFiltrados;
+
+    private ObservableList<Vehiculo> listaVehiculos;
+
+    private FilteredList<Vehiculo> vehiculosFiltrados;
+
+    private ObservableList<Alquiler> listaAlquileres;
+
+    private FilteredList<Alquiler> alquileresFiltrados;
+
     /*
-     * Qué hace: Inicializa la pantalla de alquileres configurando la fecha actual, los valores iniciales de los labels, las columnas de la tabla y el evento que actualiza automáticamente la tarifa diaria cuando se selecciona un vehículo
+     * Qué hace: Inicializa la pantalla de alquileres configurando la fecha actual, los valores iniciales de los labels, las columnas de la tabla y los eventos que actualizan automáticamente los filtros y la tarifa diaria
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
@@ -86,24 +115,98 @@ public class AlquileresController {
         lblDeposito.setText("₡0.00");
         lblTotal.setText("₡0.00");
 
-        colNumero.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getNumeroAlquiler()));
+        cmbFiltroEstado.setItems(
+                FXCollections.observableArrayList(
+                        "TODOS",
+                        "ACTIVO",
+                        "FINALIZADO"
+                )
+        );
 
-        colCliente.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCliente().getNombreCompleto()));
+        cmbFiltroEstado.setValue("TODOS");
 
-        colVehiculo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getVehiculo().toString()));
+        colNumero.setCellValueFactory(
+                dato -> new ReadOnlyObjectWrapper<>(
+                        dato.getValue().getNumeroAlquiler()
+                )
+        );
 
-        colFechaInicio.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaInicio()));
+        colCliente.setCellValueFactory(
+                dato -> new SimpleStringProperty(
+                        dato.getValue()
+                                .getCliente()
+                                .getNombreCompleto()
+                )
+        );
 
-        colFechaEsperada.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaDevolucionEsperada()));
+        colVehiculo.setCellValueFactory(
+                dato -> new SimpleStringProperty(
+                        dato.getValue()
+                                .getVehiculo()
+                                .toString()
+                )
+        );
 
-        colDias.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getCantidadDias()));
+        colFechaInicio.setCellValueFactory(
+                dato -> new ReadOnlyObjectWrapper<>(
+                        dato.getValue().getFechaInicio()
+                )
+        );
 
-        colTotal.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().calcularTotal())));
+        colFechaEsperada.setCellValueFactory(
+                dato -> new ReadOnlyObjectWrapper<>(
+                        dato.getValue()
+                                .getFechaDevolucionEsperada()
+                )
+        );
 
-        colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
+        colDias.setCellValueFactory(
+                dato -> new ReadOnlyObjectWrapper<>(
+                        dato.getValue().getCantidadDias()
+                )
+        );
 
-        cmbVehiculo.valueProperty().addListener((observable, vehiculoAnterior, vehiculoNuevo) -> {actualizarTarifaDiaria();});
+        colTotal.setCellValueFactory(
+                dato -> new SimpleStringProperty(
+                        String.format(
+                                "₡%,.2f",
+                                dato.getValue().calcularTotal()
+                        )
+                )
+        );
 
+        colEstado.setCellValueFactory(
+                dato -> new SimpleStringProperty(
+                        dato.getValue()
+                                .getEstado()
+                                .toString()
+                )
+        );
+
+        cmbVehiculo.valueProperty().addListener(
+                (observable, vehiculoAnterior, vehiculoNuevo) ->
+                        actualizarTarifaDiaria()
+        );
+
+        txtBuscarCliente.textProperty().addListener(
+                (observable, anterior, nuevo) ->
+                        filtrarClientes(nuevo)
+        );
+
+        txtBuscarVehiculo.textProperty().addListener(
+                (observable, anterior, nuevo) ->
+                        filtrarVehiculos(nuevo)
+        );
+
+        txtBuscarAlquiler.textProperty().addListener(
+                (observable, anterior, nuevo) ->
+                        filtrarAlquileres()
+        );
+
+        cmbFiltroEstado.valueProperty().addListener(
+                (observable, anterior, nuevo) ->
+                        filtrarAlquileres()
+        );
     }
 
     /*
@@ -111,14 +214,16 @@ public class AlquileresController {
      * Recibe: El servicio de clientes, el servicio de vehículos y el servicio de alquileres
      * Retorna: No retorna ningún valor
      */
-    public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehiculoServicio, AlquilerServicio alquilerServicio) {
+    public void setServicios(
+            ClienteServicio clienteServicio,
+            VehiculoServicio vehiculoServicio,
+            AlquilerServicio alquilerServicio) {
 
         this.clienteServicio = clienteServicio;
         this.vehiculoServicio = vehiculoServicio;
         this.alquilerServicio = alquilerServicio;
 
         cargarDatos();
-
     }
 
     /*
@@ -128,14 +233,217 @@ public class AlquileresController {
      */
     private void cargarDatos() {
 
-        cmbCliente.setItems(FXCollections.observableArrayList(clienteServicio.obtenerTodos()));
+        listaClientes = FXCollections.observableArrayList(
+                clienteServicio.obtenerTodos()
+        );
 
-        cmbVehiculo.setItems(FXCollections.observableArrayList(vehiculoServicio.obtenerDisponibles()));
+        clientesFiltrados = new FilteredList<>(
+                listaClientes,
+                cliente -> true
+        );
 
-        tablaAlquileres.setItems(FXCollections.observableArrayList(alquilerServicio.obtenerTodos()));
+        cmbCliente.setItems(clientesFiltrados);
 
-        lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
+        listaVehiculos = FXCollections.observableArrayList(
+                vehiculoServicio.obtenerDisponibles()
+        );
 
+        vehiculosFiltrados = new FilteredList<>(
+                listaVehiculos,
+                vehiculo -> true
+        );
+
+        cmbVehiculo.setItems(vehiculosFiltrados);
+
+        listaAlquileres = FXCollections.observableArrayList(
+                alquilerServicio.obtenerTodos()
+        );
+
+        alquileresFiltrados = new FilteredList<>(
+                listaAlquileres,
+                alquiler -> true
+        );
+
+        tablaAlquileres.setItems(
+                alquileresFiltrados
+        );
+
+        lblDeposito.setText(
+                String.format(
+                        "₡%,.2f",
+                        alquilerServicio.getDepositoGarantia()
+                )
+        );
+
+        filtrarClientes(
+                txtBuscarCliente.getText()
+        );
+
+        filtrarVehiculos(
+                txtBuscarVehiculo.getText()
+        );
+
+        filtrarAlquileres();
+    }
+
+    /*
+     * Qué hace: Filtra los clientes disponibles utilizando la cédula o el nombre escrito en el buscador
+     * Recibe: El texto utilizado para buscar clientes
+     * Retorna: No retorna ningún valor
+     */
+    private void filtrarClientes(String textoBusqueda) {
+
+        if (clientesFiltrados == null) {
+            return;
+        }
+
+        clientesFiltrados.setPredicate(cliente -> {
+
+            if (textoBusqueda == null
+                    || textoBusqueda.trim().isEmpty()) {
+
+                return true;
+            }
+
+            String busqueda =
+                    textoBusqueda
+                            .toLowerCase()
+                            .trim();
+
+            return cliente.getCedula()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || cliente.getNombreCompleto()
+                    .toLowerCase()
+                    .contains(busqueda);
+        });
+
+        cmbCliente.getSelectionModel()
+                .clearSelection();
+    }
+
+    /*
+     * Qué hace: Filtra los vehículos disponibles utilizando la placa, marca o modelo escrito en el buscador
+     * Recibe: El texto utilizado para buscar vehículos
+     * Retorna: No retorna ningún valor
+     */
+    private void filtrarVehiculos(String textoBusqueda) {
+
+        if (vehiculosFiltrados == null) {
+            return;
+        }
+
+        vehiculosFiltrados.setPredicate(vehiculo -> {
+
+            if (textoBusqueda == null
+                    || textoBusqueda.trim().isEmpty()) {
+
+                return true;
+            }
+
+            String busqueda =
+                    textoBusqueda
+                            .toLowerCase()
+                            .trim();
+
+            return vehiculo.getPlaca()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || vehiculo.getMarca()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || vehiculo.getModelo()
+                    .toLowerCase()
+                    .contains(busqueda);
+        });
+
+        cmbVehiculo.getSelectionModel()
+                .clearSelection();
+
+        actualizarTarifaDiaria();
+    }
+
+    /*
+     * Qué hace: Filtra los alquileres registrados utilizando el número de alquiler, cliente, cédula, placa o vehículo y permite además filtrar según el estado del alquiler
+     * Recibe: No recibe parámetros directamente, utiliza el buscador general y el estado seleccionado
+     * Retorna: No retorna ningún valor
+     */
+    private void filtrarAlquileres() {
+
+        if (alquileresFiltrados == null) {
+            return;
+        }
+
+        String textoBusqueda =
+                txtBuscarAlquiler.getText();
+
+        String estadoSeleccionado =
+                cmbFiltroEstado.getValue();
+
+        alquileresFiltrados.setPredicate(alquiler -> {
+
+            boolean coincideBusqueda = true;
+
+            boolean coincideEstado = true;
+
+            if (textoBusqueda != null
+                    && !textoBusqueda.trim().isEmpty()) {
+
+                String busqueda =
+                        textoBusqueda
+                                .toLowerCase()
+                                .trim();
+
+                coincideBusqueda =
+                        String.valueOf(
+                                alquiler.getNumeroAlquiler()
+                        ).contains(busqueda)
+
+                                || alquiler.getCliente()
+                                .getCedula()
+                                .toLowerCase()
+                                .contains(busqueda)
+
+                                || alquiler.getCliente()
+                                .getNombreCompleto()
+                                .toLowerCase()
+                                .contains(busqueda)
+
+                                || alquiler.getVehiculo()
+                                .getPlaca()
+                                .toLowerCase()
+                                .contains(busqueda)
+
+                                || alquiler.getVehiculo()
+                                .getMarca()
+                                .toLowerCase()
+                                .contains(busqueda)
+
+                                || alquiler.getVehiculo()
+                                .getModelo()
+                                .toLowerCase()
+                                .contains(busqueda);
+            }
+
+            if (estadoSeleccionado != null
+                    && !estadoSeleccionado.equals(
+                    "TODOS"
+            )) {
+
+                coincideEstado =
+                        alquiler.getEstado()
+                                .toString()
+                                .equals(
+                                        estadoSeleccionado
+                                );
+            }
+
+            return coincideBusqueda
+                    && coincideEstado;
+        });
     }
 
     /*
@@ -145,18 +453,24 @@ public class AlquileresController {
      */
     private void actualizarTarifaDiaria() {
 
-        Vehiculo vehiculo = cmbVehiculo.getValue();
+        Vehiculo vehiculo =
+                cmbVehiculo.getValue();
 
         if (vehiculo == null) {
 
-            lblTarifaDiaria.setText("₡0.00");
+            lblTarifaDiaria.setText(
+                    "₡0.00"
+            );
 
             return;
-
         }
 
-        lblTarifaDiaria.setText(String.format("₡%,.2f", vehiculo.getTarifaDiaria()));
-
+        lblTarifaDiaria.setText(
+                String.format(
+                        "₡%,.2f",
+                        vehiculo.getTarifaDiaria()
+                )
+        );
     }
 
     /*
@@ -169,37 +483,73 @@ public class AlquileresController {
 
         try {
 
-            Vehiculo vehiculo = cmbVehiculo.getValue();
+            Vehiculo vehiculo =
+                    cmbVehiculo.getValue();
 
             if (vehiculo == null) {
-                throw new IllegalArgumentException("Debe seleccionar un vehículo.");
+
+                throw new IllegalArgumentException(
+                        "Debe seleccionar un vehículo."
+                );
             }
 
-            int dias = Integer.parseInt(txtCantidadDias.getText().trim());
+            int dias =
+                    Integer.parseInt(
+                            txtCantidadDias
+                                    .getText()
+                                    .trim()
+                    );
 
             if (dias <= 0) {
-                throw new IllegalArgumentException("La cantidad de días debe ser mayor a cero.");
+
+                throw new IllegalArgumentException(
+                        "La cantidad de días debe ser mayor a cero."
+                );
             }
 
-            double subtotal = vehiculo.getTarifaDiaria() * dias;
+            double subtotal =
+                    vehiculo.getTarifaDiaria()
+                            * dias;
 
-            double deposito = alquilerServicio.getDepositoGarantia();
+            double deposito =
+                    alquilerServicio
+                            .getDepositoGarantia();
 
-            double total = subtotal + deposito;
+            double total =
+                    subtotal + deposito;
 
-            lblSubtotal.setText(String.format("₡%,.2f", subtotal));
+            lblSubtotal.setText(
+                    String.format(
+                            "₡%,.2f",
+                            subtotal
+                    )
+            );
 
-            lblDeposito.setText(String.format("₡%,.2f", deposito));
+            lblDeposito.setText(
+                    String.format(
+                            "₡%,.2f",
+                            deposito
+                    )
+            );
 
-            lblTotal.setText(String.format("₡%,.2f", total));
+            lblTotal.setText(
+                    String.format(
+                            "₡%,.2f",
+                            total
+                    )
+            );
 
         } catch (NumberFormatException e) {
 
-            mostrarError("La cantidad de días debe de ser un numero entero.");
+            mostrarError(
+                    "La cantidad de días debe de ser un numero entero."
+            );
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(e.getMessage());
+            mostrarError(
+                    e.getMessage()
+            );
         }
     }
 
@@ -213,25 +563,49 @@ public class AlquileresController {
 
         try {
 
-            Cliente cliente = cmbCliente.getValue();
+            Cliente cliente =
+                    cmbCliente.getValue();
 
-            Vehiculo vehiculo = cmbVehiculo.getValue();
+            Vehiculo vehiculo =
+                    cmbVehiculo.getValue();
 
-            LocalDate fecha = dpFechaInicio.getValue();
+            LocalDate fecha =
+                    dpFechaInicio.getValue();
 
             if (cliente == null) {
-                throw new IllegalArgumentException("Debe seleccionar un cliente.");
+
+                throw new IllegalArgumentException(
+                        "Debe seleccionar un cliente."
+                );
             }
 
             if (vehiculo == null) {
-                throw new IllegalArgumentException("Debe seleccionar un vehículo.");
+
+                throw new IllegalArgumentException(
+                        "Debe seleccionar un vehículo."
+                );
             }
 
-            int dias = Integer.parseInt(txtCantidadDias.getText().trim());
+            int dias =
+                    Integer.parseInt(
+                            txtCantidadDias
+                                    .getText()
+                                    .trim()
+                    );
 
-            Alquiler alquiler = alquilerServicio.crearAlquiler(cliente.getCedula(), vehiculo.getPlaca(), fecha, dias);
+            Alquiler alquiler =
+                    alquilerServicio.crearAlquiler(
+                            cliente.getCedula(),
+                            vehiculo.getPlaca(),
+                            fecha,
+                            dias
+                    );
 
-            mostrarInformacion("Alquiler #" + alquiler.getNumeroAlquiler() + " registrado correctamente.");
+            mostrarInformacion(
+                    "Alquiler #"
+                            + alquiler.getNumeroAlquiler()
+                            + " registrado correctamente."
+            );
 
             limpiarFormulario();
 
@@ -239,16 +613,21 @@ public class AlquileresController {
 
         } catch (NumberFormatException e) {
 
-            mostrarError("La cantidad de dias debe de ser un número entero.");
+            mostrarError(
+                    "La cantidad de dias debe de ser un número entero."
+            );
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(e.getMessage());
+            mostrarError(
+                    e.getMessage()
+            );
 
         } catch (RuntimeException e) {
 
-            mostrarError(e.getMessage());
-
+            mostrarError(
+                    e.getMessage()
+            );
         }
     }
 
@@ -260,28 +639,50 @@ public class AlquileresController {
     @FXML
     private void limpiarFormulario() {
 
-        cmbCliente.getSelectionModel().clearSelection();
+        cmbCliente.getSelectionModel()
+                .clearSelection();
 
-        cmbVehiculo.getSelectionModel().clearSelection();
+        cmbVehiculo.getSelectionModel()
+                .clearSelection();
 
-        dpFechaInicio.setValue(LocalDate.now());
+        txtBuscarCliente.clear();
+
+        txtBuscarVehiculo.clear();
+
+        dpFechaInicio.setValue(
+                LocalDate.now()
+        );
 
         txtCantidadDias.clear();
 
-        lblSubtotal.setText("₡0.00");
+        lblTarifaDiaria.setText(
+                "₡0.00"
+        );
+
+        lblSubtotal.setText(
+                "₡0.00"
+        );
 
         if (alquilerServicio != null) {
 
-            lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
+            lblDeposito.setText(
+                    String.format(
+                            "₡%,.2f",
+                            alquilerServicio
+                                    .getDepositoGarantia()
+                    )
+            );
 
         } else {
 
-            lblDeposito.setText("₡0.00");
-
+            lblDeposito.setText(
+                    "₡0.00"
+            );
         }
 
-        lblTotal.setText("₡0.00");
-
+        lblTotal.setText(
+                "₡0.00"
+        );
     }
 
     /*
@@ -291,13 +692,24 @@ public class AlquileresController {
      */
     private void mostrarError(String mensaje) {
 
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        Alert alerta =
+                new Alert(
+                        Alert.AlertType.ERROR
+                );
 
-        alerta.setTitle("Error");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
+        alerta.setTitle(
+                "Error"
+        );
+
+        alerta.setHeaderText(
+                null
+        );
+
+        alerta.setContentText(
+                mensaje
+        );
+
         alerta.showAndWait();
-
     }
 
     /*
@@ -305,14 +717,26 @@ public class AlquileresController {
      * Recibe: El mensaje informativo que se desea mostrar en pantalla
      * Retorna: No retorna ningún valor
      */
-    private void mostrarInformacion(String mensaje) {
+    private void mostrarInformacion(
+            String mensaje) {
 
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        Alert alerta =
+                new Alert(
+                        Alert.AlertType.INFORMATION
+                );
 
-        alerta.setTitle("Información");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
+        alerta.setTitle(
+                "Información"
+        );
+
+        alerta.setHeaderText(
+                null
+        );
+
+        alerta.setContentText(
+                mensaje
+        );
+
         alerta.showAndWait();
-
     }
 }
