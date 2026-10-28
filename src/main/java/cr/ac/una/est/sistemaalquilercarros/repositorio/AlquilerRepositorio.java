@@ -13,7 +13,7 @@ public interface AlquilerRepositorio {
 
     List<Alquiler> obtenerActivos();
 
-    void modificar(Alquiler alquiler);
+    void finalizar(Alquiler alquiler);
 
     boolean eliminar(int numeroAlquiler);
 }
