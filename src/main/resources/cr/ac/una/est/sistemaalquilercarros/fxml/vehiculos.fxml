@@ -12,10 +12,6 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.VehiculosController">
 
-    <!-- =========================
-         ENCABEZADO
-         ========================= -->
-
     <top>
 
         <VBox spacing="3.0"
@@ -31,11 +27,6 @@
 
     </top>
 
-
-    <!-- =========================
-         CONTENIDO PRINCIPAL
-         ========================= -->
-
     <center>
 
         <VBox spacing="14.0">
@@ -46,39 +37,6 @@
                         bottom="20.0"
                         left="20.0" />
             </padding>
-
-
-            <!-- =========================
-                 BUSCADOR Y FILTROS
-                 ========================= -->
-
-            <HBox alignment="CENTER_LEFT"
-                  spacing="12.0"
-                  styleClass="filter-card">
-
-                <TextField fx:id="txtBuscar"
-                           promptText="Buscar por placa, marca, modelo o tipo..."
-                           prefHeight="35.0"
-                           styleClass="search-field"
-                           HBox.hgrow="ALWAYS" />
-
-                <VBox spacing="3.0">
-
-                    <Label text="Estado"
-                           styleClass="form-label" />
-
-                    <ComboBox fx:id="cmbFiltroEstado"
-                              prefWidth="150.0"
-                              prefHeight="35.0" />
-
-                </VBox>
-
-            </HBox>
-
-
-            <!-- =========================
-                 FORMULARIO
-                 ========================= -->
 
             <HBox spacing="18.0"
                   styleClass="card">
@@ -103,9 +61,6 @@
 
                     </columnConstraints>
 
-
-                    <!-- FILA DE LABELS -->
-
                     <Label text="Placa"
                            styleClass="form-label"
                            GridPane.columnIndex="0"
@@ -125,9 +80,6 @@
                            styleClass="form-label"
                            GridPane.columnIndex="3"
                            GridPane.rowIndex="0" />
-
-
-                    <!-- FILA DE CAMPOS -->
 
                     <TextField fx:id="txtPlaca"
                                prefHeight="34.0"
@@ -149,9 +101,6 @@
                                GridPane.columnIndex="3"
                                GridPane.rowIndex="1" />
 
-
-                    <!-- SEGUNDA FILA DE LABELS -->
-
                     <Label text="Buscar tipo"
                            styleClass="form-label"
                            GridPane.columnIndex="0"
@@ -171,9 +120,6 @@
                            styleClass="form-label"
                            GridPane.columnIndex="3"
                            GridPane.rowIndex="2" />
-
-
-                    <!-- SEGUNDA FILA DE CAMPOS -->
 
                     <TextField fx:id="txtBuscarTipo"
                                promptText="Buscar tipo..."
@@ -199,9 +145,6 @@
                                GridPane.columnIndex="3"
                                GridPane.rowIndex="3" />
 
-
-                    <!-- TERCERA FILA -->
-
                     <Label text="Tipo de tracción"
                            styleClass="form-label"
                            GridPane.columnIndex="0"
@@ -224,11 +167,6 @@
                                GridPane.rowIndex="5" />
 
                 </GridPane>
-
-
-                <!-- =========================
-                     BOTONES
-                     ========================= -->
 
                 <VBox alignment="TOP_CENTER"
                       spacing="9.0"
@@ -267,10 +205,36 @@
 
             </HBox>
 
+            <HBox alignment="CENTER_LEFT"
+                  spacing="12.0"
+                  styleClass="filter-card">
 
-            <!-- =========================
-                 TABLA
-                 ========================= -->
+                <VBox spacing="3.0"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Buscar"
+                           styleClass="form-label" />
+
+                    <TextField fx:id="txtBuscar"
+                               promptText="Buscar por placa, marca, modelo o tipo..."
+                               prefHeight="35.0"
+                               styleClass="search-field"
+                               maxWidth="Infinity" />
+
+                </VBox>
+
+                <VBox spacing="3.0">
+
+                    <Label text="Estado"
+                           styleClass="form-label" />
+
+                    <ComboBox fx:id="cmbFiltroEstado"
+                              prefWidth="150.0"
+                              prefHeight="35.0" />
+
+                </VBox>
+
+            </HBox>
 
             <VBox spacing="8.0"
                   styleClass="card"

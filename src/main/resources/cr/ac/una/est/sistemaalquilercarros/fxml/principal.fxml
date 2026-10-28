@@ -13,10 +13,6 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.PrincipalController">
 
-   <!-- =========================
-        BARRA SUPERIOR
-        ========================= -->
-
    <top>
 
       <HBox alignment="CENTER_LEFT"
@@ -35,11 +31,6 @@
 
    </top>
 
-
-   <!-- =========================
-        MENÚ LATERAL
-        ========================= -->
-
    <left>
 
       <VBox prefWidth="210.0"
@@ -53,9 +44,6 @@
                     left="12.0" />
          </padding>
 
-
-         <!-- TÍTULO DEL MENÚ -->
-
          <VBox spacing="2.0"
                styleClass="sidebar-header">
 
@@ -67,11 +55,7 @@
 
          </VBox>
 
-
          <Separator />
-
-
-         <!-- BOTONES DE NAVEGACIÓN -->
 
          <Button text="Inicio"
                  mnemonicParsing="false"
@@ -122,16 +106,9 @@
                  prefHeight="40.0"
                  styleClass="nav-button" />
 
-
-         <!-- EMPUJA SALIR HACIA ABAJO -->
-
          <Region VBox.vgrow="ALWAYS" />
 
-
          <Separator />
-
-
-         <!-- BOTÓN SALIR -->
 
          <Button text="Salir"
                  mnemonicParsing="false"
@@ -143,11 +120,6 @@
       </VBox>
 
    </left>
-
-
-   <!-- =========================
-        CONTENIDO CENTRAL INICIAL
-        ========================= -->
 
    <center>
 

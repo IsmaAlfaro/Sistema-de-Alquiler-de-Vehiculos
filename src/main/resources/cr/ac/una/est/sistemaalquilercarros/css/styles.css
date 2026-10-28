@@ -1,3 +1,27 @@
+/*
+ * ================================================================
+ * SELECTOR: .root
+ * ================================================================
+ * FXML: Todos los FXML
+ * UBICACIÓN: Regla general del nodo raíz y estilos heredables de la escena
+ * APLICACIÓN Y FUNCIÓN: Establece la tipografía base Segoe UI y un tamaño predeterminado de 13px; los Label y controles pueden sobrescribirlo con reglas más específicas. No necesita styleClass="root" porque es una clase de estilo propia de JavaFX.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-family: "Segoe UI"
+ *   Selecciona la familia tipográfica utilizada por el texto del nodo y, cuando corresponde, por sus hijos mediante herencia.
+ * -fx-font-size: 13px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .root {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
@@ -6,6 +30,28 @@
 /* =========================
    FONDO GENERAL
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .page
+ * ================================================================
+ * FXML: Inicio, Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: BorderPane raíz de cada vista secundaria
+ * APLICACIÓN Y FUNCIÓN: Se declara styleClass="page" directamente en el BorderPane que tiene <top> y <center>. Da el fondo gris claro a toda la superficie de la vista; Principal usa otra clase, main-root.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #f6f8fb
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .page {
     -fx-background-color: #f6f8fb;
@@ -16,6 +62,34 @@
    ENCABEZADO
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .page-header
+ * ================================================================
+ * FXML: Inicio, Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: VBox dentro de <top> del BorderPane de cada vista
+ * APLICACIÓN Y FUNCIÓN: El VBox contiene dos Label: título con page-title y descripción con page-subtitle, separados mediante spacing="3.0" declarado en el FXML. El relleno crea espacio alrededor y el borde inferior separa el encabezado del contenido.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-padding: 22px 28px 18px 28px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ * -fx-border-color: transparent transparent #e5e9ef transparent
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 0 0 1px 0
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .page-header {
     -fx-background-color: white;
     -fx-padding: 22px 28px 18px 28px;
@@ -23,11 +97,61 @@
     -fx-border-width: 0 0 1px 0;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .page-title
+ * ================================================================
+ * FXML: Inicio, Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: Primer Label del VBox page-header
+ * APLICACIÓN Y FUNCIÓN: Identifica la pantalla: Inicio, Vehículos, Tipos de Vehículos, Clientes, Registro de Alquileres, Devolución de Vehículos o Historial de Alquileres. La clase se aplica mediante styleClass="page-title".
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 27px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .page-title {
     -fx-font-size: 27px;
     -fx-font-weight: bold;
     -fx-text-fill: #172033;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .page-subtitle
+ * ================================================================
+ * FXML: Inicio, Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: Segundo Label de page-header; adicionalmente Label del panel dashboard-info-card en Inicio
+ * APLICACIÓN Y FUNCIÓN: Describe la finalidad de la pantalla. En Inicio también se utiliza para el texto inferior del panel principal, con wrapText="true" para permitir saltos de línea.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 13px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-text-fill: #6f7785
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .page-subtitle {
     -fx-font-size: 13px;
@@ -39,6 +163,38 @@
    CONTENEDORES / TARJETAS
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .card
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: HBox de formularios en Vehiculos/TipoVehiculos/Cliente; VBox del formulario en Alquiler/Devolucion; VBox de las tablas en las seis vistas
+ * APLICACIÓN Y FUNCIÓN: En formularios HBox, el GridPane comparte fila con el VBox action-panel; en formularios VBox, aparecen título y GridPane apilados. En las tablas, el VBox contiene section-title y TableView y usa VBox.vgrow="ALWAYS". Esta clase da una misma apariencia a estructuras distintas.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 8px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 8px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #e1e6ec
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 16px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .card {
     -fx-background-color: white;
     -fx-background-radius: 8px;
@@ -47,6 +203,38 @@
     -fx-border-width: 1px;
     -fx-padding: 16px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .filter-card
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: HBox que agrupa los buscadores y, cuando existen, los filtros por estado
+ * APLICACIÓN Y FUNCIÓN: Vehiculos/Alquiler/Historial tienen TextField de búsqueda y ComboBox de estado; TipoVehiculos/Cliente/Devolucion solo buscador. En general se utiliza alignment="CENTER_LEFT", spacing="12.0" y HBox.hgrow="ALWAYS" para el campo o su VBox.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #eaf5fd
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 8px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 8px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #d4eaf9
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 12px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .filter-card {
     -fx-background-color: #eaf5fd;
@@ -62,17 +250,93 @@
    LABELS
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .form-label
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: Label descriptivos de formularios y de filtros
+ * APLICACIÓN Y FUNCIÓN: Identifica Placa, Marca, Modelo, Año, Nombre, Cédula, Cliente, Vehículo, Fecha, Estado y demás campos. En los GridPane se ubican mediante GridPane.columnIndex/rowIndex; esta clase solo determina la apariencia del texto, no la posición.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #354052
+ *   Elige el color del texto visible del control.
+ * -fx-font-size: 12px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .form-label {
     -fx-text-fill: #354052;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .section-title
+ * ================================================================
+ * FXML: Inicio, Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: Label de título para secciones, tarjetas y tablas
+ * APLICACIÓN Y FUNCIÓN: Inicio: Resumen del sistema y Panel principal; Vehiculos: Vehículos registrados; TipoVehiculos: Tipos registrados; Cliente: Clientes registrados; Alquiler: Datos del alquiler y Alquileres registrados; Devolucion: Datos de la devolución y Alquileres activos; Historial: Registro histórico.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ * -fx-font-size: 16px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .section-title {
     -fx-text-fill: #172033;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .results-label
+ * ================================================================
+ * FXML: No se encontró uso explícito en los ocho FXML enviados
+ * UBICACIÓN: Clase auxiliar disponible para futuros Label
+ * APLICACIÓN Y FUNCIÓN: Dar formato a textos secundarios de resultados o cantidades. No se debe afirmar que se usa actualmente ni eliminarla: podría aplicarse desde otro FXML o desde Java.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #788292
+ *   Elige el color del texto visible del control.
+ * -fx-font-size: 12px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .results-label {
     -fx-text-fill: #788292;
@@ -83,6 +347,42 @@
 /* =========================
    TEXTFIELD
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .text-field
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: Todos los TextField: entrada de datos y búsqueda
+ * APLICACIÓN Y FUNCIÓN: JavaFX coloca automáticamente la clase text-field a sus TextField, incluso sin styleClass. Ejemplos: txtPlaca, txtCedula, txtBuscarCliente, txtCantidadDias y txtBuscarDevolucion. promptText se establece en el FXML y usa el color configurado aquí.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 5px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 5px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #ccd4dd
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 7px 10px 7px 10px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ * -fx-text-fill: #202938
+ *   Elige el color del texto visible del control.
+ * -fx-prompt-text-fill: #9ca5b2
+ *   Establece el color del texto orientativo promptText mientras el campo está vacío.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .text-field {
     -fx-background-color: white;
@@ -97,9 +397,55 @@
     -fx-prompt-text-fill: #9ca5b2;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .text-field:hover
+ * ================================================================
+ * FXML: Los mismos FXML que contienen TextField
+ * UBICACIÓN: Estado del TextField cuando el puntero está encima
+ * APLICACIÓN Y FUNCIÓN: Modifica visualmente el borde sin alterar el contenido ni ejecutar acciones. Es un pseudoselector de JavaFX, no una clase adicional que deba escribirse en el FXML.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-border-color: #aab5c2
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .text-field:hover {
     -fx-border-color: #aab5c2;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .text-field:focused
+ * ================================================================
+ * FXML: Los mismos FXML que contienen TextField
+ * UBICACIÓN: Estado del TextField que tiene el foco de teclado
+ * APLICACIÓN Y FUNCIÓN: Se aprecia al hacer clic o desplazarse con Tab al campo. El borde azul indica el control activo y el mayor grosor refuerza la selección.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-border-color: #1685d1
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1.5px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .text-field:focused {
     -fx-border-color: #1685d1;
@@ -111,6 +457,36 @@
    COMBOBOX
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .combo-box
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Alquiler, Devolucion, Historial
+ * UBICACIÓN: ComboBox de tipo, tracción, categoría, cliente, vehículo, alquiler y estado
+ * APLICACIÓN Y FUNCIÓN: Los ComboBox reciben automáticamente combo-box. Ejemplos: cmbTipo, cmbTraccion, cmbCategoria, cmbCliente, cmbVehiculo, cmbAlquiler y cmbFiltroEstado. Los FXML definen sus tamaños preferidos y algunos usan maxWidth="Infinity".
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 5px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 5px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #ccd4dd
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .combo-box {
     -fx-background-color: white;
     -fx-background-radius: 5px;
@@ -119,14 +495,84 @@
     -fx-border-width: 1px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .combo-box:hover
+ * ================================================================
+ * FXML: Todas las vistas con ComboBox
+ * UBICACIÓN: Estado de ComboBox bajo el puntero
+ * APLICACIÓN Y FUNCIÓN: Cambia el borde al pasar el mouse, sin abrir la lista. Es automático y no requiere onAction.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-border-color: #aab5c2
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .combo-box:hover {
     -fx-border-color: #aab5c2;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .combo-box:focused
+ * ================================================================
+ * FXML: Todas las vistas con ComboBox
+ * UBICACIÓN: ComboBox seleccionado para interacción con teclado
+ * APLICACIÓN Y FUNCIÓN: Indica foco con borde azul y grosor superior; no modifica el listado de opciones ni su valor.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-border-color: #1685d1
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1.5px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .combo-box:focused {
     -fx-border-color: #1685d1;
     -fx-border-width: 1.5px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .combo-box .list-cell
+ * ================================================================
+ * FXML: Todas las vistas con ComboBox
+ * UBICACIÓN: Celdas internas usadas por el ComboBox para presentar sus opciones y selección
+ * APLICACIÓN Y FUNCIÓN: Selector descendiente: aplica a los nodos internos list-cell, no al contenedor completo. Da color de texto y espacio interior a los elementos listados.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #202938
+ *   Elige el color del texto visible del control.
+ * -fx-padding: 6px 8px 6px 8px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .combo-box .list-cell {
     -fx-text-fill: #202938;
@@ -137,6 +583,36 @@
 /* =========================
    BOTONES GENERALES
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .button
+ * ================================================================
+ * FXML: Principal, Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion
+ * UBICACIÓN: Todos los nodos Button del sistema
+ * APLICACIÓN Y FUNCIÓN: Es una clase automática de JavaFX. Los botones también usan clases concretas como nav-button, button-primary, button-secondary o button-danger, por lo que las reglas se combinan según su especificidad. onAction en FXML llama al controlador; CSS solo afecta el aspecto.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-cursor: hand
+ *   Elige la apariencia del puntero; hand muestra una mano sobre un elemento interactivo.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-background-radius: 5px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 5px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-padding: 8px 18px 8px 18px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .button {
     -fx-cursor: hand;
@@ -151,16 +627,88 @@
    BOTÓN PRINCIPAL
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .button-primary
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion
+ * UBICACIÓN: Button Registrar o Confirmar alquiler/devolución
+ * APLICACIÓN Y FUNCIÓN: Aparece en los botones de acción principal del formulario. Sus eventos son registrarVehiculo, registrarTipo, registrarCliente, confirmarAlquiler y confirmarDevolucion; el estilo azul no implementa esas operaciones.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #0f84d7
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: white
+ *   Elige el color del texto visible del control.
+ * -fx-border-color: #0f84d7
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .button-primary {
     -fx-background-color: #0f84d7;
     -fx-text-fill: white;
     -fx-border-color: #0f84d7;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .button-primary:hover
+ * ================================================================
+ * FXML: Las cinco vistas con button-primary
+ * UBICACIÓN: Estado al situar el puntero sobre Registrar o Confirmar
+ * APLICACIÓN Y FUNCIÓN: El fondo y el borde se oscurecen para comunicar que el botón puede pulsarse.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #0874c1
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: #0874c1
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .button-primary:hover {
     -fx-background-color: #0874c1;
     -fx-border-color: #0874c1;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .button-primary:pressed
+ * ================================================================
+ * FXML: Las cinco vistas con button-primary
+ * UBICACIÓN: Estado durante la pulsación de Registrar o Confirmar
+ * APLICACIÓN Y FUNCIÓN: Oscurece más el fondo al mantener presionado el botón; no señala confirmación de una operación completada.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #0767ab
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .button-primary:pressed {
     -fx-background-color: #0767ab;
@@ -171,12 +719,62 @@
    BOTÓN SECUNDARIO
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .button-secondary
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion
+ * UBICACIÓN: Modificar/Limpiar en Vehiculos y Cliente; Limpiar en TipoVehiculos; Calcular/Limpiar en Alquiler y Devolucion
+ * APLICACIÓN Y FUNCIÓN: Se utiliza como acción neutra o alternativa. Sus onAction están definidos por separado en cada FXML; la clase solo aporta el fondo gris, color de texto y borde.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #f1f3f5
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: #303846
+ *   Elige el color del texto visible del control.
+ * -fx-border-color: #d7dce2
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .button-secondary {
     -fx-background-color: #f1f3f5;
     -fx-text-fill: #303846;
     -fx-border-color: #d7dce2;
     -fx-border-width: 1px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .button-secondary:hover
+ * ================================================================
+ * FXML: Las cinco vistas con button-secondary
+ * UBICACIÓN: Estado hover de los botones secundarios
+ * APLICACIÓN Y FUNCIÓN: Acentúa el gris del fondo al pasar el puntero.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #e6e9ed
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .button-secondary:hover {
     -fx-background-color: #e6e9ed;
@@ -187,12 +785,64 @@
    BOTÓN ELIMINAR
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .button-danger
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente
+ * UBICACIÓN: Button Eliminar ubicado dentro de VBox action-panel
+ * APLICACIÓN Y FUNCIÓN: Resalta la operación de eliminación con colores rojos. Los métodos asociados son eliminarVehiculo, eliminarTipo y eliminarCliente; el CSS no borra datos.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #fff0f0
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: #e53935
+ *   Elige el color del texto visible del control.
+ * -fx-border-color: #ff9f9c
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .button-danger {
     -fx-background-color: #fff0f0;
     -fx-text-fill: #e53935;
     -fx-border-color: #ff9f9c;
     -fx-border-width: 1px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .button-danger:hover
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente
+ * UBICACIÓN: Estado hover del botón Eliminar
+ * APLICACIÓN Y FUNCIÓN: Intensifica el fondo y borde rojos mientras el cursor está sobre el control.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #ffe0df
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: #ef7773
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .button-danger:hover {
     -fx-background-color: #ffe0df;
@@ -204,12 +854,62 @@
    BOTÓN BUSCAR
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .button-search
+ * ================================================================
+ * FXML: No se encontró uso explícito en los ocho FXML enviados
+ * UBICACIÓN: Estilo preparado para un Button de búsqueda
+ * APLICACIÓN Y FUNCIÓN: Ninguna pantalla proporcionada declara styleClass="button-search"; los buscadores existentes son TextField. Se conserva intacto por posible uso futuro o desde otro archivo.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #0f84d7
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: white
+ *   Elige el color del texto visible del control.
+ * -fx-border-color: #0f84d7
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-padding: 7px 20px 7px 20px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .button-search {
     -fx-background-color: #0f84d7;
     -fx-text-fill: white;
     -fx-border-color: #0f84d7;
     -fx-padding: 7px 20px 7px 20px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .button-search:hover
+ * ================================================================
+ * FXML: No se encontró uso explícito en los ocho FXML enviados
+ * UBICACIÓN: Estado hover de un eventual botón con button-search
+ * APLICACIÓN Y FUNCIÓN: Oscurecería el fondo azul del botón de búsqueda si se llegara a utilizar.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #0874c1
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .button-search:hover {
     -fx-background-color: #0874c1;
@@ -220,6 +920,36 @@
    TABLAS
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .table-view
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: TableView tablaVehiculos, tablaTipos, tablaClientes, tablaAlquileres, tablaAlquileresActivos y tablaHistorial
+ * APLICACIÓN Y FUNCIÓN: Se aplica automáticamente a TableView. Cada FXML define TableColumn y sus anchos; columnResizePolicy usa CONSTRAINED_RESIZE_POLICY. La regla afecta el contenedor visual de la tabla, no los datos que suministra el controlador.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: #dfe4ea
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-radius: 6px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-background-radius: 6px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-padding: 0
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .table-view {
     -fx-background-color: white;
     -fx-border-color: #dfe4ea;
@@ -228,10 +958,62 @@
     -fx-padding: 0;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .table-view .column-header-background
+ * ================================================================
+ * FXML: Las seis vistas que contienen TableView
+ * UBICACIÓN: Región interna que dibuja el fondo de los encabezados de columna
+ * APLICACIÓN Y FUNCIÓN: Afecta el fondo detrás de los títulos Placa, Cliente, Total, etc. No es un nodo declarado manualmente en FXML; JavaFX lo construye dentro de TableView.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #f3f5f7
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 6px 6px 0 0
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .table-view .column-header-background {
     -fx-background-color: #f3f5f7;
     -fx-background-radius: 6px 6px 0 0;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .table-view .column-header
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Cada cabecera interna de TableColumn
+ * APLICACIÓN Y FUNCIÓN: El FXML declara las columnas mediante <TableColumn text="..."/>. El selector personaliza sus superficies y líneas divisorias; no define nombre ni ancho de columna.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: transparent
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: transparent #e1e5ea #d7dce2 transparent
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 0 1px 1px 0
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 8px 5px 8px 5px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .table-view .column-header {
     -fx-background-color: transparent;
@@ -240,11 +1022,65 @@
     -fx-padding: 8px 5px 8px 5px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .table-view .column-header .label
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Label interno que muestra el nombre de cada columna
+ * APLICACIÓN Y FUNCIÓN: Ajusta la tipografía de los textos de cabecera, por ejemplo Número, Estado, Cédula y Fecha esperada. Los títulos se determinan en el atributo text de cada TableColumn.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #202938
+ *   Elige el color del texto visible del control.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-font-size: 12px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .table-view .column-header .label {
     -fx-text-fill: #202938;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .table-view .table-cell
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Celdas internas que muestran los valores de cada fila
+ * APLICACIÓN Y FUNCIÓN: Da color, bordes y relleno a los datos de cada columna. La forma de obtener los valores pertenece al controlador y no a esta regla.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #313b49
+ *   Elige el color del texto visible del control.
+ * -fx-border-color: transparent #edf0f3 #edf0f3 transparent
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 0 1px 1px 0
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 8px 7px 8px 7px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .table-view .table-cell {
     -fx-text-fill: #313b49;
@@ -253,21 +1089,131 @@
     -fx-padding: 8px 7px 8px 7px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .table-row-cell
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Filas generadas automáticamente por cada tabla
+ * APLICACIÓN Y FUNCIÓN: Establece su fondo base blanco; ninguna fila individual está declarada en los FXML.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .table-row-cell {
     -fx-background-color: white;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .table-row-cell:odd
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Filas alternas de índice impar
+ * APLICACIÓN Y FUNCIÓN: Proporciona alternancia muy suave entre filas para facilitar la lectura.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #fbfcfd
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .table-row-cell:odd {
     -fx-background-color: #fbfcfd;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .table-row-cell:hover
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Fila bajo el cursor
+ * APLICACIÓN Y FUNCIÓN: Da retroalimentación al usuario al recorrer registros con el mouse.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #edf7fd
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .table-row-cell:hover {
     -fx-background-color: #edf7fd;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .table-row-cell:selected
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Fila que el usuario selecciona en una tabla
+ * APLICACIÓN Y FUNCIÓN: Marca en azul claro el registro seleccionado; la lógica de seleccionar y cargar datos en campos corresponde al controlador.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #bfe4fa
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .table-row-cell:selected {
     -fx-background-color: #bfe4fa;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .table-row-cell:selected .table-cell
+ * ================================================================
+ * FXML: Las seis vistas con TableView
+ * UBICACIÓN: Textos de las celdas de la fila seleccionada
+ * APLICACIÓN Y FUNCIÓN: Mantiene el texto oscuro y legible sobre el fondo azul de selección.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .table-row-cell:selected .table-cell {
     -fx-text-fill: #172033;
@@ -278,14 +1224,82 @@
    SCROLLBAR
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .scroll-bar
+ * ================================================================
+ * FXML: Principalmente tablas y controles desplazables en las vistas
+ * UBICACIÓN: Barras de desplazamiento internas creadas cuando se necesitan
+ * APLICACIÓN Y FUNCIÓN: JavaFX aplica scroll-bar automáticamente a estas barras. No se insertan manualmente en los FXML enviados.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: transparent
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .scroll-bar {
     -fx-background-color: transparent;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .scroll-bar .thumb
+ * ================================================================
+ * FXML: Vistas con barras de desplazamiento visibles
+ * UBICACIÓN: Pieza móvil de la barra que se arrastra
+ * APLICACIÓN Y FUNCIÓN: Establece color y esquinas redondeadas al elemento manipulable.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #c5ccd5
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 10px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .scroll-bar .thumb {
     -fx-background-color: #c5ccd5;
     -fx-background-radius: 10px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .scroll-bar .thumb:hover
+ * ================================================================
+ * FXML: Vistas con barras de desplazamiento visibles
+ * UBICACIÓN: Pieza móvil cuando el cursor pasa por encima
+ * APLICACIÓN Y FUNCIÓN: Oscurece la pieza para indicar la posibilidad de arrastrarla.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #aeb7c2
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .scroll-bar .thumb:hover {
     -fx-background-color: #aeb7c2;
@@ -297,6 +1311,30 @@
    ========================= */
 
 .text-field:disabled,
+    /*
+     * ================================================================
+     * SELECTOR: .combo-box:disabled
+     * ================================================================
+     * FXML: Todos los formularios que contienen TextField o ComboBox
+     * UBICACIÓN: Controles deshabilitados por código o configuración de JavaFX
+     * APLICACIÓN Y FUNCIÓN: La pseudoclase disabled aparece cuando setDisable(true) o disable="true" desactiva un control. Reduce su opacidad y cambia el fondo; no define cuándo deben deshabilitarse.
+     *
+     * PROPIEDADES DE ESTA REGLA:
+     * -fx-opacity: 0.65
+     *   Establece transparencia; 0 es completamente transparente y 1 completamente opaco.
+     * -fx-background-color: #f1f3f5
+     *   Determina el color de fondo de la superficie del control o contenedor.
+     *
+     * CÓMO SE APLICA: Las clases personalizadas se asignan con
+     * styleClass="nombre-de-clase" en el elemento FXML; las clases
+     * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+     * :focused, :pressed, :selected) y descendientes (.table-cell,
+     * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+     * Las propiedades de layout como spacing, hgap, vgap, Insets,
+     * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+     * en FXML y NO las introduce esta regla de CSS.
+     */
+
 .combo-box:disabled {
     -fx-opacity: 0.65;
     -fx-background-color: #f1f3f5;
@@ -307,6 +1345,28 @@
    SEPARADORES
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .separator .line
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Línea interna de los Separator del menú lateral y tarjeta de bienvenida
+ * APLICACIÓN Y FUNCIÓN: En Principal.fxml hay Separator después de sidebar-header, antes del botón Salir y entre los textos de bienvenida. El selector personaliza su línea, que JavaFX crea internamente.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-border-color: #e3e7ec
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .separator .line {
     -fx-border-color: #e3e7ec;
 }
@@ -316,22 +1376,134 @@
    UTILIDADES
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .panel-transparent
+ * ================================================================
+ * FXML: No se encontró uso explícito en los ocho FXML enviados
+ * UBICACIÓN: Clase auxiliar para contenedores sin fondo
+ * APLICACIÓN Y FUNCIÓN: No se observó styleClass="panel-transparent"; se conserva para un posible uso en otra pantalla o desde Java.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: transparent
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .panel-transparent {
     -fx-background-color: transparent;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .action-panel
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente
+ * UBICACIÓN: VBox a la derecha de cada formulario HBox
+ * APLICACIÓN Y FUNCIÓN: Cada uno tiene alignment="TOP_CENTER", spacing="9.0", prefWidth="125.0"; contiene Registrar, Eliminar, Limpiar y también Modificar en Vehiculos/Cliente. El padding agrega separación superior e izquierda respecto del GridPane.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: transparent
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-padding: 18px 0 0 15px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .action-panel {
     -fx-background-color: transparent;
     -fx-padding: 18px 0 0 15px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .search-field
+ * ================================================================
+ * FXML: Vehiculos, TipoVehiculos, Cliente, Alquiler, Devolucion, Historial
+ * UBICACIÓN: TextField de búsqueda en el HBox filter-card
+ * APLICACIÓN Y FUNCIÓN: Se aplica explícitamente a txtBuscar, txtBuscarAlquiler o txtBuscarDevolucion; además se suma el estilo automático text-field. Los campos tienen prefHeight="35.0" y suelen crecer con HBox.hgrow="ALWAYS".
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 13px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .search-field {
     -fx-font-size: 13px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .field-small
+ * ================================================================
+ * FXML: No se encontró uso explícito en los ocho FXML enviados
+ * UBICACIÓN: Clase auxiliar para TextField de altura preferida compacta
+ * APLICACIÓN Y FUNCIÓN: Los campos actuales establecen prefHeight="34.0" o "35.0" directamente en FXML; no usan styleClass="field-small".
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-pref-height: 34px
+ *   Indica la altura preferida usada por el sistema de distribución JavaFX, que puede ajustarla si es necesario.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .field-small {
     -fx-pref-height: 34px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .combo-small
+ * ================================================================
+ * FXML: No se encontró uso explícito en los ocho FXML enviados
+ * UBICACIÓN: Clase auxiliar para ComboBox de altura preferida compacta
+ * APLICACIÓN Y FUNCIÓN: Los ComboBox actuales fijan prefHeight directamente en FXML; no se ha encontrado styleClass="combo-small".
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-pref-height: 34px
+ *   Indica la altura preferida usada por el sistema de distribución JavaFX, que puede ajustarla si es necesario.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .combo-small {
     -fx-pref-height: 34px;
@@ -341,6 +1513,28 @@
    VENTANA PRINCIPAL
    ========================================================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .main-root
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: BorderPane raíz fx:id="panelPrincipal"
+ * APLICACIÓN Y FUNCIÓN: Es la ventana contenedora con prefWidth="1100.0" y prefHeight="700.0". Distribuye barra top, menú left y área central center. Usa stylesheets="@../css/styles.css" para cargar estas reglas.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #f6f8fb
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .main-root {
     -fx-background-color: #f6f8fb;
 }
@@ -349,6 +1543,32 @@
 /* =========================
    BARRA SUPERIOR
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .main-topbar
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: HBox en la región <top> del BorderPane principal
+ * APLICACIÓN Y FUNCIÓN: Contiene Label con texto Sistema Alquiler de Vehículos. En FXML: alignment="CENTER_LEFT", prefHeight="58.0" e Insets izquierda/derecha de 22. El CSS aporta fondo blanco y línea inferior.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: transparent transparent #e1e6ec transparent
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 0 0 1px 0
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .main-topbar {
     -fx-background-color: white;
@@ -362,6 +1582,32 @@
     -fx-border-width: 0 0 1px 0;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .main-system-title
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Label dentro del HBox main-topbar
+ * APLICACIÓN Y FUNCIÓN: Estiliza el nombre Sistema Alquiler de Vehículos con tipografía destacada, negrita y azul oscuro.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 20px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .main-system-title {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
@@ -372,6 +1618,32 @@
 /* =========================
    MENÚ LATERAL
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .sidebar
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: VBox en <left> del BorderPane principal
+ * APLICACIÓN Y FUNCIÓN: Tiene prefWidth="210.0", spacing="6.0" e Insets 18 arriba/abajo y 12 a los lados. Incluye sidebar-header, Separator, siete Button nav-button, Region flexible, Separator y Button nav-button-exit. CSS añade fondo y línea derecha.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: transparent #e1e6ec transparent transparent
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 0 1px 0 0
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .sidebar {
     -fx-background-color: white;
@@ -385,15 +1657,87 @@
     -fx-border-width: 0 1px 0 0;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .sidebar-header
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: VBox superior dentro de sidebar
+ * APLICACIÓN Y FUNCIÓN: Agrupa Label Menú principal y Gestión del sistema con spacing="2.0". El padding CSS separa estos textos del resto del menú.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-padding: 4px 8px 10px 8px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .sidebar-header {
     -fx-padding: 4px 8px 10px 8px;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .sidebar-title
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Label Menú principal dentro de sidebar-header
+ * APLICACIÓN Y FUNCIÓN: Destaca el título de navegación con 15px y negrita.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 15px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .sidebar-title {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-text-fill: #172033;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .sidebar-subtitle
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Label Gestión del sistema dentro de sidebar-header
+ * APLICACIÓN Y FUNCIÓN: Presenta una descripción secundaria más pequeña y gris.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 11px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-text-fill: #8a94a2
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .sidebar-subtitle {
     -fx-font-size: 11px;
@@ -404,6 +1748,44 @@
 /* =========================
    BOTONES DEL MENÚ
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .nav-button
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Siete Button en VBox sidebar: Inicio, Vehículos, Tipos de Vehículos, Clientes, Alquileres, Devoluciones e Historial
+ * APLICACIÓN Y FUNCIÓN: Todos declaran styleClass="nav-button", maxWidth="Infinity" y prefHeight="40.0". Sus onAction llaman a mostrarInicio, mostrarVehiculos, mostrarTiposVehiculo, mostrarClientes, mostrarAlquileres, mostrarDevolucion y mostrarHistorial en PrincipalController. CSS los muestra alineados a la izquierda.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: transparent
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: #354052
+ *   Elige el color del texto visible del control.
+ * -fx-font-size: 13px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: normal
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-alignment: CENTER_LEFT
+ *   Alinea el contenido dentro del control, sin reposicionar el control en el contenedor padre.
+ * -fx-padding: 0 16px 0 16px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ * -fx-background-radius: 6px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 6px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-cursor: hand
+ *   Elige la apariencia del puntero; hand muestra una mano sobre un elemento interactivo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .nav-button {
     -fx-background-color: transparent;
@@ -423,10 +1805,56 @@
     -fx-cursor: hand;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .nav-button:hover
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Siete botones del menú al pasar el mouse
+ * APLICACIÓN Y FUNCIÓN: Cambia el fondo a azul claro y el texto a azul; no cambia de pantalla hasta ejecutar onAction.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #edf6fc
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: #0874c1
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .nav-button:hover {
     -fx-background-color: #edf6fc;
     -fx-text-fill: #0874c1;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .nav-button:pressed
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Botón del menú durante una pulsación
+ * APLICACIÓN Y FUNCIÓN: Oscurece temporalmente el fondo. No funciona como marcador permanente de la sección abierta.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #dceefa
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .nav-button:pressed {
     -fx-background-color: #dceefa;
@@ -436,6 +1864,44 @@
 /* =========================
    BOTÓN SALIR
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .nav-button-exit
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Button Salir al final de VBox sidebar
+ * APLICACIÓN Y FUNCIÓN: Tiene onAction="#cerrarAplicacion", prefHeight="40.0" y maxWidth="Infinity". La Region VBox.vgrow="ALWAYS" situada antes de él ocupa espacio libre y lo empuja hacia abajo; CSS solo aporta el aspecto rojo.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: transparent
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: #d64545
+ *   Elige el color del texto visible del control.
+ * -fx-font-size: 13px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: normal
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-alignment: CENTER_LEFT
+ *   Alinea el contenido dentro del control, sin reposicionar el control en el contenedor padre.
+ * -fx-padding: 0 16px 0 16px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ * -fx-background-radius: 6px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 6px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-cursor: hand
+ *   Elige la apariencia del puntero; hand muestra una mano sobre un elemento interactivo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .nav-button-exit {
     -fx-background-color: transparent;
@@ -455,6 +1921,30 @@
     -fx-cursor: hand;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .nav-button-exit:hover
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Button Salir cuando el cursor está encima
+ * APLICACIÓN Y FUNCIÓN: Resalta con fondo rosado y texto rojo intenso para diferenciar la acción de salida.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #fff0f0
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-text-fill: #c62828
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .nav-button-exit:hover {
     -fx-background-color: #fff0f0;
     -fx-text-fill: #c62828;
@@ -465,6 +1955,30 @@
    ÁREA CENTRAL
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .main-content
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: StackPane dentro de <center> del BorderPane
+ * APLICACIÓN Y FUNCIÓN: Contiene VBox welcome-card y, por defecto, StackPane centra su único hijo. El padding CSS de 30px evita que el contenido se pegue a los bordes.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #f6f8fb
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-padding: 30px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .main-content {
     -fx-background-color: #f6f8fb;
     -fx-padding: 30px;
@@ -474,6 +1988,38 @@
 /* =========================
    TARJETA DE BIENVENIDA
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .welcome-card
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: VBox dentro del StackPane main-content
+ * APLICACIÓN Y FUNCIÓN: Usa alignment="CENTER", spacing="10.0" y maxWidth="520.0". Agrupa welcome-title, welcome-subtitle, Separator y welcome-description; el CSS crea una tarjeta blanca con borde, redondeo y relleno.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 10px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 10px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #e1e6ec
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 35px 45px 35px 45px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .welcome-card {
     -fx-background-color: white;
@@ -487,17 +2033,95 @@
     -fx-padding: 35px 45px 35px 45px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .welcome-title
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Primer Label de la tarjeta welcome-card
+ * APLICACIÓN Y FUNCIÓN: Texto Sistema de Alquiler de Vehículos; título con mayor tamaño y negrita.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 25px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .welcome-title {
     -fx-font-size: 25px;
     -fx-font-weight: bold;
     -fx-text-fill: #172033;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .welcome-subtitle
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Segundo Label de welcome-card
+ * APLICACIÓN Y FUNCIÓN: Texto Seleccione una opción del menú lateral para comenzar. Tiene wrapText="true" en FXML; text-alignment:center centra las líneas si el texto se ajusta.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 14px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-text-fill: #667080
+ *   Elige el color del texto visible del control.
+ * -fx-text-alignment: center
+ *   Alinea las líneas de texto cuando una etiqueta tiene varias líneas; no sustituye alignment del contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .welcome-subtitle {
     -fx-font-size: 14px;
     -fx-text-fill: #667080;
     -fx-text-alignment: center;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .welcome-description
+ * ================================================================
+ * FXML: Principal
+ * UBICACIÓN: Último Label de welcome-card, después de Separator
+ * APLICACIÓN Y FUNCIÓN: Describe la administración de vehículos, clientes, alquileres, devoluciones e historial. wrapText="true" viene del FXML; la clase presenta un texto discreto y centrado.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 12px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-text-fill: #8a94a2
+ *   Elige el color del texto visible del control.
+ * -fx-text-alignment: center
+ *   Alinea las líneas de texto cuando una etiqueta tiene varias líneas; no sustituye alignment del contenedor.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .welcome-description {
     -fx-font-size: 12px;
@@ -508,6 +2132,40 @@
 /* =========================================================
    DASHBOARD - INICIO
    ========================================================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-card
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Cuatro VBox distribuidos en GridPane de dos columnas y dos filas
+ * APLICACIÓN Y FUNCIÓN: Se ubican con GridPane.columnIndex y rowIndex: Vehículos (0,0), Disponibles (1,0), Clientes (0,1), Alquileres (1,1). Cada VBox usa alignment="CENTER_LEFT" y spacing="8.0". CSS aplica tarjeta blanca, bordes y altura mínima.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 9px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 9px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #e1e6ec
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 22px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ * -fx-min-height: 150px
+ *   Establece altura mínima que el sistema de layout procurará respetar.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .dashboard-card {
     -fx-background-color: white;
@@ -523,6 +2181,30 @@
     -fx-min-height: 150px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-card:hover
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Cualquiera de los cuatro VBox dashboard-card
+ * APLICACIÓN Y FUNCIÓN: Al colocar el cursor sobre una tarjeta cambia suavemente el fondo y el borde. Es un efecto visual, no un botón ni un evento de navegación.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #fbfdff
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: #cbd7e3
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .dashboard-card:hover {
     -fx-background-color: #fbfdff;
     -fx-border-color: #cbd7e3;
@@ -533,17 +2215,93 @@
    TEXTOS DE LAS TARJETAS
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-card-title
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Primer Label de las cuatro tarjetas del GridPane
+ * APLICACIÓN Y FUNCIÓN: Textos Cantidad de Vehículos, Vehículos Disponibles, Clientes Registrados y Alquileres Activos; el CSS marca una jerarquía tipográfica intermedia.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 14px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #475366
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .dashboard-card-title {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #475366;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-card-value
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Label centrales lblCantidadVehiculos, lblVehiculosDisponibles, lblCantidadClientes y lblAlquileresActivos
+ * APLICACIÓN Y FUNCIÓN: Muestra números inicialmente "0" que puede actualizar InicioController. A los tres últimos también se les aplica una clase de color adicional. La tipografía grande hace prominente cada indicador.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 34px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #172033
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .dashboard-card-value {
     -fx-font-size: 34px;
     -fx-font-weight: bold;
     -fx-text-fill: #172033;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-card-description
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Último Label de cada tarjeta de indicadores
+ * APLICACIÓN Y FUNCIÓN: Textos que explican qué representa cada cantidad; tamaño pequeño y gris para no competir con el valor numérico.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 12px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-text-fill: #8a94a2
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .dashboard-card-description {
     -fx-font-size: 12px;
@@ -555,13 +2313,79 @@
    VALORES DESTACADOS
    ========================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-value-success
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Label fx:id="lblVehiculosDisponibles" de la tarjeta superior derecha
+ * APLICACIÓN Y FUNCIÓN: Se combina con dashboard-card-value para mostrar en verde la cantidad de vehículos disponibles.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #24a148
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .dashboard-value-success {
     -fx-text-fill: #24a148;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-value-info
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Label fx:id="lblCantidadClientes" de la tarjeta inferior izquierda
+ * APLICACIÓN Y FUNCIÓN: Se combina con dashboard-card-value y pinta de azul la cantidad de clientes registrados.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #0f84d7
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .dashboard-value-info {
     -fx-text-fill: #0f84d7;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-value-warning
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: Label fx:id="lblAlquileresActivos" de la tarjeta inferior derecha
+ * APLICACIÓN Y FUNCIÓN: Se combina con dashboard-card-value y pinta de naranja los alquileres activos.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-text-fill: #e89b19
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .dashboard-value-warning {
     -fx-text-fill: #e89b19;
@@ -571,6 +2395,38 @@
 /* =========================
    PANEL INFERIOR
    ========================= */
+
+/*
+ * ================================================================
+ * SELECTOR: .dashboard-info-card
+ * ================================================================
+ * FXML: Inicio
+ * UBICACIÓN: VBox inferior ubicado después del GridPane del resumen
+ * APLICACIÓN Y FUNCIÓN: Tiene spacing="7.0" y contiene el Label Panel principal con section-title y un Label descriptivo con page-subtitle y wrapText="true". CSS crea una tarjeta azul clara.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #eef7fd
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 9px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 9px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #d5eaf8
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 18px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .dashboard-info-card {
     -fx-background-color: #eef7fd;
@@ -588,6 +2444,38 @@
    RESUMEN DE ALQUILER
    ========================================================= */
 
+/*
+ * ================================================================
+ * SELECTOR: .summary-card
+ * ================================================================
+ * FXML: Alquiler, Devolucion
+ * UBICACIÓN: VBox dentro de los HBox horizontales de resultados
+ * APLICACIÓN Y FUNCIÓN: Alquiler: Tarifa diaria, Subtotal, Depósito y Total. Devolucion: Cliente, Vehículo, Fecha esperada, Días de atraso, Multa, Depósito devuelto y Saldo pendiente. Cada VBox tiene spacing="5.0" y HBox.hgrow="ALWAYS". CSS forma una tarjeta individual.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: white
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-background-radius: 8px
+ *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
+ * -fx-border-radius: 8px
+ *   Redondea las esquinas del borde visible, independiente del radio del fondo.
+ * -fx-border-color: #e1e6ec
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ * -fx-border-width: 1px
+ *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
+ * -fx-padding: 12px 16px 12px 16px
+ *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .summary-card {
     -fx-background-color: white;
     -fx-background-radius: 8px;
@@ -597,10 +2485,60 @@
     -fx-padding: 12px 16px 12px 16px;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .summary-total-card
+ * ================================================================
+ * FXML: Alquiler, Devolucion
+ * UBICACIÓN: VBox del total de alquiler o saldo pendiente de devolución
+ * APLICACIÓN Y FUNCIÓN: Se aplica JUNTO con summary-card al mismo VBox: styleClass="summary-card summary-total-card". Sustituye el fondo y el borde para resaltar la cifra final; conserva el relleno y redondeo de summary-card.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-background-color: #eef7fd
+ *   Determina el color de fondo de la superficie del control o contenedor.
+ * -fx-border-color: #cfe6f6
+ *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .summary-total-card {
     -fx-background-color: #eef7fd;
     -fx-border-color: #cfe6f6;
 }
+
+/*
+ * ================================================================
+ * SELECTOR: .summary-label
+ * ================================================================
+ * FXML: Alquiler, Devolucion
+ * UBICACIÓN: Primer Label descriptivo de cada summary-card
+ * APLICACIÓN Y FUNCIÓN: Identifica qué dato se muestra: Tarifa diaria, Subtotal, Depósito, Total, Cliente, Vehículo, Fecha esperada, Días de atraso, Multa, Depósito devuelto y Saldo pendiente.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 12px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #667080
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
 
 .summary-label {
     -fx-font-size: 12px;
@@ -608,14 +2546,98 @@
     -fx-text-fill: #667080;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .summary-value
+ * ================================================================
+ * FXML: Alquiler, Devolucion
+ * UBICACIÓN: Label de importes y cifras normales
+ * APLICACIÓN Y FUNCIÓN: En Alquiler: lblTarifaDiaria, lblSubtotal y lblDeposito. En Devolucion: lblDiasAtraso, lblMulta y lblDepositoDevuelto. El FXML inicializa cifras como ₡0.00 y 0; el controlador puede actualizarlas.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 18px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #263142
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .summary-value {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: #263142;
 }
 
+/*
+ * ================================================================
+ * SELECTOR: .summary-total-value
+ * ================================================================
+ * FXML: Alquiler, Devolucion
+ * UBICACIÓN: Label lblTotal y lblSaldoPendiente
+ * APLICACIÓN Y FUNCIÓN: Se utiliza dentro de la tarjeta summary-total-card. Tamaño mayor y azul para diferenciar el total respecto a otros importes.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 20px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #0f84d7
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
 .summary-total-value {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #0f84d7;
+}
+
+/*
+ * ================================================================
+ * SELECTOR: .summary-value-small
+ * ================================================================
+ * FXML: Devolucion
+ * UBICACIÓN: Label lblCliente, lblVehiculo y lblFechaEsperada
+ * APLICACIÓN Y FUNCIÓN: Presenta valores descriptivos que requieren una letra menor que las cifras monetarias. Cliente y Vehículo usan wrapText="true" en FXML para nombres largos.
+ *
+ * PROPIEDADES DE ESTA REGLA:
+ * -fx-font-size: 14px
+ *   Establece el tamaño de letra del texto, en píxeles CSS.
+ * -fx-font-weight: bold
+ *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
+ * -fx-text-fill: #263142
+ *   Elige el color del texto visible del control.
+ *
+ * CÓMO SE APLICA: Las clases personalizadas se asignan con
+ * styleClass="nombre-de-clase" en el elemento FXML; las clases
+ * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
+ * :focused, :pressed, :selected) y descendientes (.table-cell,
+ * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * Las propiedades de layout como spacing, hgap, vgap, Insets,
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
+ * en FXML y NO las introduce esta regla de CSS.
+ */
+
+.summary-value-small {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263142;
 }

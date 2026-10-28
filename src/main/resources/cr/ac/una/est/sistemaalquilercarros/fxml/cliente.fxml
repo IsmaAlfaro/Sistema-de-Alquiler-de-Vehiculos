@@ -38,10 +38,6 @@
                         left="20.0" />
             </padding>
 
-            <!-- =========================
-                 FORMULARIO
-                 ========================= -->
-
             <HBox spacing="18.0"
                   styleClass="card">
 
@@ -58,8 +54,6 @@
                                            percentWidth="50.0" />
 
                     </columnConstraints>
-
-                    <!-- FILA 1 -->
 
                     <Label text="Cédula"
                            styleClass="form-label"
@@ -82,8 +76,6 @@
                                prefHeight="34.0"
                                GridPane.columnIndex="1"
                                GridPane.rowIndex="1" />
-
-                    <!-- FILA 2 -->
 
                     <Label text="Teléfono"
                            styleClass="form-label"
@@ -108,10 +100,6 @@
                                GridPane.rowIndex="3" />
 
                 </GridPane>
-
-                <!-- =========================
-                     BOTONES
-                     ========================= -->
 
                 <VBox alignment="TOP_CENTER"
                       spacing="9.0"
@@ -150,10 +138,6 @@
 
             </HBox>
 
-            <!-- =========================
-                 BUSCADOR
-                 ========================= -->
-
             <HBox alignment="CENTER_LEFT"
                   spacing="12.0"
                   styleClass="filter-card">
@@ -165,10 +149,6 @@
                            HBox.hgrow="ALWAYS" />
 
             </HBox>
-
-            <!-- =========================
-                 TABLA
-                 ========================= -->
 
             <VBox spacing="8.0"
                   styleClass="card"

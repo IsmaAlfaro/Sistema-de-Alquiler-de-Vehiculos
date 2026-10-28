@@ -62,9 +62,6 @@
 
             </rowConstraints>
 
-
-            <!-- TARJETA VEHÍCULOS -->
-
             <VBox alignment="CENTER_LEFT"
                   spacing="8.0"
                   styleClass="dashboard-card"
@@ -82,9 +79,6 @@
                       styleClass="dashboard-card-description" />
 
             </VBox>
-
-
-            <!-- TARJETA DISPONIBLES -->
 
             <VBox alignment="CENTER_LEFT"
                   spacing="8.0"
@@ -104,9 +98,6 @@
 
             </VBox>
 
-
-            <!-- TARJETA CLIENTES -->
-
             <VBox alignment="CENTER_LEFT"
                   spacing="8.0"
                   styleClass="dashboard-card"
@@ -124,9 +115,6 @@
                       styleClass="dashboard-card-description" />
 
             </VBox>
-
-
-            <!-- TARJETA ALQUILERES -->
 
             <VBox alignment="CENTER_LEFT"
                   spacing="8.0"

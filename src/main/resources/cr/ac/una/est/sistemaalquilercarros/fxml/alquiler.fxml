@@ -38,10 +38,6 @@
                         left="20.0" />
             </padding>
 
-            <!-- =========================
-                 SELECCIÓN DE CLIENTE Y VEHÍCULO
-                 ========================= -->
-
             <VBox spacing="12.0"
                   styleClass="card">
 
@@ -60,8 +56,6 @@
                                            percentWidth="50.0" />
 
                     </columnConstraints>
-
-                    <!-- BUSCADORES -->
 
                     <Label text="Buscar cliente"
                            styleClass="form-label"
@@ -84,8 +78,6 @@
                                prefHeight="34.0"
                                GridPane.columnIndex="1"
                                GridPane.rowIndex="1" />
-
-                    <!-- COMBOS -->
 
                     <Label text="Cliente"
                            styleClass="form-label"
@@ -110,8 +102,6 @@
                               maxWidth="Infinity"
                               GridPane.columnIndex="1"
                               GridPane.rowIndex="3" />
-
-                    <!-- FECHA Y DÍAS -->
 
                     <Label text="Fecha de inicio"
                            styleClass="form-label"
@@ -138,10 +128,6 @@
                 </GridPane>
 
             </VBox>
-
-            <!-- =========================
-                 RESUMEN ECONÓMICO
-                 ========================= -->
 
             <HBox spacing="12.0">
 
@@ -199,10 +185,6 @@
 
             </HBox>
 
-            <!-- =========================
-                 BOTONES
-                 ========================= -->
-
             <HBox alignment="CENTER_RIGHT"
                   spacing="10.0">
 
@@ -226,19 +208,23 @@
 
             </HBox>
 
-            <!-- =========================
-                 FILTROS DE LA TABLA
-                 ========================= -->
-
             <HBox alignment="CENTER_LEFT"
                   spacing="12.0"
                   styleClass="filter-card">
 
-                <TextField fx:id="txtBuscarAlquiler"
-                           promptText="Buscar por número, cliente, cédula o vehículo..."
-                           prefHeight="35.0"
-                           styleClass="search-field"
-                           HBox.hgrow="ALWAYS" />
+                <VBox spacing="3.0"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Buscar"
+                           styleClass="form-label" />
+
+                    <TextField fx:id="txtBuscarAlquiler"
+                               promptText="Buscar por número, cliente, cédula o vehículo..."
+                               prefHeight="35.0"
+                               styleClass="search-field"
+                               maxWidth="Infinity" />
+
+                </VBox>
 
                 <VBox spacing="3.0">
 
@@ -252,10 +238,6 @@
                 </VBox>
 
             </HBox>
-
-            <!-- =========================
-                 TABLA
-                 ========================= -->
 
             <VBox spacing="8.0"
                   styleClass="card"

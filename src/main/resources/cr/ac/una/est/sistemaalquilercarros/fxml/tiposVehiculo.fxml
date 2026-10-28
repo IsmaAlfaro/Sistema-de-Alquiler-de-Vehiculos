@@ -26,10 +26,6 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="16.0" />
             </padding>
 
-            <!-- =========================
-                 FORMULARIO
-                 ========================= -->
-
             <HBox spacing="18.0" styleClass="card">
 
                 <GridPane hgap="16.0" vgap="12.0" HBox.hgrow="ALWAYS">
@@ -70,10 +66,6 @@
 
                 </GridPane>
 
-                <!-- =========================
-                     BOTONES
-                     ========================= -->
-
                 <VBox alignment="TOP_CENTER" prefWidth="125.0" spacing="9.0" styleClass="action-panel">
 
                     <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#registrarTipo" prefHeight="35.0" styleClass="button-primary" text="Registrar" />
@@ -86,19 +78,11 @@
 
             </HBox>
 
-            <!-- =========================
-                 BUSCADOR
-                 ========================= -->
-
             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="filter-card">
 
                 <TextField fx:id="txtBuscar" prefHeight="35.0" promptText="Buscar por nombre o categoría..." styleClass="search-field" HBox.hgrow="ALWAYS" />
 
             </HBox>
-
-            <!-- =========================
-                 TABLA
-                 ========================= -->
 
             <VBox spacing="8.0" styleClass="card" VBox.vgrow="ALWAYS">
 

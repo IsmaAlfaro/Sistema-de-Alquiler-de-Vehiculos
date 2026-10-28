@@ -38,19 +38,23 @@
                         left="20.0" />
             </padding>
 
-            <!-- =========================
-                 FILTROS
-                 ========================= -->
-
             <HBox alignment="CENTER_LEFT"
                   spacing="12.0"
                   styleClass="filter-card">
 
-                <TextField fx:id="txtBuscar"
-                           promptText="Buscar por número, cliente, cédula, placa o vehículo..."
-                           prefHeight="35.0"
-                           styleClass="search-field"
-                           HBox.hgrow="ALWAYS" />
+                <VBox spacing="3.0"
+                      HBox.hgrow="ALWAYS">
+
+                    <Label text="Buscar"
+                           styleClass="form-label" />
+
+                    <TextField fx:id="txtBuscar"
+                               promptText="Buscar por número, cliente, cédula, placa o vehículo..."
+                               prefHeight="35.0"
+                               styleClass="search-field"
+                               maxWidth="Infinity" />
+
+                </VBox>
 
                 <VBox spacing="3.0">
 
@@ -64,10 +68,6 @@
                 </VBox>
 
             </HBox>
-
-            <!-- =========================
-                 TABLA
-                 ========================= -->
 
             <VBox spacing="8.0"
                   styleClass="card"
