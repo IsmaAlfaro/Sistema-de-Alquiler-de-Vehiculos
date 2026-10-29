@@ -75,11 +75,7 @@ public class AlquilerServicio {
 
         Alquiler alquiler = new Alquiler(0, cliente, vehiculo, fechaInicio, cantidadDias, DEPOSITO_GARANTIA);
 
-        Alquiler alquilerGuardado = alquilerRepositorio.agregar(alquiler);
-
-        vehiculoServicio.cambiarEstado(placaVehiculo, EstadoVehiculo.ALQUILADO);
-
-        return alquilerGuardado;
+        return alquilerRepositorio.agregar(alquiler);
 
     }
 
@@ -126,9 +122,7 @@ public class AlquilerServicio {
 
         alquiler.finalizar(fechaDevolucion);
 
-        alquilerRepositorio.modificar(alquiler);
-
-        vehiculoServicio.cambiarEstado(alquiler.getVehiculo().getPlaca(), EstadoVehiculo.DISPONIBLE);
+        alquilerRepositorio.finalizar(alquiler);
 
         return new ResultadoDevolucion(diasAtraso, multa, depositoDevuelto, saldoPendiente);
 
