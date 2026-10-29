@@ -4,15 +4,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="650.0" prefWidth="1000.0" styleClass="page" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.TiposVehiculoController">
+<BorderPane prefHeight="650.0"
+            prefWidth="1000.0"
+            styleClass="page"
+            stylesheets="@../css/styles.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="cr.ac.una.est.sistemaalquilercarros.controlador.TiposVehiculoController">
 
     <top>
 
-        <VBox spacing="3.0" styleClass="page-header">
+        <VBox spacing="3.0"
+              styleClass="page-header">
 
-            <Label styleClass="page-title" text="Tipos de Vehículos" />
+            <Label styleClass="page-title"
+                   text="Tipos de Vehículos" />
 
-            <Label styleClass="page-subtitle" text="Registro y gestión de categorías y características de vehículos" />
+            <Label styleClass="page-subtitle"
+                   text="Registro y gestión de categorías y características de vehículos" />
 
         </VBox>
 
@@ -23,84 +32,166 @@
         <VBox spacing="14.0">
 
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="16.0" />
+                <Insets bottom="20.0"
+                        left="20.0"
+                        right="20.0"
+                        top="16.0" />
             </padding>
 
-            <HBox spacing="18.0" styleClass="card">
+            <HBox spacing="18.0"
+                  styleClass="card">
 
-                <GridPane hgap="16.0" vgap="12.0" HBox.hgrow="ALWAYS">
+                <GridPane hgap="16.0"
+                          vgap="12.0"
+                          HBox.hgrow="ALWAYS">
 
                     <columnConstraints>
 
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="50.0" />
 
-                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="50.0" />
 
                     </columnConstraints>
 
-                    <Label styleClass="form-label" text="Nombre del tipo" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label styleClass="form-label"
+                           text="Nombre del tipo"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="0" />
 
-                    <Label styleClass="form-label" text="Categoría" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label styleClass="form-label"
+                           text="Categoría"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="0" />
 
-                    <TextField fx:id="txtNombre" prefHeight="34.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtNombre"
+                               prefHeight="34.0"
+                               GridPane.columnIndex="0"
+                               GridPane.rowIndex="1" />
 
-                    <ComboBox fx:id="cmbCategoria" maxWidth="Infinity" prefHeight="34.0" promptText="Seleccione..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="cmbCategoria"
+                              maxWidth="Infinity"
+                              prefHeight="34.0"
+                              promptText="Seleccione..."
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="1" />
 
-                    <Label styleClass="form-label" text="Características requeridas" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                    <Label styleClass="form-label"
+                           text="Características requeridas"
+                           GridPane.columnIndex="0"
+                           GridPane.columnSpan="2"
+                           GridPane.rowIndex="2" />
 
-                    <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                    <VBox spacing="8.0"
+                          GridPane.columnIndex="0"
+                          GridPane.columnSpan="2"
+                          GridPane.rowIndex="3">
 
-                        <CheckBox fx:id="chkPasajeros" mnemonicParsing="false" text="Requiere cantidad de pasajeros" />
+                        <CheckBox fx:id="chkPasajeros"
+                                  mnemonicParsing="false"
+                                  text="Requiere cantidad de pasajeros" />
 
-                        <CheckBox fx:id="chkTraccion" mnemonicParsing="false" text="Requiere tipo de tracción" />
+                        <CheckBox fx:id="chkTraccion"
+                                  mnemonicParsing="false"
+                                  text="Requiere tipo de tracción" />
 
-                        <CheckBox fx:id="chkCapacidadCarga" mnemonicParsing="false" text="Requiere capacidad de carga" />
+                        <CheckBox fx:id="chkCapacidadCarga"
+                                  mnemonicParsing="false"
+                                  text="Requiere capacidad de carga" />
 
                     </VBox>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
 
                 </GridPane>
 
-                <VBox alignment="TOP_CENTER" prefWidth="125.0" spacing="9.0" styleClass="action-panel">
+                <VBox alignment="TOP_CENTER"
+                      prefWidth="125.0"
+                      spacing="9.0"
+                      styleClass="action-panel">
 
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#registrarTipo" prefHeight="35.0" styleClass="button-primary" text="Registrar" />
+                    <Button maxWidth="Infinity"
+                            mnemonicParsing="false"
+                            onAction="#registrarTipo"
+                            prefHeight="35.0"
+                            styleClass="button-primary"
+                            text="Registrar" />
 
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#eliminarTipo" prefHeight="35.0" styleClass="button-danger" text="Eliminar" />
+                    <Button maxWidth="Infinity"
+                            mnemonicParsing="false"
+                            onAction="#modificarTipo"
+                            prefHeight="35.0"
+                            styleClass="button-secondary"
+                            text="Modificar" />
 
-                    <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#limpiarFormulario" prefHeight="35.0" styleClass="button-secondary" text="Limpiar" />
+                    <Button maxWidth="Infinity"
+                            mnemonicParsing="false"
+                            onAction="#eliminarTipo"
+                            prefHeight="35.0"
+                            styleClass="button-danger"
+                            text="Eliminar" />
+
+                    <Button maxWidth="Infinity"
+                            mnemonicParsing="false"
+                            onAction="#limpiarFormulario"
+                            prefHeight="35.0"
+                            styleClass="button-secondary"
+                            text="Limpiar" />
 
                 </VBox>
 
             </HBox>
 
-            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="filter-card">
+            <HBox alignment="CENTER_LEFT"
+                  spacing="12.0"
+                  styleClass="filter-card">
 
-                <TextField fx:id="txtBuscar" prefHeight="35.0" promptText="Buscar por nombre o categoría..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="txtBuscar"
+                           prefHeight="35.0"
+                           promptText="Buscar por nombre o categoría..."
+                           styleClass="search-field"
+                           HBox.hgrow="ALWAYS" />
 
             </HBox>
 
-            <VBox spacing="8.0" styleClass="card" VBox.vgrow="ALWAYS">
+            <VBox spacing="8.0"
+                  styleClass="card"
+                  VBox.vgrow="ALWAYS">
 
-                <Label styleClass="section-title" text="Tipos registrados" />
+                <Label styleClass="section-title"
+                       text="Tipos registrados" />
 
-                <TableView fx:id="tablaTipos" prefHeight="300.0" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tablaTipos"
+                           prefHeight="300.0"
+                           VBox.vgrow="ALWAYS">
 
                     <columns>
 
-                        <TableColumn fx:id="colNombre" prefWidth="160.0" text="Nombre" />
+                        <TableColumn fx:id="colNombre"
+                                     prefWidth="160.0"
+                                     text="Nombre" />
 
-                        <TableColumn fx:id="colCategoria" prefWidth="160.0" text="Categoría" />
+                        <TableColumn fx:id="colCategoria"
+                                     prefWidth="160.0"
+                                     text="Categoría" />
 
-                        <TableColumn fx:id="colPasajeros" prefWidth="120.0" text="Pasajeros" />
+                        <TableColumn fx:id="colPasajeros"
+                                     prefWidth="120.0"
+                                     text="Pasajeros" />
 
-                        <TableColumn fx:id="colTraccion" prefWidth="120.0" text="Tracción" />
+                        <TableColumn fx:id="colTraccion"
+                                     prefWidth="120.0"
+                                     text="Tracción" />
 
-                        <TableColumn fx:id="colCarga" prefWidth="140.0" text="Carga" />
+                        <TableColumn fx:id="colCarga"
+                                     prefWidth="140.0"
+                                     text="Carga" />
 
                     </columns>
 

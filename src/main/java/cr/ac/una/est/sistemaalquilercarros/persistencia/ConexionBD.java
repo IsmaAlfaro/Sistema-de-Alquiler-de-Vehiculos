@@ -12,9 +12,13 @@ public class ConexionBD {
 
     private static final String CONTRASENA = "admin";
 
+    /*
+     * Qué hace: Establece y retorna una nueva conexión con la base de datos MySQL utilizando la dirección, el usuario y la contraseña configurados para el sistema
+     * Recibe: No recibe parámetros
+     * Retorna: Una conexión activa con la base de datos
+     */
     public Connection obtenerConexion() throws SQLException {
 
         return DriverManager.getConnection(URL, USUARIO, CONTRASENA);
-
     }
 }

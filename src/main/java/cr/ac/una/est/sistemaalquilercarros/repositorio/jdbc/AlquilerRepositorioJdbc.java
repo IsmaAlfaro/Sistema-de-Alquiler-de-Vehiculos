@@ -27,13 +27,22 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
     private final ClienteRepositorio clienteRepositorio;
     private final VehiculoRepositorio vehiculoRepositorio;
 
+    /*
+     * Qué hace: Inicializa el repositorio de alquileres utilizando la conexión con la base de datos y los repositorios necesarios para recuperar clientes y vehículos relacionados
+     * Recibe: El objeto ConexionBD, el repositorio de clientes y el repositorio de vehículos
+     * Retorna: No retorna ningún valor
+     */
     public AlquilerRepositorioJdbc(ConexionBD conexionBD, ClienteRepositorio clienteRepositorio, VehiculoRepositorio vehiculoRepositorio) {
-
         this.conexionBD = conexionBD;
         this.clienteRepositorio = clienteRepositorio;
         this.vehiculoRepositorio = vehiculoRepositorio;
     }
 
+    /*
+     * Qué hace: Registra un nuevo alquiler y cambia el vehículo relacionado de DISPONIBLE a ALQUILADO dentro de una misma transacción, deshaciendo los cambios si alguna operación falla
+     * Recibe: El objeto Alquiler que se desea registrar
+     * Retorna: El alquiler registrado con el número generado automáticamente por la base de datos
+     */
     @Override
     public Alquiler agregar(Alquiler alquiler) {
 
@@ -66,7 +75,6 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         if (!claves.next()) {
 
                             throw new SQLException("No se pudo generar el número del alquiler.");
-
                         }
 
                         numeroAlquiler = claves.getInt(1);
@@ -84,7 +92,6 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                     if (filas != 1) {
 
                         throw new SQLException("El vehículo ya no está disponible.");
-
                     }
                 }
 
@@ -93,18 +100,20 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                 return new Alquiler(numeroAlquiler, alquiler.getCliente(), alquiler.getVehiculo(), alquiler.getFechaInicio(), alquiler.getCantidadDias(), alquiler.getFechaDevolucionReal(), alquiler.getTarifaDiariaAplicada(), alquiler.getDepositoGarantia(), alquiler.getEstado());
 
             } catch (SQLException e) {
-
                 cn.rollback();
                 throw e;
             }
 
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudo registrar el alquiler.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Busca un alquiler en la base de datos utilizando su número de alquiler
+     * Recibe: El número del alquiler que se desea buscar
+     * Retorna: El alquiler encontrado o null si no existe ningún alquiler con ese número
+     */
     @Override
     public Alquiler buscarPorNumero(int numeroAlquiler) {
 
@@ -117,21 +126,22 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-
                     return crearAlquiler(rs);
-
                 }
             }
 
             return null;
 
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudo buscar el alquiler.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Obtiene todos los alquileres registrados actualmente en la base de datos
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista que contiene todos los alquileres registrados
+     */
     @Override
     public List<Alquiler> obtenerTodos() {
 
@@ -142,20 +152,21 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
         try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-
                 alquileres.add(crearAlquiler(rs));
-
             }
 
             return alquileres;
 
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudieron cargar los alquileres.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Obtiene únicamente los alquileres cuyo estado actual es ACTIVO
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista que contiene todos los alquileres activos
+     */
     @Override
     public List<Alquiler> obtenerActivos() {
 
@@ -170,21 +181,22 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             try (ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
-
                     alquileres.add(crearAlquiler(rs));
-
                 }
             }
 
             return alquileres;
 
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudieron cargar los alquileres activos.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Finaliza un alquiler activo registrando su fecha real de devolución y cambiando el vehículo relacionado de ALQUILADO a DISPONIBLE dentro de una misma transacción, deshaciendo los cambios si alguna operación falla
+     * Recibe: El objeto Alquiler que contiene los datos de la devolución que se desea finalizar
+     * Retorna: No retorna ningún valor
+     */
     @Override
     public void finalizar(Alquiler alquiler) {
 
@@ -208,9 +220,7 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                     int filas = ps.executeUpdate();
 
                     if (filas != 1) {
-
                         throw new SQLException("El alquiler ya no está activo.");
-
                     }
                 }
 
@@ -223,9 +233,7 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                     int filas = ps.executeUpdate();
 
                     if (filas != 1) {
-
                         throw new SQLException("No se pudo liberar el vehículo.");
-
                     }
                 }
 
@@ -239,12 +247,15 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             }
 
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudo finalizar el alquiler.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Elimina de la base de datos el alquiler identificado por su número de alquiler
+     * Recibe: El número del alquiler que se desea eliminar
+     * Retorna: true si se eliminó un alquiler y false si no se encontró ningún registro para eliminar
+     */
     @Override
     public boolean eliminar(int numeroAlquiler) {
 
@@ -253,15 +264,19 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
         try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setInt(1, numeroAlquiler);
+
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudo eliminar el alquiler.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Construye un objeto Alquiler utilizando los datos obtenidos de una consulta y recupera los objetos Cliente y Vehiculo relacionados por medio de sus respectivos repositorios
+     * Recibe: El ResultSet ubicado en el registro del alquiler que se desea convertir
+     * Retorna: El objeto Alquiler construido con la información obtenida de la base de datos
+     */
     private Alquiler crearAlquiler(ResultSet rs) throws SQLException {
 
         Cliente cliente = clienteRepositorio.buscarPorCedula(rs.getString("cedula_cliente"));

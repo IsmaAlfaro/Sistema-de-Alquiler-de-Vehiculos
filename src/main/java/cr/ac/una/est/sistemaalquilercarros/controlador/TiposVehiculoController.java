@@ -82,9 +82,7 @@ public class TiposVehiculoController {
 
         colCategoria.setCellValueFactory(
                 dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getCategoria()
-                                .toString()
+                        dato.getValue().getCategoria().toString()
                 )
         );
 
@@ -112,9 +110,15 @@ public class TiposVehiculoController {
                 )
         );
 
-        txtBuscar.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarTipos(nuevo)
+        txtBuscar
+                .textProperty()
+                .addListener(
+                        (observable, anterior, nuevo) ->
+                                filtrarTipos(nuevo)
+                );
+
+        tablaTipos.setOnMouseClicked(
+                evento -> cargarTipoSeleccionado()
         );
     }
 
@@ -167,6 +171,119 @@ public class TiposVehiculoController {
 
             mostrarInformacion(
                     "Tipo de vehículo registrado correctamente."
+            );
+
+        } catch (IllegalArgumentException e) {
+
+            mostrarError(
+                    e.getMessage()
+            );
+
+        } catch (RuntimeException e) {
+
+            mostrarError(
+                    e.getMessage()
+            );
+        }
+    }
+
+    /*
+     * Qué hace: Carga en el formulario los datos del tipo de vehículo seleccionado en la tabla para permitir su modificación
+     * Recibe: No recibe parámetros directamente, utiliza el tipo seleccionado actualmente en la tabla
+     * Retorna: No retorna ningún valor
+     */
+    private void cargarTipoSeleccionado() {
+
+        TipoVehiculo seleccionado =
+                tablaTipos
+                        .getSelectionModel()
+                        .getSelectedItem();
+
+        if (seleccionado == null) {
+            return;
+        }
+
+        txtNombre.setText(
+                seleccionado.getNombre()
+        );
+
+        cmbCategoria.setValue(
+                seleccionado.getCategoria()
+        );
+
+        chkPasajeros.setSelected(
+                seleccionado.isRequierePasajeros()
+        );
+
+        chkTraccion.setSelected(
+                seleccionado.isRequiereTraccion()
+        );
+
+        chkCapacidadCarga.setSelected(
+                seleccionado.isRequiereCapacidadCarga()
+        );
+    }
+
+    /*
+     * Qué hace: Modifica los datos del tipo de vehículo seleccionado utilizando los valores actuales del formulario y actualiza la información almacenada en la base de datos
+     * Recibe: No recibe parámetros directamente, utiliza el tipo seleccionado en la tabla y los valores ingresados en el formulario
+     * Retorna: No retorna ningún valor
+     */
+    @FXML
+    private void modificarTipo() {
+
+        TipoVehiculo seleccionado =
+                tablaTipos
+                        .getSelectionModel()
+                        .getSelectedItem();
+
+        if (seleccionado == null) {
+
+            mostrarError(
+                    "Debe seleccionar un tipo de vehículo."
+            );
+
+            return;
+        }
+
+        try {
+
+            String nombre =
+                    txtNombre
+                            .getText()
+                            .trim();
+
+            CategoriaVehiculo categoria =
+                    cmbCategoria.getValue();
+
+            if (!seleccionado
+                    .getNombre()
+                    .equalsIgnoreCase(nombre)) {
+
+                throw new IllegalArgumentException(
+                        "El nombre del tipo de vehículo no se puede modificar."
+                );
+            }
+
+            TipoVehiculo tipoModificado =
+                    new TipoVehiculo(
+                            nombre,
+                            categoria,
+                            chkPasajeros.isSelected(),
+                            chkTraccion.isSelected(),
+                            chkCapacidadCarga.isSelected()
+                    );
+
+            tipoVehiculoServicio.modificarTipo(
+                    tipoModificado
+            );
+
+            actualizarTabla();
+
+            limpiarFormulario();
+
+            mostrarInformacion(
+                    "Tipo de vehículo modificado correctamente."
             );
 
         } catch (IllegalArgumentException e) {

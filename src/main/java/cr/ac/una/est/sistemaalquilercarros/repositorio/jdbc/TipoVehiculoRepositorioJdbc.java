@@ -16,12 +16,20 @@ public class TipoVehiculoRepositorioJdbc implements TipoVehiculoRepositorio {
 
     private final ConexionBD conexionBD;
 
+    /*
+     * Qué hace: Inicializa el repositorio de tipos de vehículo utilizando el objeto encargado de proporcionar las conexiones con la base de datos
+     * Recibe: El objeto ConexionBD que permite obtener conexiones con MySQL
+     * Retorna: No retorna ningún valor
+     */
     public TipoVehiculoRepositorioJdbc(ConexionBD conexionBD) {
-
         this.conexionBD = conexionBD;
-
     }
 
+    /*
+     * Qué hace: Registra en la base de datos un nuevo tipo de vehículo junto con su categoría y las características que requiere
+     * Recibe: El objeto TipoVehiculo que se desea registrar
+     * Retorna: No retorna ningún valor
+     */
     @Override
     public void agregar(TipoVehiculo tipo) {
 
@@ -40,6 +48,12 @@ public class TipoVehiculoRepositorioJdbc implements TipoVehiculoRepositorio {
             throw new RuntimeException("No se pudo registrar el tipo de vehículo.", e);
         }
     }
+
+    /*
+     * Qué hace: Busca en la base de datos un tipo de vehículo utilizando su nombre como identificador
+     * Recibe: El nombre del tipo de vehículo que se desea buscar
+     * Retorna: El tipo de vehículo encontrado o null si no existe ningún registro con ese nombre
+     */
     @Override
     public TipoVehiculo buscarPorNombre(String nombre) {
 
@@ -62,6 +76,11 @@ public class TipoVehiculoRepositorioJdbc implements TipoVehiculoRepositorio {
         }
     }
 
+    /*
+     * Qué hace: Obtiene todos los tipos de vehículo registrados actualmente en la base de datos
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista que contiene todos los tipos de vehículo registrados
+     */
     @Override
     public List<TipoVehiculo> obtenerTodos() {
 
@@ -76,13 +95,17 @@ public class TipoVehiculoRepositorioJdbc implements TipoVehiculoRepositorio {
             }
 
             return tipos;
+
         } catch (SQLException e) {
-
             throw new RuntimeException("No se pudieron cargar los tipos de vehículo.", e);
-
         }
     }
 
+    /*
+     * Qué hace: Actualiza la categoría y las características requeridas del tipo de vehículo indicado utilizando su nombre como identificador
+     * Recibe: El objeto TipoVehiculo que contiene los datos actualizados
+     * Retorna: No retorna ningún valor
+     */
     @Override
     public void modificar(TipoVehiculo tipo) {
 
@@ -101,23 +124,38 @@ public class TipoVehiculoRepositorioJdbc implements TipoVehiculoRepositorio {
             throw new RuntimeException("No se pudo modificar el tipo de vehículo.", e);
         }
     }
+
+    /*
+     * Qué hace: Elimina de la base de datos el tipo de vehículo identificado por el nombre indicado
+     * Recibe: El nombre del tipo de vehículo que se desea eliminar
+     * Retorna: true si se eliminó un registro y false si no se encontró ningún tipo para eliminar
+     */
     @Override
     public boolean eliminar(String nombre) {
 
         String sql = "DELETE FROM tipo_vehiculo WHERE nombre = ?";
 
-        try (Connection cn = conexionBD.obtenerConexion();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
+
             ps.setString(1, nombre);
+
             return ps.executeUpdate() > 0;
+
         } catch (SQLException e) {
             throw new RuntimeException("No se pudo eliminar el tipo de vehículo.", e);
         }
 
     }
+
+    /*
+     * Qué hace: Construye un objeto TipoVehiculo utilizando los datos obtenidos de un registro de la base de datos
+     * Recibe: El ResultSet ubicado en el registro del tipo de vehículo que se desea convertir
+     * Retorna: El objeto TipoVehiculo construido con los datos obtenidos
+     */
     private TipoVehiculo crearTipo(ResultSet rs) throws SQLException {
 
         String nombre = rs.getString("nombre");
+
         CategoriaVehiculo categoria = CategoriaVehiculo.valueOf(rs.getString("categoria"));
 
         boolean requierePasajeros = rs.getBoolean("requiere_pasajeros");
@@ -125,6 +163,7 @@ public class TipoVehiculoRepositorioJdbc implements TipoVehiculoRepositorio {
         boolean requiereCapacidadCarga = rs.getBoolean("requiere_capacidad_carga");
 
         return new TipoVehiculo(nombre, categoria, requierePasajeros, requiereTraccion, requiereCapacidadCarga);
+
     }
 
 }
