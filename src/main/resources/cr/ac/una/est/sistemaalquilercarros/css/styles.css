@@ -1553,9 +1553,9 @@
  * APLICACIÓN Y FUNCIÓN: Contiene Label con texto Sistema Alquiler de Vehículos. En FXML: alignment="CENTER_LEFT", prefHeight="58.0" e Insets izquierda/derecha de 22. El CSS aporta fondo blanco y línea inferior.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: white
+ * -fx-background-color: #0f84d7
  *   Determina el color de fondo de la superficie del control o contenedor.
- * -fx-border-color: transparent transparent #e1e6ec transparent
+ * -fx-border-color: transparent transparent #0874c1 transparent
  *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
  * -fx-border-width: 0 0 1px 0
  *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
@@ -1571,13 +1571,9 @@
  */
 
 .main-topbar {
-    -fx-background-color: white;
+    -fx-background-color: linear-gradient(to right, #0f6fae 0%, #1685d1 55%, #0f6fae 100%);
 
-    -fx-border-color:
-            transparent
-            transparent
-            #e1e6ec
-            transparent;
+    -fx-border-color: transparent transparent rgba(255,255,255,0.18) transparent;
 
     -fx-border-width: 0 0 1px 0;
 }
@@ -1595,7 +1591,7 @@
  *   Establece el tamaño de letra del texto, en píxeles CSS.
  * -fx-font-weight: bold
  *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
- * -fx-text-fill: #172033
+ * -fx-text-fill: White
  *   Elige el color del texto visible del control.
  *
  * CÓMO SE APLICA: Las clases personalizadas se asignan con
@@ -1609,9 +1605,20 @@
  */
 
 .main-system-title {
-    -fx-font-size: 20px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #172033;
+    -fx-text-fill: white;
+}
+
+.main-system-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: rgba(255,255,255,0.82);
+}
+
+.main-project-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(255,255,255,0.90);
 }
 
 
@@ -1628,9 +1635,9 @@
  * APLICACIÓN Y FUNCIÓN: Tiene prefWidth="210.0", spacing="6.0" e Insets 18 arriba/abajo y 12 a los lados. Incluye sidebar-header, Separator, siete Button nav-button, Region flexible, Separator y Button nav-button-exit. CSS añade fondo y línea derecha.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: white
+ * -fx-background-color: #126fa8
  *   Determina el color de fondo de la superficie del control o contenedor.
- * -fx-border-color: transparent #e1e6ec transparent transparent
+ * -fx-border-color: transparent #0d628f transparent transparent
  *   Establece el color del borde. Cuando hay cuatro valores, el orden es superior, derecho, inferior e izquierdo.
  * -fx-border-width: 0 1px 0 0
  *   Define el grosor del borde. Con cuatro valores, sigue el orden superior, derecho, inferior e izquierdo.
@@ -1646,14 +1653,8 @@
  */
 
 .sidebar {
-    -fx-background-color: white;
-
-    -fx-border-color:
-            transparent
-            #e1e6ec
-            transparent
-            transparent;
-
+    -fx-background-color: #126fa8;
+    -fx-border-color: transparent #0d628f transparent transparent;
     -fx-border-width: 0 1px 0 0;
 }
 
@@ -1696,7 +1697,7 @@
  *   Establece el tamaño de letra del texto, en píxeles CSS.
  * -fx-font-weight: bold
  *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
- * -fx-text-fill: #172033
+ * -fx-text-fill: white
  *   Elige el color del texto visible del control.
  *
  * CÓMO SE APLICA: Las clases personalizadas se asignan con
@@ -1712,7 +1713,7 @@
 .sidebar-title {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #172033;
+    -fx-text-fill: white;
 }
 
 /*
@@ -1726,7 +1727,7 @@
  * PROPIEDADES DE ESTA REGLA:
  * -fx-font-size: 11px
  *   Establece el tamaño de letra del texto, en píxeles CSS.
- * -fx-text-fill: #8a94a2
+ * -fx-text-fill: #d8edf9
  *   Elige el color del texto visible del control.
  *
  * CÓMO SE APLICA: Las clases personalizadas se asignan con
@@ -1741,67 +1742,114 @@
 
 .sidebar-subtitle {
     -fx-font-size: 11px;
-    -fx-text-fill: #8a94a2;
+    -fx-text-fill: #d8edf9;
 }
 
-
 /* =========================
-   BOTONES DEL MENÚ
+   BOTONES DEL SISTEMA
    ========================= */
-
 /*
  * ================================================================
  * SELECTOR: .nav-button
  * ================================================================
  * FXML: Principal
- * UBICACIÓN: Siete Button en VBox sidebar: Inicio, Vehículos, Tipos de Vehículos, Clientes, Alquileres, Devoluciones e Historial
- * APLICACIÓN Y FUNCIÓN: Todos declaran styleClass="nav-button", maxWidth="Infinity" y prefHeight="40.0". Sus onAction llaman a mostrarInicio, mostrarVehiculos, mostrarTiposVehiculo, mostrarClientes, mostrarAlquileres, mostrarDevolucion y mostrarHistorial en PrincipalController. CSS los muestra alineados a la izquierda.
+ * UBICACIÓN: Siete Button dentro del VBox sidebar:
+ * Inicio, Vehículos, Tipos de Vehículos, Clientes, Alquileres,
+ * Devoluciones e Historial.
+ *
+ * APLICACIÓN Y FUNCIÓN:
+ * Todos declaran styleClass="nav-button", maxWidth="Infinity"
+ * y prefHeight="40.0".
+ * Sus onAction llaman a los métodos mostrarInicio, mostrarVehiculos,
+ * mostrarTiposVehiculo, mostrarClientes, mostrarAlquileres,
+ * mostrarDevolucion y mostrarHistorial del PrincipalController.
+ *
+ * Esta clase define la apariencia general de los botones del menú
+ * lateral. Como el sidebar utiliza un fondo azul, los botones se
+ * muestran normalmente sin fondo propio y con texto blanco,
+ * manteniendo una apariencia limpia y uniforme.
+ *
+ * Cuando el usuario coloca el mouse sobre uno de estos botones,
+ * la regla .nav-button:hover cambia su fondo a un azul más claro
+ * para indicar visualmente cuál opción está siendo señalada.
+ *
+ * Cuando el botón se encuentra presionado, la regla
+ * .nav-button:pressed utiliza un azul más oscuro para dar
+ * retroalimentación visual al usuario.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: transparent
- *   Determina el color de fondo de la superficie del control o contenedor.
- * -fx-text-fill: #354052
- *   Elige el color del texto visible del control.
- * -fx-font-size: 13px
- *   Establece el tamaño de letra del texto, en píxeles CSS.
- * -fx-font-weight: normal
- *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
- * -fx-alignment: CENTER_LEFT
- *   Alinea el contenido dentro del control, sin reposicionar el control en el contenedor padre.
- * -fx-padding: 0 16px 0 16px
- *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
- * -fx-background-radius: 6px
- *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
- * -fx-border-radius: 6px
- *   Redondea las esquinas del borde visible, independiente del radio del fondo.
- * -fx-cursor: hand
- *   Elige la apariencia del puntero; hand muestra una mano sobre un elemento interactivo.
  *
- * CÓMO SE APLICA: Las clases personalizadas se asignan con
- * styleClass="nombre-de-clase" en el elemento FXML; las clases
- * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
- * :focused, :pressed, :selected) y descendientes (.table-cell,
- * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * -fx-background-color: transparent
+ *   Hace que el botón no tenga un fondo propio en estado normal,
+ *   permitiendo que se vea el color azul del sidebar detrás de él.
+ *
+ * -fx-text-fill: white
+ *   Define el color blanco del texto para generar contraste
+ *   con el fondo azul del menú lateral.
+ *
+ * -fx-font-size: 13px
+ *   Establece el tamaño de letra del texto en píxeles CSS.
+ *
+ * -fx-font-weight: normal
+ *   Mantiene el texto con grosor regular, evitando que todas las
+ *   opciones del menú se vean demasiado pesadas visualmente.
+ *
+ * -fx-alignment: CENTER_LEFT
+ *   Coloca el texto del botón alineado verticalmente al centro
+ *   y horizontalmente hacia la izquierda.
+ *
+ * -fx-padding: 0 16px 0 16px
+ *   Añade espacio interior horizontal al botón.
+ *   Los cuatro valores representan:
+ *   arriba, derecha, abajo e izquierda.
+ *
+ * -fx-background-radius: 6px
+ *   Redondea las esquinas del fondo del botón.
+ *   Este efecto se aprecia especialmente cuando aparece el fondo
+ *   de hover o pressed.
+ *
+ * -fx-border-radius: 6px
+ *   Mantiene el mismo redondeo para un posible borde del botón,
+ *   aunque actualmente la regla no utiliza un borde visible.
+ *
+ * -fx-cursor: hand
+ *   Cambia el puntero a una mano cuando el mouse pasa sobre el botón,
+ *   indicando que se trata de un elemento interactivo.
+ *
+ * ESTADOS RELACIONADOS:
+ *
+ * .nav-button:hover
+ *   Se activa automáticamente cuando el cursor está encima del botón.
+ *   Utiliza un azul más claro y mantiene el texto blanco.
+ *
+ * .nav-button:pressed
+ *   Se activa mientras el botón está siendo presionado.
+ *   Utiliza un azul más oscuro para mostrar que la acción está
+ *   siendo ejecutada.
+ *
+ * CÓMO SE APLICA:
+ * Las clases personalizadas se asignan desde FXML mediante:
+ *
+ * styleClass="nav-button"
+ *
+ * Las pseudoclases como :hover y :pressed no se colocan manualmente
+ * en el FXML, JavaFX las activa automáticamente dependiendo del
+ * estado del control.
+ *
  * Las propiedades de layout como spacing, hgap, vgap, Insets,
- * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
- * en FXML y NO las introduce esta regla de CSS.
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se configuran
+ * desde FXML o Scene Builder y no son creadas por esta regla CSS.
  */
 
 .nav-button {
     -fx-background-color: transparent;
-
-    -fx-text-fill: #354052;
-
+    -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: normal;
-
     -fx-alignment: CENTER_LEFT;
-
     -fx-padding: 0 16px 0 16px;
-
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
-
     -fx-cursor: hand;
 }
 
@@ -1810,28 +1858,49 @@
  * SELECTOR: .nav-button:hover
  * ================================================================
  * FXML: Principal
- * UBICACIÓN: Siete botones del menú al pasar el mouse
- * APLICACIÓN Y FUNCIÓN: Cambia el fondo a azul claro y el texto a azul; no cambia de pantalla hasta ejecutar onAction.
+ * UBICACIÓN: Siete botones del menú lateral cuando el cursor del mouse
+ * se encuentra encima de alguno de ellos.
+ *
+ * APLICACIÓN Y FUNCIÓN:
+ * Esta pseudoclase se activa automáticamente cuando el usuario coloca
+ * el cursor sobre un botón que utiliza styleClass="nav-button".
+ *
+ * Su función es destacar visualmente la opción señalada sin ejecutar
+ * todavía ninguna acción. El cambio de pantalla solamente ocurre cuando
+ * el usuario hace clic y se ejecuta el método indicado en onAction.
+ *
+ * Como el sidebar utiliza un fondo azul, el estado hover aplica un azul
+ * más claro al botón para diferenciarlo del resto de las opciones,
+ * manteniendo el texto en color blanco para conservar el contraste.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: #edf6fc
- *   Determina el color de fondo de la superficie del control o contenedor.
- * -fx-text-fill: #0874c1
- *   Elige el color del texto visible del control.
  *
- * CÓMO SE APLICA: Las clases personalizadas se asignan con
- * styleClass="nombre-de-clase" en el elemento FXML; las clases
- * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
- * :focused, :pressed, :selected) y descendientes (.table-cell,
- * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
+ * -fx-background-color: #2184bd
+ *   Cambia temporalmente el fondo del botón a un azul más claro que
+ *   el color normal del sidebar, haciendo visible cuál opción está
+ *   siendo señalada por el usuario.
+ *
+ * -fx-text-fill: white
+ *   Mantiene el texto en color blanco para asegurar una buena
+ *   legibilidad sobre el nuevo fondo azul.
+ *
+ * CÓMO SE APLICA:
+ * :hover es una pseudoclase de JavaFX y no debe escribirse en el FXML.
+ * JavaFX la activa automáticamente mientras el cursor permanece encima
+ * del control.
+ *
+ * El botón únicamente necesita declarar:
+ *
+ * styleClass="nav-button"
+ *
  * Las propiedades de layout como spacing, hgap, vgap, Insets,
- * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
- * en FXML y NO las introduce esta regla de CSS.
+ * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se configuran
+ * desde FXML o Scene Builder y no son creadas por esta regla CSS.
  */
 
 .nav-button:hover {
-    -fx-background-color: #edf6fc;
-    -fx-text-fill: #0874c1;
+    -fx-background-color: #2184bd;
+    -fx-text-fill: white;
 }
 
 /*
@@ -1839,25 +1908,41 @@
  * SELECTOR: .nav-button:pressed
  * ================================================================
  * FXML: Principal
- * UBICACIÓN: Botón del menú durante una pulsación
- * APLICACIÓN Y FUNCIÓN: Oscurece temporalmente el fondo. No funciona como marcador permanente de la sección abierta.
+ * UBICACIÓN: Botón del menú lateral durante el instante en que el
+ * usuario mantiene presionado el botón del mouse.
+ *
+ * APLICACIÓN Y FUNCIÓN:
+ * Esta pseudoclase proporciona retroalimentación visual durante la
+ * pulsación del botón.
+ *
+ * Mientras el usuario lo mantiene presionado, el fondo cambia a un
+ * azul más oscuro. Cuando se libera el botón, este estado desaparece.
+ *
+ * Este efecto no representa la pantalla actualmente abierta ni funciona
+ * como una selección permanente. Solamente se utiliza durante la
+ * pulsación del botón.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: #dceefa
- *   Determina el color de fondo de la superficie del control o contenedor.
  *
- * CÓMO SE APLICA: Las clases personalizadas se asignan con
- * styleClass="nombre-de-clase" en el elemento FXML; las clases
- * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
- * :focused, :pressed, :selected) y descendientes (.table-cell,
- * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
- * Las propiedades de layout como spacing, hgap, vgap, Insets,
- * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
- * en FXML y NO las introduce esta regla de CSS.
+ * -fx-background-color: #0d628f
+ *   Oscurece temporalmente el fondo del botón para indicar que está
+ *   siendo presionado.
+ *
+ * CÓMO SE APLICA:
+ * :pressed es una pseudoclase que JavaFX activa automáticamente durante
+ * la pulsación del control.
+ *
+ * No debe escribirse manualmente en styleClass.
+ * El botón solamente utiliza:
+ *
+ * styleClass="nav-button"
+ *
+ * Las propiedades relacionadas con posición, tamaño y distribución
+ * pertenecen al FXML y no son modificadas por esta regla CSS.
  */
 
 .nav-button:pressed {
-    -fx-background-color: #dceefa;
+    -fx-background-color: #0d628f;
 }
 
 
@@ -1865,59 +1950,84 @@
    BOTÓN SALIR
    ========================= */
 
+
 /*
  * ================================================================
  * SELECTOR: .nav-button-exit
  * ================================================================
  * FXML: Principal
- * UBICACIÓN: Button Salir al final de VBox sidebar
- * APLICACIÓN Y FUNCIÓN: Tiene onAction="#cerrarAplicacion", prefHeight="40.0" y maxWidth="Infinity". La Region VBox.vgrow="ALWAYS" situada antes de él ocupa espacio libre y lo empuja hacia abajo; CSS solo aporta el aspecto rojo.
+ * UBICACIÓN: Button "Salir" ubicado al final del VBox sidebar.
+ *
+ * APLICACIÓN Y FUNCIÓN:
+ * El botón utiliza onAction="#cerrarAplicacion", prefHeight="40.0"
+ * y maxWidth="Infinity".
+ *
+ * La Region con VBox.vgrow="ALWAYS" situada antes del botón ocupa el
+ * espacio vertical disponible y empuja "Salir" hacia la parte inferior
+ * del menú lateral.
+ *
+ * Esta regla CSS únicamente controla su apariencia.
+ *
+ * Debido a que el sidebar ahora utiliza un fondo azul, el botón se
+ * mantiene transparente y utiliza un tono rojo claro para diferenciarlo
+ * visualmente de las opciones normales del menú y comunicar que se trata
+ * de una acción de salida.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: transparent
- *   Determina el color de fondo de la superficie del control o contenedor.
- * -fx-text-fill: #d64545
- *   Elige el color del texto visible del control.
- * -fx-font-size: 13px
- *   Establece el tamaño de letra del texto, en píxeles CSS.
- * -fx-font-weight: normal
- *   Controla el grosor de la letra: bold es negrita y normal es peso regular.
- * -fx-alignment: CENTER_LEFT
- *   Alinea el contenido dentro del control, sin reposicionar el control en el contenedor padre.
- * -fx-padding: 0 16px 0 16px
- *   Añade espacio INTERIOR entre el borde del nodo y su contenido; con cuatro valores: arriba, derecha, abajo, izquierda.
- * -fx-background-radius: 6px
- *   Redondea las esquinas del fondo; cuatro valores pueden corresponder a esquinas diferentes.
- * -fx-border-radius: 6px
- *   Redondea las esquinas del borde visible, independiente del radio del fondo.
- * -fx-cursor: hand
- *   Elige la apariencia del puntero; hand muestra una mano sobre un elemento interactivo.
  *
- * CÓMO SE APLICA: Las clases personalizadas se asignan con
- * styleClass="nombre-de-clase" en el elemento FXML; las clases
- * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
- * :focused, :pressed, :selected) y descendientes (.table-cell,
- * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
- * Las propiedades de layout como spacing, hgap, vgap, Insets,
- * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
- * en FXML y NO las introduce esta regla de CSS.
+ * -fx-background-color: transparent
+ *   Hace que el botón no tenga un fondo propio en su estado normal,
+ *   permitiendo que se vea directamente el color azul del sidebar.
+ *
+ * -fx-text-fill: #ffd6d6
+ *   Utiliza un tono rojo claro que contrasta correctamente con el fondo
+ *   azul y permite distinguir la acción de salida de las opciones de
+ *   navegación normales.
+ *
+ * -fx-font-size: 13px
+ *   Define el tamaño del texto del botón.
+ *
+ * -fx-font-weight: normal
+ *   Mantiene un grosor regular de la fuente.
+ *
+ * -fx-alignment: CENTER_LEFT
+ *   Alinea el texto verticalmente al centro y horizontalmente hacia
+ *   la izquierda.
+ *
+ * -fx-padding: 0 16px 0 16px
+ *   Añade espacio interior a la derecha e izquierda del contenido.
+ *   Los valores representan arriba, derecha, abajo e izquierda.
+ *
+ * -fx-background-radius: 6px
+ *   Redondea las esquinas del fondo cuando este aparezca en estados
+ *   como hover.
+ *
+ * -fx-border-radius: 6px
+ *   Mantiene el mismo redondeo para cualquier borde que pudiera
+ *   aplicarse al botón.
+ *
+ * -fx-cursor: hand
+ *   Cambia el puntero a una mano cuando el usuario coloca el mouse
+ *   sobre el botón, indicando que es interactivo.
+ *
+ * CÓMO SE APLICA:
+ * Esta clase personalizada se asigna en FXML mediante:
+ *
+ * styleClass="nav-button-exit"
+ *
+ * La posición del botón al final del sidebar no es causada por CSS,
+ * sino por la Region con VBox.vgrow="ALWAYS" definida en el FXML.
  */
 
 .nav-button-exit {
     -fx-background-color: transparent;
-
-    -fx-text-fill: #d64545;
-
+    -fx-text-fill: #ffd6d6;
     -fx-font-size: 13px;
     -fx-font-weight: normal;
-
     -fx-alignment: CENTER_LEFT;
-
     -fx-padding: 0 16px 0 16px;
-
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
-
     -fx-cursor: hand;
 }
 
@@ -1926,28 +2036,48 @@
  * SELECTOR: .nav-button-exit:hover
  * ================================================================
  * FXML: Principal
- * UBICACIÓN: Button Salir cuando el cursor está encima
- * APLICACIÓN Y FUNCIÓN: Resalta con fondo rosado y texto rojo intenso para diferenciar la acción de salida.
+ * UBICACIÓN: Button "Salir" cuando el cursor del mouse se encuentra
+ * encima de él.
+ *
+ * APLICACIÓN Y FUNCIÓN:
+ * Esta pseudoclase resalta la acción de salida cuando el usuario coloca
+ * el cursor sobre el botón.
+ *
+ * A diferencia de los botones normales de navegación, utiliza un fondo
+ * rojizo oscuro para indicar que se trata de una acción diferente y
+ * potencialmente destructiva, ya que cierra la aplicación.
+ *
+ * El texto cambia a blanco para mantener suficiente contraste sobre
+ * el fondo rojo.
  *
  * PROPIEDADES DE ESTA REGLA:
- * -fx-background-color: #fff0f0
- *   Determina el color de fondo de la superficie del control o contenedor.
- * -fx-text-fill: #c62828
- *   Elige el color del texto visible del control.
  *
- * CÓMO SE APLICA: Las clases personalizadas se asignan con
- * styleClass="nombre-de-clase" en el elemento FXML; las clases
- * automáticas (.button, .text-field, etc.), pseudoclases (:hover,
- * :focused, :pressed, :selected) y descendientes (.table-cell,
- * .thumb, etc.) actúan mediante los nodos o estados JavaFX.
- * Las propiedades de layout como spacing, hgap, vgap, Insets,
- * GridPane.columnIndex, HBox.hgrow y VBox.vgrow se declaran
- * en FXML y NO las introduce esta regla de CSS.
+ * -fx-background-color: #a94545
+ *   Aplica un fondo rojo oscuro al botón mientras el cursor está encima.
+ *
+ * -fx-text-fill: white
+ *   Cambia el texto a blanco para mantener buena legibilidad y
+ *   aumentar el contraste.
+ *
+ * CÓMO SE APLICA:
+ * :hover es una pseudoclase gestionada automáticamente por JavaFX.
+ * No se agrega manualmente en Scene Builder ni en el atributo
+ * styleClass.
+ *
+ * El botón únicamente necesita:
+ *
+ * styleClass="nav-button-exit"
+ *
+ * Cuando el cursor entra en el botón, JavaFX aplica automáticamente
+ * .nav-button-exit:hover y vuelve al estilo normal al retirar el cursor.
+ *
+ * Las propiedades de layout y posición siguen perteneciendo al FXML
+ * y no son modificadas por esta regla CSS.
  */
 
 .nav-button-exit:hover {
-    -fx-background-color: #fff0f0;
-    -fx-text-fill: #c62828;
+    -fx-background-color: #a94545;
+    -fx-text-fill: white;
 }
 
 

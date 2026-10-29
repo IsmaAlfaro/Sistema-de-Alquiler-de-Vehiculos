@@ -2,7 +2,9 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
 <BorderPane fx:id="panelPrincipal"
             prefHeight="700.0"
@@ -15,19 +17,76 @@
 
    <top>
 
-      <HBox alignment="CENTER_LEFT"
-            prefHeight="58.0"
-            styleClass="main-topbar">
+      <StackPane prefHeight="78.0"
+                 styleClass="main-topbar">
 
-         <padding>
-            <Insets left="22.0"
-                    right="22.0" />
-         </padding>
+         <!-- =========================
+              PATRÓN DECORATIVO
+              ========================= -->
 
-         <Label text="Sistema Alquiler de Vehículos"
-                styleClass="main-system-title" />
+         <Pane mouseTransparent="true">
 
-      </HBox>
+            <Line startX="560.0"
+                  startY="0.0"
+                  endX="500.0"
+                  endY="78.0"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="18.0" />
+
+            <Line startX="690.0"
+                  startY="0.0"
+                  endX="630.0"
+                  endY="78.0"
+                  stroke="rgba(255,255,255,0.06)"
+                  strokeWidth="18.0" />
+
+            <Line startX="820.0"
+                  startY="0.0"
+                  endX="760.0"
+                  endY="78.0"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="18.0" />
+
+            <Line startX="950.0"
+                  startY="0.0"
+                  endX="890.0"
+                  endY="78.0"
+                  stroke="rgba(255,255,255,0.04)"
+                  strokeWidth="18.0" />
+
+         </Pane>
+
+         <!-- =========================
+              CONTENIDO DE LA BARRA
+              ========================= -->
+
+         <HBox alignment="CENTER_LEFT"
+               spacing="12.0">
+
+            <padding>
+               <Insets left="28.0"
+                       right="28.0" />
+            </padding>
+
+            <VBox spacing="3.0"
+                  alignment="CENTER_LEFT">
+
+               <Label text="XANTIUM"
+                      styleClass="main-system-title" />
+
+               <Label text="Sistema de alquiler de vehículos"
+                      styleClass="main-system-subtitle" />
+
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Label text="Proyecto Programación 3"
+                   styleClass="main-project-label" />
+
+         </HBox>
+
+      </StackPane>
 
    </top>
 
@@ -38,84 +97,99 @@
             styleClass="sidebar">
 
          <padding>
-            <Insets top="18.0"
+            <Insets bottom="18.0"
+                    left="12.0"
                     right="12.0"
-                    bottom="18.0"
-                    left="12.0" />
+                    top="18.0" />
          </padding>
+
+         <!-- LOGO DEL SISTEMA -->
+         <HBox alignment="CENTER">
+
+            <ImageView fitHeight="175.0"
+                       fitWidth="175.0"
+                       preserveRatio="true">
+
+               <image>
+                  <Image url="@../img/logo.png" />
+               </image>
+
+            </ImageView>
+
+         </HBox>
 
          <VBox spacing="2.0"
                styleClass="sidebar-header">
 
-            <Label text="Menú principal"
-                   styleClass="sidebar-title" />
+            <Label styleClass="sidebar-title"
+                   text="Menú principal" />
 
-            <Label text="Gestión del sistema"
-                   styleClass="sidebar-subtitle" />
+            <Label styleClass="sidebar-subtitle"
+                   text="Gestión del sistema" />
 
          </VBox>
 
          <Separator />
 
-         <Button text="Inicio"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarInicio"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Inicio" />
 
-         <Button text="Vehículos"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarVehiculos"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Vehículos" />
 
-         <Button text="Tipos de Vehículos"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarTiposVehiculo"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Tipos de Vehículos" />
 
-         <Button text="Clientes"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarClientes"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Clientes" />
 
-         <Button text="Alquileres"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarAlquileres"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Alquileres" />
 
-         <Button text="Devoluciones"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarDevolucion"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Devoluciones" />
 
-         <Button text="Historial"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#mostrarHistorial"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button" />
+                 styleClass="nav-button"
+                 text="Historial" />
 
          <Region VBox.vgrow="ALWAYS" />
 
          <Separator />
 
-         <Button text="Salir"
+         <Button maxWidth="Infinity"
                  mnemonicParsing="false"
                  onAction="#cerrarAplicacion"
-                 maxWidth="Infinity"
                  prefHeight="40.0"
-                 styleClass="nav-button-exit" />
+                 styleClass="nav-button-exit"
+                 text="Salir" />
 
       </VBox>
 
@@ -126,22 +200,22 @@
       <StackPane styleClass="main-content">
 
          <VBox alignment="CENTER"
-               spacing="10.0"
                maxWidth="520.0"
+               spacing="10.0"
                styleClass="welcome-card">
 
-            <Label text="Sistema de Alquiler de Vehículos"
-                   styleClass="welcome-title" />
+            <Label styleClass="welcome-title"
+                   text="Sistema de Alquiler de Vehículos" />
 
-            <Label text="Seleccione una opción del menú lateral para comenzar"
-                   wrapText="true"
-                   styleClass="welcome-subtitle" />
+            <Label styleClass="welcome-subtitle"
+                   text="Seleccione una opción del menú lateral para comenzar"
+                   wrapText="true" />
 
             <Separator />
 
-            <Label text="Administre vehículos, clientes, alquileres, devoluciones e historial desde un solo lugar"
-                   wrapText="true"
-                   styleClass="welcome-description" />
+            <Label styleClass="welcome-description"
+                   text="Administre vehículos, clientes, alquileres, devoluciones e historial desde un solo lugar"
+                   wrapText="true" />
 
          </VBox>
 

@@ -1,8 +1,6 @@
 package cr.ac.una.est.sistemaalquilercarros.app;
 
 import cr.ac.una.est.sistemaalquilercarros.persistencia.ConexionBD;
-import cr.ac.una.est.sistemaalquilercarros.persistencia.DatosSistema;
-import cr.ac.una.est.sistemaalquilercarros.persistencia.PersistenciaDatos;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.AlquilerRepositorio;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.ClienteRepositorio;
 import cr.ac.una.est.sistemaalquilercarros.repositorio.TipoVehiculoRepositorio;
@@ -18,27 +16,25 @@ import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
 
 public class ContextoAplicacion {
 
-    private final PersistenciaDatos persistencia;
-    private final DatosSistema datosSistema;
     private final ConexionBD conexionBD;
+
     private final ClienteRepositorio clienteRepositorio;
     private final TipoVehiculoRepositorio tipoVehiculoRepositorio;
     private final VehiculoRepositorio vehiculoRepositorio;
     private final AlquilerRepositorio alquilerRepositorio;
+
     private final VehiculoServicio vehiculoServicio;
     private final ClienteServicio clienteServicio;
     private final AlquilerServicio alquilerServicio;
     private final TipoVehiculoServicio tipoVehiculoServicio;
 
+
     /*
-     * Qué hace: Inicializa el contexto general de la aplicación creando el sistema de persistencia, cargando los datos previamente almacenados, estableciendo la conexión con MySQL y construyendo los diferentes repositorios y servicios que serán compartidos por las pantallas del programa
+     * Qué hace: Inicializa el contexto general de la aplicación estableciendo la conexión con MySQL y construyendo los repositorios y servicios que serán compartidos por las diferentes pantallas del programa
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
     public ContextoAplicacion() {
-
-        persistencia = new PersistenciaDatos();
-        datosSistema = persistencia.cargar();
 
         conexionBD = new ConexionBD();
 
@@ -54,10 +50,9 @@ public class ContextoAplicacion {
 
         vehiculoServicio = new VehiculoServicio(vehiculoRepositorio);
 
-        clienteServicio = new ClienteServicio(clienteRepositorio, datosSistema);
+        clienteServicio = new ClienteServicio(clienteRepositorio, alquilerRepositorio);
 
         alquilerServicio = new AlquilerServicio(alquilerRepositorio, vehiculoServicio, clienteServicio);
-
     }
 
     /*
@@ -66,6 +61,7 @@ public class ContextoAplicacion {
      * Retorna: El objeto TipoVehiculoServicio
      */
     public TipoVehiculoServicio getTipoVehiculoServicio() {
+
         return tipoVehiculoServicio;
     }
 
@@ -75,6 +71,7 @@ public class ContextoAplicacion {
      * Retorna: El objeto VehiculoServicio
      */
     public VehiculoServicio getVehiculoServicio() {
+
         return vehiculoServicio;
     }
 
@@ -84,6 +81,7 @@ public class ContextoAplicacion {
      * Retorna: El objeto ClienteServicio
      */
     public ClienteServicio getClienteServicio() {
+
         return clienteServicio;
     }
 
@@ -93,6 +91,7 @@ public class ContextoAplicacion {
      * Retorna: El objeto AlquilerServicio
      */
     public AlquilerServicio getAlquilerServicio() {
+
         return alquilerServicio;
     }
 }
