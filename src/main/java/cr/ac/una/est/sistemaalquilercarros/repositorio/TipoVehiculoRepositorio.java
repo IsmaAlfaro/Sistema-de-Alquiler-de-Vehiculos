@@ -14,4 +14,5 @@ public interface TipoVehiculoRepositorio {
     void modificar(TipoVehiculo tipo);
 
     boolean eliminar(String nombre);
+
 }

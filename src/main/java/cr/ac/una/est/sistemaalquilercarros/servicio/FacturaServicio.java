@@ -10,16 +10,17 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class FacturaServicio {
 
-    private static final DateTimeFormatter FORMATO_FECHA =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /*
      * Qué hace: Genera un archivo PDF estilizado con la información completa del alquiler seleccionado, mostrando una factura inicial cuando el alquiler está activo o una factura final cuando ya fue devuelto
@@ -29,19 +30,20 @@ public class FacturaServicio {
     public File generarFactura(Alquiler alquiler) {
 
         if (alquiler == null) {
+
             throw new IllegalArgumentException("Debe seleccionar un alquiler.");
+
         }
 
         File carpetaFacturas = new File("facturas");
 
         if (!carpetaFacturas.exists()) {
+
             carpetaFacturas.mkdirs();
+
         }
 
-        File archivo = new File(
-                carpetaFacturas,
-                "Factura_Alquiler_" + alquiler.getNumeroAlquiler() + ".pdf"
-        );
+        File archivo = new File(carpetaFacturas, "Factura_Alquiler_" + alquiler.getNumeroAlquiler() + ".pdf");
 
         try (PDDocument documento = new PDDocument()) {
 
@@ -49,745 +51,462 @@ public class FacturaServicio {
 
             documento.addPage(pagina);
 
-            PDFont fuenteNormal =
-                    PDType0Font.load(
-                            documento,
-                            new File("C:/Windows/Fonts/arial.ttf")
-                    );
+            PDFont fuenteNormal = PDType0Font.load(documento, new File("C:/Windows/Fonts/arial.ttf"));
 
-            PDFont fuenteNegrita =
-                    PDType0Font.load(
-                            documento,
-                            new File("C:/Windows/Fonts/arialbd.ttf")
-                    );
+            PDFont fuenteNegrita = PDType0Font.load(documento, new File("C:/Windows/Fonts/arialbd.ttf"));
 
-            try (PDPageContentStream contenido =
-                         new PDPageContentStream(documento, pagina)) {
+            /*
+             * Logo de XANTIUM
+             */
 
-                float margen = 45;
+            PDImageXObject logo;
+
+            try (InputStream logoStream = getClass().getResourceAsStream("/cr/ac/una/est/sistemaalquilercarros/img/logo.png")) {
+
+                if (logoStream == null) {
+
+                    throw new IllegalStateException("No se pudo encontrar el logo de XANTIUM.");
+
+                }
+
+                logo = PDImageXObject.createFromByteArray(documento, logoStream.readAllBytes(), "logo-xantium");
+
+            }
+
+            try (PDPageContentStream contenido = new PDPageContentStream(documento, pagina)) {
+
+                float margen = 36;
+
                 float anchoPagina = pagina.getMediaBox().getWidth();
+
                 float anchoContenido = anchoPagina - margen * 2;
 
-                float y = 797;
+                double subtotal = alquiler.calcularSubtotal();
+
+                double deposito = alquiler.getDepositoGarantia();
+
+                double totalInicial = alquiler.getMontoPagado() == null ? alquiler.calcularTotal() : alquiler.getMontoPagado();
+
+                boolean alquilerFinalizado = alquiler.getEstado() == EstadoAlquiler.FINALIZADO;
+
+                LocalDate fechaDevolucion = alquilerFinalizado ? alquiler.getFechaDevolucionReal() : null;
+
+                long diasAtraso = alquilerFinalizado ? alquiler.calcularDiasAtraso(fechaDevolucion) : 0;
+
+                double multa = alquilerFinalizado ? alquiler.calcularMulta(fechaDevolucion) : 0;
+
+                double depositoDevuelto = alquilerFinalizado ? alquiler.calcularDepositoADevolver(fechaDevolucion) : 0;
+
+                double saldoPendiente = alquilerFinalizado ? alquiler.calcularSaldoPendiente(fechaDevolucion) : 0;
+
+                double costoFinalAlquiler = subtotal + multa;
+
+                String numeroFactura = String.format("%08d", alquiler.getNumeroAlquiler());
+
+                String tituloFactura = alquilerFinalizado ? "FINAL DE ALQUILER" : "DE ALQUILER";
 
                 /*
                  * Encabezado principal
                  */
 
-                dibujarRectanguloRelleno(
-                        contenido,
-                        margen,
-                        742,
-                        anchoContenido,
-                        65,
-                        20,
-                        115,
-                        190
-                );
-
-                escribirTextoColor(
-                        contenido,
-                        fuenteNegrita,
-                        22,
-                        margen + 18,
-                        778,
-                        "XANTIUM",
-                        255,
-                        255,
-                        255
-                );
-
-                escribirTextoColor(
-                        contenido,
-                        fuenteNormal,
-                        10,
-                        margen + 18,
-                        760,
-                        "Sistema de Alquiler de Vehículos",
-                        255,
-                        255,
-                        255
-                );
-
-                String titulo =
-                        alquiler.getEstado() == EstadoAlquiler.ACTIVO
-                                ? "FACTURA DE ALQUILER"
-                                : "FACTURA FINAL DE ALQUILER";
-
-                escribirTextoDerechaColor(
-                        contenido,
-                        fuenteNegrita,
-                        13,
-                        anchoPagina - margen - 18,
-                        779,
-                        titulo,
-                        255,
-                        255,
-                        255
-                );
-
-                escribirTextoDerechaColor(
-                        contenido,
-                        fuenteNormal,
-                        10,
-                        anchoPagina - margen - 18,
-                        760,
-                        "Alquiler #" + alquiler.getNumeroAlquiler(),
-                        255,
-                        255,
-                        255
-                );
-
-                y = 718;
+                dibujarRectanguloRelleno(contenido, margen, 715, anchoContenido, 92, 10, 70, 145);
 
                 /*
-                 * Estado del alquiler
+                 * Fondo blanco para el logo
                  */
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        10,
-                        margen,
-                        y,
-                        "Estado:"
-                );
+                dibujarRectanguloRelleno(contenido, margen + 15, 730, 62, 62, 255, 255, 255);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        10,
-                        margen + 45,
-                        y,
-                        alquiler.getEstado().toString()
-                );
+                contenido.drawImage(logo, margen + 20, 735, 52, 52);
 
-                y -= 27;
+                escribirTextoColor(contenido, fuenteNegrita, 21, margen + 90, 774, "XANTIUM", 255, 255, 255);
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, margen + 91, 758, "RENT A CAR", 210, 230, 250);
+
+                escribirTextoColor(contenido, fuenteNormal, 8, margen + 91, 742, "Sistema de Alquiler de Vehículos", 255, 255, 255);
+
+                escribirTextoDerechaColor(contenido, fuenteNegrita, 22, anchoPagina - margen - 16, 776, "FACTURA", 255, 255, 255);
+
+                escribirTextoDerechaColor(contenido, fuenteNegrita, 9, anchoPagina - margen - 16, 759, tituloFactura, 220, 235, 250);
+
+                escribirTextoDerechaColor(contenido, fuenteNormal, 8, anchoPagina - margen - 16, 741, "Nº " + numeroFactura, 255, 255, 255);
+
+                escribirTextoDerechaColor(contenido, fuenteNormal, 8, anchoPagina - margen - 16, 727, "Emisión: " + formatoFecha(LocalDate.now()), 255, 255, 255);
 
                 /*
-                 * Cliente y vehículo
+                 * Tarjetas de cliente y vehículo
                  */
 
-                dibujarTituloSeccion(
-                        contenido,
-                        fuenteNegrita,
-                        margen,
-                        y,
-                        anchoContenido,
-                        "DATOS GENERALES"
-                );
+                float separacionTarjetas = 10;
 
-                y -= 28;
+                float anchoTarjeta = (anchoContenido - separacionTarjetas) / 2;
 
-                float columnaIzquierda = margen + 12;
-                float columnaDerecha = margen + anchoContenido / 2 + 12;
+                float xCliente = margen;
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        11,
-                        columnaIzquierda,
-                        y,
-                        "Cliente"
-                );
+                float xVehiculo = margen + anchoTarjeta + separacionTarjetas;
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        11,
-                        columnaDerecha,
-                        y,
-                        "Vehículo"
-                );
+                dibujarRectanguloRelleno(contenido, xCliente, 595, anchoTarjeta, 95, 245, 249, 253);
 
-                y -= 19;
+                dibujarRectanguloRelleno(contenido, xVehiculo, 595, anchoTarjeta, 95, 245, 249, 253);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaIzquierda,
-                        y,
-                        alquiler.getCliente().getNombreCompleto()
-                );
+                dibujarRectanguloRelleno(contenido, xCliente, 665, anchoTarjeta, 25, 225, 239, 250);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaDerecha,
-                        y,
-                        alquiler.getVehiculo().getMarca()
-                                + " "
-                                + alquiler.getVehiculo().getModelo()
-                );
+                dibujarRectanguloRelleno(contenido, xVehiculo, 665, anchoTarjeta, 25, 225, 239, 250);
 
-                y -= 16;
+                escribirTextoColor(contenido, fuenteNegrita, 11, xCliente + 12, 673, "CLIENTE", 10, 70, 145);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaIzquierda,
-                        y,
-                        "Cédula: " + alquiler.getCliente().getCedula()
-                );
+                escribirTextoColor(contenido, fuenteNegrita, 11, xVehiculo + 12, 673, "VEHÍCULO", 10, 70, 145);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaDerecha,
-                        y,
-                        "Placa: " + alquiler.getVehiculo().getPlaca()
-                );
+                escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, 648, "Nombre:");
 
-                y -= 16;
+                escribirTexto(contenido, fuenteNegrita, 8, xCliente + 70, 648, alquiler.getCliente().getNombreCompleto());
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaIzquierda,
-                        y,
-                        "Teléfono: " + alquiler.getCliente().getTelefono()
-                );
+                escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, 633, "Cédula:");
 
-                y -= 16;
+                escribirTexto(contenido, fuenteNegrita, 8, xCliente + 70, 633, alquiler.getCliente().getCedula());
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaIzquierda,
-                        y,
-                        "Correo: " + alquiler.getCliente().getCorreo()
-                );
+                escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, 618, "Teléfono:");
 
-                y -= 28;
+                escribirTexto(contenido, fuenteNegrita, 8, xCliente + 70, 618, alquiler.getCliente().getTelefono());
+
+                escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, 603, "Correo:");
+
+                escribirTexto(contenido, fuenteNegrita, 7, xCliente + 70, 603, alquiler.getCliente().getCorreo());
+
+                escribirTexto(contenido, fuenteNormal, 8, xVehiculo + 12, 648, "Marca:");
+
+                escribirTexto(contenido, fuenteNegrita, 8, xVehiculo + 70, 648, alquiler.getVehiculo().getMarca());
+
+                escribirTexto(contenido, fuenteNormal, 8, xVehiculo + 12, 633, "Modelo:");
+
+                escribirTexto(contenido, fuenteNegrita, 8, xVehiculo + 70, 633, alquiler.getVehiculo().getModelo());
+
+                escribirTexto(contenido, fuenteNormal, 8, xVehiculo + 12, 618, "Placa:");
+
+                escribirTexto(contenido, fuenteNegrita, 8, xVehiculo + 70, 618, alquiler.getVehiculo().getPlaca());
+
+                escribirTexto(contenido, fuenteNormal, 7.5f, xVehiculo + 12, 603, "Estado del alquiler:");
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, xVehiculo + 105, 603, alquiler.getEstado().toString(), 10, 90, 160);
 
                 /*
-                 * Datos del alquiler
+                 * Detalles del alquiler
                  */
 
-                dibujarTituloSeccion(
-                        contenido,
-                        fuenteNegrita,
-                        margen,
-                        y,
-                        anchoContenido,
-                        "DETALLE DEL ALQUILER"
-                );
+                dibujarRectanguloRelleno(contenido, margen, 492, anchoContenido, 87, 245, 249, 253);
 
-                y -= 28;
+                dibujarRectanguloRelleno(contenido, margen, 554, anchoContenido, 25, 225, 239, 250);
 
-                float columnaDatos = margen + 12;
-                float columnaMontos = margen + 300;
+                escribirTextoColor(contenido, fuenteNegrita, 11, margen + 12, 562, "DETALLES DEL ALQUILER", 10, 70, 145);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaDatos,
-                        y,
-                        "Fecha de inicio"
-                );
+                escribirTexto(contenido, fuenteNormal, 8, margen + 12, 536, "Fecha de inicio:");
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + 145,
-                        y,
-                        formatoFecha(alquiler.getFechaInicio())
-                );
+                escribirTexto(contenido, fuenteNegrita, 8, margen + 100, 536, formatoFecha(alquiler.getFechaInicio()));
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaMontos,
-                        y,
-                        "Tarifa diaria"
-                );
+                escribirTexto(contenido, fuenteNormal, 8, margen + 12, 518, "Fecha esperada:");
 
-                escribirTextoDerecha(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + anchoContenido - 12,
-                        y,
-                        formatoDinero(alquiler.getTarifaDiariaAplicada())
-                );
+                escribirTexto(contenido, fuenteNegrita, 8, margen + 100, 518, formatoFecha(alquiler.getFechaDevolucionEsperada()));
 
-                y -= 18;
+                if (alquilerFinalizado) {
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaDatos,
-                        y,
-                        "Fecha esperada"
-                );
+                    escribirTexto(contenido, fuenteNormal, 8, margen + 12, 500, "Fecha de devolución:");
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + 145,
-                        y,
-                        formatoFecha(alquiler.getFechaDevolucionEsperada())
-                );
+                    escribirTexto(contenido, fuenteNegrita, 8, margen + 100, 500, formatoFecha(fechaDevolucion));
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaMontos,
-                        y,
-                        "Subtotal"
-                );
+                }
 
-                escribirTextoDerecha(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + anchoContenido - 12,
-                        y,
-                        formatoDinero(alquiler.calcularSubtotal())
-                );
+                escribirTexto(contenido, fuenteNormal, 8, margen + 265, 536, "Cantidad de días:");
 
-                y -= 18;
+                escribirTexto(contenido, fuenteNegrita, 8, margen + 355, 536, String.valueOf(alquiler.getCantidadDias()));
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaDatos,
-                        y,
-                        "Cantidad de días"
-                );
+                escribirTexto(contenido, fuenteNormal, 8, margen + 265, 518, "Tarifa diaria:");
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + 145,
-                        y,
-                        String.valueOf(alquiler.getCantidadDias())
-                );
-
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaMontos,
-                        y,
-                        "Depósito"
-                );
-
-                escribirTextoDerecha(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + anchoContenido - 12,
-                        y,
-                        formatoDinero(alquiler.getDepositoGarantia())
-                );
-
-                y -= 27;
+                escribirTexto(contenido, fuenteNegrita, 8, margen + 355, 518, formatoDinero(alquiler.getTarifaDiariaAplicada()));
 
                 /*
-                 * Total inicial
+                 * Tabla económica
                  */
 
-                dibujarRectanguloRelleno(
-                        contenido,
-                        margen,
-                        y - 10,
-                        anchoContenido,
-                        31,
-                        225,
-                        239,
-                        250
-                );
+                float xDescripcion = margen;
 
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        11,
-                        margen + 12,
-                        y,
-                        "TOTAL PAGADO"
-                );
+                float anchoDescripcion = 245;
 
-                escribirTextoDerechaColor(
-                        contenido,
-                        fuenteNegrita,
-                        13,
-                        margen + anchoContenido - 12,
-                        y,
-                        formatoDinero(alquiler.getMontoPagado()),
-                        20,
-                        115,
-                        190
-                );
+                float xCantidad = xDescripcion + anchoDescripcion;
 
-                y -= 42;
+                float anchoCantidad = 75;
+
+                float xPrecio = xCantidad + anchoCantidad;
+
+                float anchoPrecio = 100;
+
+                float xImporte = xPrecio + anchoPrecio;
+
+                float anchoImporte = anchoContenido - anchoDescripcion - anchoCantidad - anchoPrecio;
+
+                dibujarRectanguloRelleno(contenido, margen, 453, anchoContenido, 27, 10, 70, 145);
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, xDescripcion + 10, 463, "DESCRIPCIÓN", 255, 255, 255);
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, xCantidad + 13, 463, "CANTIDAD", 255, 255, 255);
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, xPrecio + 10, 463, "PRECIO", 255, 255, 255);
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, xImporte + 10, 463, "IMPORTE", 255, 255, 255);
+
+                dibujarRectanguloRelleno(contenido, margen, 425, anchoContenido, 28, 250, 252, 254);
+
+                escribirTexto(contenido, fuenteNormal, 8, xDescripcion + 10, 435, "Alquiler " + alquiler.getVehiculo().getMarca() + " " + alquiler.getVehiculo().getModelo());
+
+                escribirTexto(contenido, fuenteNormal, 8, xCantidad + 18, 435, alquiler.getCantidadDias() + " días");
+
+                escribirTextoDerecha(contenido, fuenteNormal, 8, xPrecio + anchoPrecio - 10, 435, formatoDinero(alquiler.getTarifaDiariaAplicada()));
+
+                escribirTextoDerecha(contenido, fuenteNegrita, 8, xImporte + anchoImporte - 10, 435, formatoDinero(subtotal));
+
+                dibujarRectanguloRelleno(contenido, margen, 397, anchoContenido, 28, 245, 249, 253);
+
+                escribirTexto(contenido, fuenteNormal, 8, xDescripcion + 10, 407, "Depósito de garantía");
+
+                escribirTexto(contenido, fuenteNormal, 8, xCantidad + 30, 407, "1");
+
+                escribirTextoDerecha(contenido, fuenteNormal, 8, xPrecio + anchoPrecio - 10, 407, formatoDinero(deposito));
+
+                escribirTextoDerecha(contenido, fuenteNegrita, 8, xImporte + anchoImporte - 10, 407, formatoDinero(deposito));
+
+                dibujarLinea(contenido, xCantidad, 397, xCantidad, 480, 210, 220, 230);
+
+                dibujarLinea(contenido, xPrecio, 397, xPrecio, 480, 210, 220, 230);
+
+                dibujarLinea(contenido, xImporte, 397, xImporte, 480, 210, 220, 230);
 
                 /*
                  * Pago inicial
                  */
 
-                dibujarTituloSeccion(
-                        contenido,
-                        fuenteNegrita,
-                        margen,
-                        y,
-                        anchoContenido,
-                        "PAGO INICIAL"
-                );
+                float yTarjetasPago = 250;
 
-                y -= 28;
+                float altoTarjetasPago = 128;
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        9,
-                        columnaIzquierda,
-                        y,
-                        "Método de pago"
-                );
-
-                escribirTexto(
-                        contenido,
-                        fuenteNegrita,
-                        9,
-                        margen + 130,
-                        y,
-                        String.valueOf(alquiler.getMetodoPago())
-                );
-
-                if (alquiler.getMetodoPago() == MetodoPago.EFECTIVO) {
-
-                    escribirTexto(
-                            contenido,
-                            fuenteNormal,
-                            9,
-                            columnaDerecha,
-                            y,
-                            "Monto recibido"
-                    );
-
-                    escribirTextoDerecha(
-                            contenido,
-                            fuenteNegrita,
-                            9,
-                            margen + anchoContenido - 12,
-                            y,
-                            formatoDinero(alquiler.getMontoRecibido())
-                    );
-
-                    y -= 18;
-
-                    escribirTexto(
-                            contenido,
-                            fuenteNormal,
-                            9,
-                            columnaDerecha,
-                            y,
-                            "Vuelto"
-                    );
-
-                    escribirTextoDerecha(
-                            contenido,
-                            fuenteNegrita,
-                            9,
-                            margen + anchoContenido - 12,
-                            y,
-                            formatoDinero(alquiler.getVuelto())
-                    );
-                }
-
-                /*
-                 * Información de devolución
-                 */
-
-                if (alquiler.getEstado() == EstadoAlquiler.FINALIZADO) {
+                if (alquilerFinalizado) {
 
                     /*
-                     * Línea divisoria entre el pago inicial y la devolución
+                     * Pago inicial en alquiler finalizado
                      */
 
-                    y -= 22;
+                    dibujarRectanguloRelleno(contenido, xCliente, yTarjetasPago, anchoTarjeta, altoTarjetasPago, 245, 249, 253);
 
-                    dibujarLinea(
-                            contenido,
-                            margen,
-                            y,
-                            margen + anchoContenido,
-                            y,
-                            190,
-                            200,
-                            210
-                    );
+                    dibujarRectanguloRelleno(contenido, xCliente, yTarjetasPago + altoTarjetasPago - 25, anchoTarjeta, 25, 225, 239, 250);
 
-                    y -= 22;
+                    escribirTextoColor(contenido, fuenteNegrita, 11, xCliente + 12, yTarjetasPago + altoTarjetasPago - 17, "PAGO INICIAL", 10, 70, 145);
 
-                    LocalDate fechaDevolucion =
-                            alquiler.getFechaDevolucionReal();
+                    escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, yTarjetasPago + 82, "Método:");
 
-                    long diasAtraso =
-                            alquiler.calcularDiasAtraso(fechaDevolucion);
+                    escribirTextoDerecha(contenido, fuenteNegrita, 8, xCliente + anchoTarjeta - 12, yTarjetasPago + 82, alquiler.getMetodoPago() == null ? "No registrado" : alquiler.getMetodoPago().toString());
 
-                    double multa =
-                            alquiler.calcularMulta(fechaDevolucion);
+                    escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, yTarjetasPago + 64, "Monto pagado:");
 
-                    double depositoDevuelto =
-                            alquiler.calcularDepositoADevolver(fechaDevolucion);
+                    escribirTextoDerecha(contenido, fuenteNegrita, 8, xCliente + anchoTarjeta - 12, yTarjetasPago + 64, formatoDinero(totalInicial));
 
-                    double saldoPendiente =
-                            alquiler.calcularSaldoPendiente(fechaDevolucion);
+                    if (alquiler.getMetodoPago() == MetodoPago.EFECTIVO) {
 
-                    dibujarTituloSeccion(
-                            contenido,
-                            fuenteNegrita,
-                            margen,
-                            y,
-                            anchoContenido,
-                            "DEVOLUCIÓN"
-                    );
+                        escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, yTarjetasPago + 46, "Monto recibido:");
 
-                    y -= 28;
+                        escribirTextoDerecha(contenido, fuenteNegrita, 8, xCliente + anchoTarjeta - 12, yTarjetasPago + 46, formatoDinero(alquiler.getMontoRecibido()));
 
-                    escribirTexto(
-                            contenido,
-                            fuenteNormal,
-                            9,
-                            columnaDatos,
-                            y,
-                            "Fecha real"
-                    );
+                        escribirTexto(contenido, fuenteNormal, 8, xCliente + 12, yTarjetasPago + 28, "Vuelto:");
 
-                    escribirTexto(
-                            contenido,
-                            fuenteNegrita,
-                            9,
-                            margen + 145,
-                            y,
-                            formatoFecha(fechaDevolucion)
-                    );
+                        escribirTextoDerecha(contenido, fuenteNegrita, 8, xCliente + anchoTarjeta - 12, yTarjetasPago + 28, formatoDinero(alquiler.getVuelto()));
 
-                    escribirTexto(
-                            contenido,
-                            fuenteNormal,
-                            9,
-                            columnaMontos,
-                            y,
-                            "Multa"
-                    );
-
-                    escribirTextoDerecha(
-                            contenido,
-                            fuenteNegrita,
-                            9,
-                            margen + anchoContenido - 12,
-                            y,
-                            formatoDinero(multa)
-                    );
-
-                    y -= 18;
-
-                    escribirTexto(
-                            contenido,
-                            fuenteNormal,
-                            9,
-                            columnaDatos,
-                            y,
-                            "Días de atraso"
-                    );
-
-                    escribirTexto(
-                            contenido,
-                            fuenteNegrita,
-                            9,
-                            margen + 145,
-                            y,
-                            String.valueOf(diasAtraso)
-                    );
-
-                    escribirTexto(
-                            contenido,
-                            fuenteNormal,
-                            9,
-                            columnaMontos,
-                            y,
-                            "Depósito devuelto"
-                    );
-
-                    escribirTextoDerecha(
-                            contenido,
-                            fuenteNegrita,
-                            9,
-                            margen + anchoContenido - 12,
-                            y,
-                            formatoDinero(depositoDevuelto)
-                    );
-
-                    y -= 28;
+                    }
 
                     /*
-                     * Saldo adicional sin marco
+                     * Devolución
                      */
 
-                    escribirTexto(
-                            contenido,
-                            fuenteNegrita,
-                            10,
-                            margen + 12,
-                            y,
-                            "SALDO ADICIONAL"
-                    );
+                    dibujarRectanguloRelleno(contenido, xVehiculo, yTarjetasPago, anchoTarjeta, altoTarjetasPago, 245, 249, 253);
 
-                    escribirTextoDerechaColor(
-                            contenido,
-                            fuenteNegrita,
-                            11,
-                            margen + anchoContenido - 12,
-                            y,
-                            formatoDinero(saldoPendiente),
-                            20,
-                            115,
-                            190
-                    );
+                    dibujarRectanguloRelleno(contenido, xVehiculo, yTarjetasPago + altoTarjetasPago - 25, anchoTarjeta, 25, 225, 239, 250);
+
+                    escribirTextoColor(contenido, fuenteNegrita, 11, xVehiculo + 12, yTarjetasPago + altoTarjetasPago - 17, "DEVOLUCIÓN", 10, 70, 145);
+
+                    escribirTexto(contenido, fuenteNormal, 7, xVehiculo + 12, yTarjetasPago + 82, "Fecha real:");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 7, xVehiculo + anchoTarjeta - 12, yTarjetasPago + 82, formatoFecha(fechaDevolucion));
+
+                    escribirTexto(contenido, fuenteNormal, 7, xVehiculo + 12, yTarjetasPago + 67, "Días de atraso:");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 7, xVehiculo + anchoTarjeta - 12, yTarjetasPago + 67, String.valueOf(diasAtraso));
+
+                    escribirTexto(contenido, fuenteNormal, 7, xVehiculo + 12, yTarjetasPago + 52, "Multa:");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 7, xVehiculo + anchoTarjeta - 12, yTarjetasPago + 52, formatoDinero(multa));
+
+                    escribirTexto(contenido, fuenteNormal, 7, xVehiculo + 12, yTarjetasPago + 37, "Depósito devuelto:");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 7, xVehiculo + anchoTarjeta - 12, yTarjetasPago + 37, formatoDinero(depositoDevuelto));
+
+                    escribirTexto(contenido, fuenteNegrita, 7, xVehiculo + 12, yTarjetasPago + 22, "Saldo adicional:");
+
+                    escribirTextoDerechaColor(contenido, fuenteNegrita, 8, xVehiculo + anchoTarjeta - 12, yTarjetasPago + 22, formatoDinero(saldoPendiente), 10, 90, 160);
 
                     if (alquiler.getMetodoPagoDevolucion() != null) {
 
-                        y -= 42;
+                        escribirTexto(contenido, fuenteNormal, 6.5f, xVehiculo + 12, yTarjetasPago + 8, "Pago adicional realizado con: " + alquiler.getMetodoPagoDevolucion());
 
-                        dibujarTituloSeccion(
-                                contenido,
-                                fuenteNegrita,
-                                margen,
-                                y,
-                                anchoContenido,
-                                "PAGO ADICIONAL DE DEVOLUCIÓN"
-                        );
-
-                        y -= 28;
-
-                        escribirTexto(
-                                contenido,
-                                fuenteNormal,
-                                9,
-                                columnaIzquierda,
-                                y,
-                                "Método de pago"
-                        );
-
-                        escribirTexto(
-                                contenido,
-                                fuenteNegrita,
-                                9,
-                                margen + 130,
-                                y,
-                                String.valueOf(alquiler.getMetodoPagoDevolucion())
-                        );
-
-                        escribirTexto(
-                                contenido,
-                                fuenteNormal,
-                                9,
-                                columnaDerecha,
-                                y,
-                                "Monto pagado"
-                        );
-
-                        escribirTextoDerecha(
-                                contenido,
-                                fuenteNegrita,
-                                9,
-                                margen + anchoContenido - 12,
-                                y,
-                                formatoDinero(alquiler.getMontoPagadoDevolucion())
-                        );
-
-                        if (alquiler.getMetodoPagoDevolucion() == MetodoPago.EFECTIVO) {
-
-                            y -= 18;
-
-                            escribirTexto(
-                                    contenido,
-                                    fuenteNormal,
-                                    9,
-                                    columnaIzquierda,
-                                    y,
-                                    "Monto recibido"
-                            );
-
-                            escribirTexto(
-                                    contenido,
-                                    fuenteNegrita,
-                                    9,
-                                    margen + 130,
-                                    y,
-                                    formatoDinero(alquiler.getMontoRecibidoDevolucion())
-                            );
-
-                            escribirTexto(
-                                    contenido,
-                                    fuenteNormal,
-                                    9,
-                                    columnaDerecha,
-                                    y,
-                                    "Vuelto"
-                            );
-
-                            escribirTextoDerecha(
-                                    contenido,
-                                    fuenteNegrita,
-                                    9,
-                                    margen + anchoContenido - 12,
-                                    y,
-                                    formatoDinero(alquiler.getVueltoDevolucion())
-                            );
-                        }
                     }
+
+                } else {
+
+                    /*
+                     * Pago inicial en alquiler activo
+                     */
+
+                    dibujarRectanguloRelleno(contenido, margen, yTarjetasPago, anchoContenido, altoTarjetasPago, 245, 249, 253);
+
+                    dibujarRectanguloRelleno(contenido, margen, yTarjetasPago + altoTarjetasPago - 25, anchoContenido, 25, 225, 239, 250);
+
+                    escribirTextoColor(contenido, fuenteNegrita, 11, margen + 12, yTarjetasPago + altoTarjetasPago - 17, "PAGO INICIAL", 10, 70, 145);
+
+                    escribirTexto(contenido, fuenteNormal, 8, margen + 12, yTarjetasPago + 82, "Método de pago:");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 8, margen + anchoContenido / 2 - 20, yTarjetasPago + 82, alquiler.getMetodoPago() == null ? "No registrado" : alquiler.getMetodoPago().toString());
+
+                    escribirTexto(contenido, fuenteNormal, 8, margen + 285, yTarjetasPago + 82, "Monto pagado:");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 8, margen + anchoContenido - 12, yTarjetasPago + 82, formatoDinero(totalInicial));
+
+                    if (alquiler.getMetodoPago() == MetodoPago.EFECTIVO) {
+
+                        escribirTexto(contenido, fuenteNormal, 8, margen + 12, yTarjetasPago + 58, "Monto recibido:");
+
+                        escribirTextoDerecha(contenido, fuenteNegrita, 8, margen + anchoContenido / 2 - 20, yTarjetasPago + 58, formatoDinero(alquiler.getMontoRecibido()));
+
+                        escribirTexto(contenido, fuenteNormal, 8, margen + 285, yTarjetasPago + 58, "Vuelto:");
+
+                        escribirTextoDerecha(contenido, fuenteNegrita, 8, margen + anchoContenido - 12, yTarjetasPago + 58, formatoDinero(alquiler.getVuelto()));
+
+                    }
+
+                    escribirTextoColor(contenido, fuenteNegrita, 8, margen + 12, yTarjetasPago + 28, "ALQUILER ACTIVO", 10, 90, 160);
+
+                    escribirTexto(contenido, fuenteNormal, 8, margen + 100, yTarjetasPago + 28, "Pendiente de devolución");
+
+                }
+
+                /*
+                 * Resumen económico
+                 */
+
+                escribirTextoColor(contenido, fuenteNegrita, 9, margen, 221, "RESUMEN ECONÓMICO", 10, 70, 145);
+
+                dibujarLinea(contenido, margen, 214, margen + anchoContenido, 214, 180, 200, 220);
+
+                if (alquilerFinalizado) {
+
+                    /*
+                     * Resumen de alquiler finalizado
+                     */
+
+                    dibujarRectanguloRelleno(contenido, margen, 105, anchoContenido / 2 - 12, 84, 10, 70, 145);
+
+                    escribirTextoColor(contenido, fuenteNormal, 9, margen + 15, 167, "COSTO FINAL DEL ALQUILER", 220, 235, 250);
+
+                    escribirTextoColor(contenido, fuenteNegrita, 18, margen + 15, 140, formatoDinero(costoFinalAlquiler), 255, 255, 255);
+
+                    escribirTextoColor(contenido, fuenteNormal, 7, margen + 15, 120, "Costo real del servicio después de liquidar el depósito", 220, 235, 250);
+
+                    float xResumen = margen + anchoContenido / 2;
+
+                    /*
+                     * Liquidación del pago
+                     */
+
+                    escribirTextoColor(contenido, fuenteNegrita, 7, xResumen, 194, "LIQUIDACIÓN DEL PAGO", 10, 70, 145);
+
+                    escribirTexto(contenido, fuenteNormal, 6.5f, xResumen, 176, "El depósito se descuenta del pago inicial cuando es devuelto");
+
+                    /*
+                     * Movimientos del pago
+                     */
+
+                    escribirTextoColor(contenido, fuenteNegrita, 7, xResumen, 143, "MOVIMIENTOS DEL PAGO", 10, 70, 145);
+
+                    escribirTexto(contenido, fuenteNormal, 7.5f, xResumen, 127, "Pago inicial recibido");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 7.5f, margen + anchoContenido, 127, formatoDinero(totalInicial));
+
+                    escribirTexto(contenido, fuenteNormal, 7.5f, xResumen, 111, "Depósito devuelto");
+
+                    if (depositoDevuelto > 0) {
+
+                        escribirTextoDerechaColor(contenido, fuenteNegrita, 7.5f, margen + anchoContenido, 111, formatoDinero(depositoDevuelto), 35, 140, 70);
+
+                    } else {
+
+                        escribirTextoDerecha(contenido, fuenteNegrita, 7.5f, margen + anchoContenido, 111, formatoDinero(depositoDevuelto));
+
+                    }
+
+                    escribirTexto(contenido, fuenteNormal, 7.5f, xResumen, 95, "Pago adicional");
+
+                    if (saldoPendiente > 0) {
+
+                        escribirTextoDerechaColor(contenido, fuenteNegrita, 7.5f, margen + anchoContenido, 95, formatoDinero(saldoPendiente), 190, 45, 45);
+
+                    } else {
+
+                        escribirTextoDerecha(contenido, fuenteNegrita, 7.5f, margen + anchoContenido, 95, formatoDinero(saldoPendiente));
+
+                    }
+
+                } else {
+
+                    /*
+                     * Resumen de alquiler activo
+                     */
+
+                    dibujarRectanguloRelleno(contenido, margen, 105, anchoContenido / 2 - 12, 84, 10, 70, 145);
+
+                    escribirTextoColor(contenido, fuenteNormal, 9, margen + 15, 167, "TOTAL PAGADO INICIAL", 220, 235, 250);
+
+                    escribirTextoColor(contenido, fuenteNegrita, 18, margen + 15, 140, formatoDinero(totalInicial), 255, 255, 255);
+
+                    escribirTextoColor(contenido, fuenteNormal, 7, margen + 15, 120, "Alquiler actualmente activo", 220, 235, 250);
+
+                    float xResumen = margen + anchoContenido / 2;
+
+                    escribirTexto(contenido, fuenteNormal, 8, xResumen, 181, "Subtotal del alquiler");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 8, margen + anchoContenido, 181, formatoDinero(subtotal));
+
+                    escribirTexto(contenido, fuenteNormal, 8, xResumen, 159, "Depósito de garantía");
+
+                    escribirTextoDerecha(contenido, fuenteNegrita, 8, margen + anchoContenido, 159, formatoDinero(deposito));
+
+                    escribirTexto(contenido, fuenteNormal, 8, xResumen, 137, "Total pagado");
+
+                    escribirTextoDerechaColor(contenido, fuenteNegrita, 9, margen + anchoContenido, 137, formatoDinero(totalInicial), 10, 90, 160);
+
+                    escribirTexto(contenido, fuenteNormal, 7, xResumen, 115, "La devolución todavía no ha sido registrada");
+
                 }
 
                 /*
                  * Pie de página
                  */
 
-                dibujarLinea(
-                        contenido,
-                        margen,
-                        55,
-                        margen + anchoContenido,
-                        55,
-                        180,
-                        180,
-                        180
-                );
+                dibujarLinea(contenido, margen, 67, margen + 180, 67, 10, 70, 145);
 
-                escribirTexto(
-                        contenido,
-                        fuenteNormal,
-                        8,
-                        margen,
-                        37,
-                        "Gracias por utilizar XANTIUM"
-                );
+                dibujarLinea(contenido, anchoPagina - margen - 180, 67, anchoPagina - margen, 67, 10, 70, 145);
 
-                escribirTextoDerecha(
-                        contenido,
-                        fuenteNormal,
-                        8,
-                        margen + anchoContenido,
-                        37,
-                        "Alquiler #" + alquiler.getNumeroAlquiler()
-                );
+                float anchoGracias = fuenteNegrita.getStringWidth("GRACIAS POR UTILIZAR XANTIUM") / 1000 * 8;
+
+                escribirTextoColor(contenido, fuenteNegrita, 8, (anchoPagina - anchoGracias) / 2, 64, "GRACIAS POR UTILIZAR XANTIUM", 10, 70, 145);
+
+                escribirTexto(contenido, fuenteNormal, 6.5f, margen, 43, "Factura generada por el Sistema de Alquiler de Vehículos XANTIUM");
+
+                escribirTextoDerecha(contenido, fuenteNormal, 6.5f, margen + anchoContenido, 43, "Nº " + numeroFactura);
+
             }
 
             documento.save(archivo);
@@ -796,11 +515,10 @@ public class FacturaServicio {
 
         } catch (IOException e) {
 
-            throw new RuntimeException(
-                    "No se pudo generar la factura PDF.",
-                    e
-            );
+            throw new RuntimeException("No se pudo generar la factura PDF.", e);
+
         }
+
     }
 
     /*
@@ -808,37 +526,20 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido del PDF, la fuente, el tamaño de letra, las coordenadas X e Y y el texto que se desea escribir
      * Retorna: No retorna ningún valor
      */
-    private void escribirTexto(
-            PDPageContentStream contenido,
-            PDFont fuente,
-            float tamano,
-            float x,
-            float y,
-            String texto) throws IOException {
+    private void escribirTexto(PDPageContentStream contenido, PDFont fuente, float tamano, float x, float y, String texto) throws IOException {
 
-        contenido.setNonStrokingColor(
-                0f,
-                0f,
-                0f
-        );
+        contenido.setNonStrokingColor(0f, 0f, 0f);
 
         contenido.beginText();
 
-        contenido.setFont(
-                fuente,
-                tamano
-        );
+        contenido.setFont(fuente, tamano);
 
-        contenido.newLineAtOffset(
-                x,
-                y
-        );
+        contenido.newLineAtOffset(x, y);
 
-        contenido.showText(
-                texto
-        );
+        contenido.showText(texto);
 
         contenido.endText();
+
     }
 
     /*
@@ -846,46 +547,22 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido, la fuente, tamaño, posición, texto y valores RGB del color
      * Retorna: No retorna ningún valor
      */
-    private void escribirTextoColor(
-            PDPageContentStream contenido,
-            PDFont fuente,
-            float tamano,
-            float x,
-            float y,
-            String texto,
-            int rojo,
-            int verde,
-            int azul) throws IOException {
+    private void escribirTextoColor(PDPageContentStream contenido, PDFont fuente, float tamano, float x, float y, String texto, int rojo, int verde, int azul) throws IOException {
 
-        contenido.setNonStrokingColor(
-                rojo / 255f,
-                verde / 255f,
-                azul / 255f
-        );
+        contenido.setNonStrokingColor(rojo / 255f, verde / 255f, azul / 255f);
 
         contenido.beginText();
 
-        contenido.setFont(
-                fuente,
-                tamano
-        );
+        contenido.setFont(fuente, tamano);
 
-        contenido.newLineAtOffset(
-                x,
-                y
-        );
+        contenido.newLineAtOffset(x, y);
 
-        contenido.showText(
-                texto
-        );
+        contenido.showText(texto);
 
         contenido.endText();
 
-        contenido.setNonStrokingColor(
-                0f,
-                0f,
-                0f
-        );
+        contenido.setNonStrokingColor(0f, 0f, 0f);
+
     }
 
     /*
@@ -893,27 +570,12 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido, la fuente, el tamaño, la posición derecha, la posición vertical y el texto
      * Retorna: No retorna ningún valor
      */
-    private void escribirTextoDerecha(
-            PDPageContentStream contenido,
-            PDFont fuente,
-            float tamano,
-            float xDerecha,
-            float y,
-            String texto) throws IOException {
+    private void escribirTextoDerecha(PDPageContentStream contenido, PDFont fuente, float tamano, float xDerecha, float y, String texto) throws IOException {
 
-        float anchoTexto =
-                fuente.getStringWidth(texto)
-                        / 1000
-                        * tamano;
+        float anchoTexto = fuente.getStringWidth(texto) / 1000 * tamano;
 
-        escribirTexto(
-                contenido,
-                fuente,
-                tamano,
-                xDerecha - anchoTexto,
-                y,
-                texto
-        );
+        escribirTexto(contenido, fuente, tamano, xDerecha - anchoTexto, y, texto);
+
     }
 
     /*
@@ -921,33 +583,12 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido, la fuente, el tamaño, la posición derecha, la posición vertical, el texto y los valores RGB
      * Retorna: No retorna ningún valor
      */
-    private void escribirTextoDerechaColor(
-            PDPageContentStream contenido,
-            PDFont fuente,
-            float tamano,
-            float xDerecha,
-            float y,
-            String texto,
-            int rojo,
-            int verde,
-            int azul) throws IOException {
+    private void escribirTextoDerechaColor(PDPageContentStream contenido, PDFont fuente, float tamano, float xDerecha, float y, String texto, int rojo, int verde, int azul) throws IOException {
 
-        float anchoTexto =
-                fuente.getStringWidth(texto)
-                        / 1000
-                        * tamano;
+        float anchoTexto = fuente.getStringWidth(texto) / 1000 * tamano;
 
-        escribirTextoColor(
-                contenido,
-                fuente,
-                tamano,
-                xDerecha - anchoTexto,
-                y,
-                texto,
-                rojo,
-                verde,
-                azul
-        );
+        escribirTextoColor(contenido, fuente, tamano, xDerecha - anchoTexto, y, texto, rojo, verde, azul);
+
     }
 
     /*
@@ -955,36 +596,16 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido, la posición, el tamaño del rectángulo y los valores RGB del color
      * Retorna: No retorna ningún valor
      */
-    private void dibujarRectanguloRelleno(
-            PDPageContentStream contenido,
-            float x,
-            float y,
-            float ancho,
-            float alto,
-            int rojo,
-            int verde,
-            int azul) throws IOException {
+    private void dibujarRectanguloRelleno(PDPageContentStream contenido, float x, float y, float ancho, float alto, int rojo, int verde, int azul) throws IOException {
 
-        contenido.setNonStrokingColor(
-                rojo / 255f,
-                verde / 255f,
-                azul / 255f
-        );
+        contenido.setNonStrokingColor(rojo / 255f, verde / 255f, azul / 255f);
 
-        contenido.addRect(
-                x,
-                y,
-                ancho,
-                alto
-        );
+        contenido.addRect(x, y, ancho, alto);
 
         contenido.fill();
 
-        contenido.setNonStrokingColor(
-                0f,
-                0f,
-                0f
-        );
+        contenido.setNonStrokingColor(0f, 0f, 0f);
+
     }
 
     /*
@@ -992,43 +613,20 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido, las coordenadas de inicio y fin y los valores RGB
      * Retorna: No retorna ningún valor
      */
-    private void dibujarLinea(
-            PDPageContentStream contenido,
-            float xInicio,
-            float yInicio,
-            float xFin,
-            float yFin,
-            int rojo,
-            int verde,
-            int azul) throws IOException {
+    private void dibujarLinea(PDPageContentStream contenido, float xInicio, float yInicio, float xFin, float yFin, int rojo, int verde, int azul) throws IOException {
 
-        contenido.setStrokingColor(
-                rojo / 255f,
-                verde / 255f,
-                azul / 255f
-        );
+        contenido.setStrokingColor(rojo / 255f, verde / 255f, azul / 255f);
 
-        contenido.setLineWidth(
-                0.7f
-        );
+        contenido.setLineWidth(0.7f);
 
-        contenido.moveTo(
-                xInicio,
-                yInicio
-        );
+        contenido.moveTo(xInicio, yInicio);
 
-        contenido.lineTo(
-                xFin,
-                yFin
-        );
+        contenido.lineTo(xFin, yFin);
 
         contenido.stroke();
 
-        contenido.setStrokingColor(
-                0f,
-                0f,
-                0f
-        );
+        contenido.setStrokingColor(0f, 0f, 0f);
+
     }
 
     /*
@@ -1036,36 +634,12 @@ public class FacturaServicio {
      * Recibe: El flujo de contenido, la fuente en negrita, la posición, el ancho disponible y el título de la sección
      * Retorna: No retorna ningún valor
      */
-    private void dibujarTituloSeccion(
-            PDPageContentStream contenido,
-            PDFont fuente,
-            float x,
-            float y,
-            float ancho,
-            String titulo) throws IOException {
+    private void dibujarTituloSeccion(PDPageContentStream contenido, PDFont fuente, float x, float y, float ancho, String titulo) throws IOException {
 
-        dibujarRectanguloRelleno(
-                contenido,
-                x,
-                y - 7,
-                ancho,
-                23,
-                235,
-                243,
-                249
-        );
+        dibujarRectanguloRelleno(contenido, x, y - 7, ancho, 23, 235, 243, 249);
 
-        escribirTextoColor(
-                contenido,
-                fuente,
-                10,
-                x + 10,
-                y,
-                titulo,
-                20,
-                90,
-                150
-        );
+        escribirTextoColor(contenido, fuente, 10, x + 10, y, titulo, 20, 90, 150);
+
     }
 
     /*
@@ -1073,16 +647,20 @@ public class FacturaServicio {
      * Recibe: La fecha que se desea mostrar
      * Retorna: La fecha convertida al formato dd/MM/yyyy o un guion cuando no existe
      */
-    private String formatoFecha(
-            LocalDate fecha) {
+    private String formatoFecha(LocalDate fecha) {
 
         if (fecha == null) {
+
             return "-";
+
         }
 
         return fecha.format(
+
                 FORMATO_FECHA
+
         );
+
     }
 
     /*
@@ -1090,16 +668,16 @@ public class FacturaServicio {
      * Recibe: El monto que se desea mostrar
      * Retorna: Una cadena de texto con el monto formateado utilizando el símbolo del colón
      */
-    private String formatoDinero(
-            Double monto) {
+    private String formatoDinero(Double monto) {
 
         if (monto == null) {
+
             return "₡0.00";
+
         }
 
-        return String.format(
-                "₡%,.2f",
-                monto
-        );
+        return String.format("₡%,.2f", monto);
+
     }
+
 }

@@ -21,7 +21,9 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
      * Retorna: No retorna ningún valor
      */
     public ClienteRepositorioJdbc(ConexionBD conexionBD) {
+
         this.conexionBD = conexionBD;
+
     }
 
     /*
@@ -37,14 +39,21 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
         try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, cliente.getCedula());
+
             ps.setString(2, cliente.getNombreCompleto());
+
             ps.setString(3, cliente.getTelefono());
+
             ps.setString(4, cliente.getCorreo());
+
             ps.executeUpdate();
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo registrar el cliente.", e);
+
         }
+
     }
 
     /*
@@ -62,16 +71,23 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
             ps.setString(1, cedula);
 
             try (ResultSet rs = ps.executeQuery()) {
+
                 if (rs.next()) {
+
                     return new Cliente(rs.getString("cedula"), rs.getString("nombre_completo"), rs.getString("telefono"), rs.getString("correo"));
+
                 }
+
             }
 
             return null;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo buscar el cliente.", e);
+
         }
+
     }
 
     /*
@@ -81,6 +97,7 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
      */
     @Override
     public List<Cliente> obtenerTodos() {
+
         String sql = "SELECT cedula, nombre_completo, telefono, correo " + "FROM cliente";
 
         List<Cliente> clientes = new ArrayList<>();
@@ -90,6 +107,7 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
             while (rs.next()) {
 
                 Cliente cliente = new Cliente(rs.getString("cedula"), rs.getString("nombre_completo"), rs.getString("telefono"), rs.getString("correo"));
+
                 clientes.add(cliente);
 
             }
@@ -97,8 +115,11 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
             return clientes;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudieron cargar los clientes.", e);
+
         }
+
     }
 
     /*
@@ -108,19 +129,27 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
      */
     @Override
     public void modificar(Cliente cliente) {
+
         String sql = "UPDATE cliente " + "SET nombre_completo = ?, telefono = ?, correo = ? " + "WHERE cedula = ?";
 
         try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
 
             ps.setString(1, cliente.getNombreCompleto());
+
             ps.setString(2, cliente.getTelefono());
+
             ps.setString(3, cliente.getCorreo());
+
             ps.setString(4, cliente.getCedula());
+
             ps.executeUpdate();
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo modificar el cliente.", e);
+
         }
+
     }
 
     /*
@@ -138,7 +167,11 @@ public class ClienteRepositorioJdbc implements ClienteRepositorio {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo eliminar el cliente.", e);
+
         }
+
     }
+
 }

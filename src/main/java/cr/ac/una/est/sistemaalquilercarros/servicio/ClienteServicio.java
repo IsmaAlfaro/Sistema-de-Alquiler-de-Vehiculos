@@ -20,6 +20,7 @@ public class ClienteServicio {
     public ClienteServicio(ClienteRepositorio clienteRepositorio, AlquilerRepositorio alquilerRepositorio) {
 
         this.clienteRepositorio = clienteRepositorio;
+
         this.alquilerRepositorio = alquilerRepositorio;
 
     }
@@ -32,16 +33,21 @@ public class ClienteServicio {
     public void registrarCliente(Cliente cliente) {
 
         if (cliente == null) {
+
             throw new IllegalArgumentException("El cliente no puede ser nulo.");
+
         }
 
         validarCliente(cliente);
 
         if (buscarPorCedula(cliente.getCedula()) != null) {
+
             throw new IllegalArgumentException("Ya existe un cliente con esa cédula.");
+
         }
 
         clienteRepositorio.agregar(cliente);
+
     }
 
     /*
@@ -49,14 +55,16 @@ public class ClienteServicio {
      * Recibe: La cédula del cliente que se desea localizar
      * Retorna: El cliente encontrado o null si no existe ningún cliente con esa cédula
      */
-    public Cliente buscarPorCedula(
-            String cedula) {
+    public Cliente buscarPorCedula(String cedula) {
 
         if (cedula == null || cedula.trim().isEmpty()) {
+
             return null;
+
         }
 
         return clienteRepositorio.buscarPorCedula(cedula.trim());
+
     }
 
     /*
@@ -65,7 +73,9 @@ public class ClienteServicio {
      * Retorna: La lista completa de clientes registrados
      */
     public List<Cliente> obtenerTodos() {
+
         return clienteRepositorio.obtenerTodos();
+
     }
 
 
@@ -79,20 +89,27 @@ public class ClienteServicio {
         Cliente clienteActual = buscarPorCedula(cedula);
 
         if (clienteActual == null) {
+
             throw new IllegalArgumentException("El cliente no existe.");
+
         }
 
         if (clienteModificado == null) {
+
             throw new IllegalArgumentException("Los nuevos datos del cliente no son válidos.");
+
         }
 
         if (!clienteActual.getCedula().equalsIgnoreCase(clienteModificado.getCedula())) {
+
             throw new IllegalArgumentException("La cédula del cliente no se puede modificar.");
+
         }
 
         validarCliente(clienteModificado);
 
         clienteRepositorio.modificar(clienteModificado);
+
     }
 
     /*
@@ -105,17 +122,23 @@ public class ClienteServicio {
         Cliente cliente = buscarPorCedula(cedula);
 
         if (cliente == null) {
+
             throw new IllegalArgumentException("El cliente no existe.");
+
         }
 
         for (Alquiler alquiler : alquilerRepositorio.obtenerActivos()) {
 
             if (alquiler.getCliente().getCedula().equalsIgnoreCase(cedula)) {
+
                 throw new IllegalArgumentException("No se puede eliminar un cliente con un alquiler activo.");
+
             }
+
         }
 
         clienteRepositorio.eliminar(cedula);
+
     }
 
     /*
@@ -124,7 +147,9 @@ public class ClienteServicio {
      * Retorna: La cantidad total de clientes registrados
      */
     public int cantidadClientes() {
+
         return clienteRepositorio.obtenerTodos().size();
+
     }
 
     /*
@@ -135,19 +160,29 @@ public class ClienteServicio {
     private void validarCliente(Cliente cliente) {
 
         if (cliente.getCedula() == null || cliente.getCedula().trim().isEmpty()) {
+
             throw new IllegalArgumentException("La cédula es obligatoria.");
+
         }
 
         if (cliente.getNombreCompleto() == null || cliente.getNombreCompleto().trim().isEmpty()) {
+
             throw new IllegalArgumentException("El nombre es obligatorio.");
+
         }
 
         if (cliente.getTelefono() == null || cliente.getTelefono().trim().isEmpty()) {
+
             throw new IllegalArgumentException("El teléfono es obligatorio.");
+
         }
 
         if (cliente.getCorreo() == null || cliente.getCorreo().trim().isEmpty()) {
+
             throw new IllegalArgumentException("El correo es obligatorio.");
+
         }
+
     }
+
 }

@@ -32,6 +32,7 @@ public class InicioController {
         this.contexto = contexto;
 
         actualizarDatos();
+
     }
 
 
@@ -43,8 +44,11 @@ public class InicioController {
     private void actualizarDatos() {
 
         lblCantidadVehiculos.setText("...");
+
         lblVehiculosDisponibles.setText("...");
+
         lblCantidadClientes.setText("...");
+
         lblAlquileresActivos.setText("...");
 
         Task<int[]> tarea = new Task<>() {
@@ -64,7 +68,7 @@ public class InicioController {
 
                     }
 
-                };
+        };
 
 
         tarea.setOnSucceeded(evento -> {
@@ -80,6 +84,7 @@ public class InicioController {
                     lblAlquileresActivos.setText(String.valueOf(resultados[3]));
 
                 }
+
         );
 
 
@@ -96,17 +101,21 @@ public class InicioController {
                     Throwable error = tarea.getException();
 
                     if (error != null) {
+
                         error.printStackTrace();
+
                     }
 
                 }
-        );
 
+        );
 
         Thread hilo = new Thread(tarea);
 
         hilo.setDaemon(true);
 
         hilo.start();
+
     }
+
 }

@@ -1,6 +1,7 @@
 package cr.ac.una.est.sistemaalquilercarros.modelo;
 
 import cr.ac.una.est.sistemaalquilercarros.interfaces.Calculable;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -17,12 +18,10 @@ public class Alquiler implements Calculable, Serializable {
     private double tarifaDiariaAplicada;
     private double depositoGarantia;
     private EstadoAlquiler estado;
-
     private MetodoPago metodoPago;
     private Double montoPagado;
     private Double montoRecibido;
     private Double vuelto;
-
     private MetodoPago metodoPagoDevolucion;
     private Double montoPagadoDevolucion;
     private Double montoRecibidoDevolucion;
@@ -36,6 +35,7 @@ public class Alquiler implements Calculable, Serializable {
     public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, double depositoGarantia) {
 
         this(numeroAlquiler, cliente, vehiculo, fechaInicio, cantidadDias, null, vehiculo.getTarifaDiaria(), depositoGarantia, EstadoAlquiler.ACTIVO);
+
     }
 
     /*
@@ -46,6 +46,7 @@ public class Alquiler implements Calculable, Serializable {
     public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, LocalDate fechaDevolucionReal, double tarifaDiariaAplicada, double depositoGarantia, EstadoAlquiler estado) {
 
         this(numeroAlquiler, cliente, vehiculo, fechaInicio, cantidadDias, fechaDevolucionReal, tarifaDiariaAplicada, depositoGarantia, estado, null, null, null, null);
+
     }
 
     /*
@@ -69,6 +70,7 @@ public class Alquiler implements Calculable, Serializable {
         this.montoPagado = montoPagado;
         this.montoRecibido = montoRecibido;
         this.vuelto = vuelto;
+
     }
 
     /*
@@ -77,7 +79,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El subtotal correspondiente al alquiler sin incluir el depósito de garantía
      */
     public double calcularSubtotal() {
+
         return tarifaDiariaAplicada * cantidadDias;
+
     }
 
     /*
@@ -87,7 +91,9 @@ public class Alquiler implements Calculable, Serializable {
      */
     @Override
     public double calcularTotal() {
+
         return calcularSubtotal() + depositoGarantia;
+
     }
 
     /*
@@ -98,10 +104,13 @@ public class Alquiler implements Calculable, Serializable {
     public long calcularDiasAtraso(LocalDate fechaDevolucion) {
 
         if (!fechaDevolucion.isAfter(fechaDevolucionEsperada)) {
+
             return 0;
+
         }
 
         return ChronoUnit.DAYS.between(fechaDevolucionEsperada, fechaDevolucion);
+
     }
 
     /*
@@ -111,10 +120,10 @@ public class Alquiler implements Calculable, Serializable {
      */
     public double calcularMulta(LocalDate fechaDevolucion) {
 
-        long diasAtraso =
-                calcularDiasAtraso(fechaDevolucion);
+        long diasAtraso = calcularDiasAtraso(fechaDevolucion);
 
         return tarifaDiariaAplicada * diasAtraso;
+
     }
 
     /*
@@ -126,10 +135,8 @@ public class Alquiler implements Calculable, Serializable {
 
         double multa = calcularMulta(fechaDevolucion);
 
-        return Math.max(
-                0,
-                depositoGarantia - multa
-        );
+        return Math.max(0, depositoGarantia - multa);
+
     }
 
     /*
@@ -141,10 +148,8 @@ public class Alquiler implements Calculable, Serializable {
 
         double multa = calcularMulta(fechaDevolucion);
 
-        return Math.max(
-                0,
-                multa - depositoGarantia
-        );
+        return Math.max(0, multa - depositoGarantia);
+
     }
 
     /*
@@ -155,7 +160,9 @@ public class Alquiler implements Calculable, Serializable {
     public void finalizar(LocalDate fechaDevolucionReal) {
 
         this.fechaDevolucionReal = fechaDevolucionReal;
+
         this.estado = EstadoAlquiler.FINALIZADO;
+
     }
 
     /*
@@ -164,17 +171,32 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: No retorna ningún valor
      */
     public void registrarPago(MetodoPago metodoPago, double montoPagado, Double montoRecibido, Double vuelto) {
+
         this.metodoPago = metodoPago;
+
         this.montoPagado = montoPagado;
+
         this.montoRecibido = montoRecibido;
+
         this.vuelto = vuelto;
+
     }
 
+    /*
+     * Qué hace: Registra la información relacionada con el pago realizado al finalizar la devolucion
+     * Recibe: El método de pago utilizado, el monto pagado, el monto recibido en efectivo y el vuelto correspondiente
+     * Retorna: No retorna ningún valor
+     */
     public void registrarPagoDevolucion(MetodoPago metodoPagoDevolucion, double montoPagadoDevolucion, Double montoRecibidoDevolucion, Double vueltoDevolucion) {
+
         this.metodoPagoDevolucion = metodoPagoDevolucion;
+
         this.montoPagadoDevolucion = montoPagadoDevolucion;
+
         this.montoRecibidoDevolucion = montoRecibidoDevolucion;
+
         this.vueltoDevolucion = vueltoDevolucion;
+
     }
 
     /*
@@ -183,7 +205,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El número identificador del alquiler
      */
     public int getNumeroAlquiler() {
+
         return numeroAlquiler;
+
     }
 
     /*
@@ -192,7 +216,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El cliente relacionado con el alquiler
      */
     public Cliente getCliente() {
+
         return cliente;
+
     }
 
     /*
@@ -201,7 +227,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El vehículo relacionado con el alquiler
      */
     public Vehiculo getVehiculo() {
+
         return vehiculo;
+
     }
 
     /*
@@ -210,7 +238,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: La fecha de inicio del alquiler
      */
     public LocalDate getFechaInicio() {
+
         return fechaInicio;
+
     }
 
     /*
@@ -219,7 +249,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: La cantidad de días establecidos para el alquiler
      */
     public int getCantidadDias() {
+
         return cantidadDias;
+
     }
 
     /*
@@ -228,7 +260,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: La fecha esperada de devolución del vehículo
      */
     public LocalDate getFechaDevolucionEsperada() {
+
         return fechaDevolucionEsperada;
+
     }
 
     /*
@@ -237,7 +271,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: La fecha real de devolución del vehículo
      */
     public LocalDate getFechaDevolucionReal() {
+
         return fechaDevolucionReal;
+
     }
 
     /*
@@ -246,7 +282,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: La tarifa diaria utilizada para calcular el alquiler
      */
     public double getTarifaDiariaAplicada() {
+
         return tarifaDiariaAplicada;
+
     }
 
     /*
@@ -255,7 +293,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El monto correspondiente al depósito de garantía
      */
     public double getDepositoGarantia() {
+
         return depositoGarantia;
+
     }
 
     /*
@@ -264,7 +304,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El estado actual del alquiler
      */
     public EstadoAlquiler getEstado() {
+
         return estado;
+
     }
 
     /*
@@ -273,7 +315,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El método de pago utilizado o null si el alquiler todavía no ha sido pagado
      */
     public MetodoPago getMetodoPago() {
+
         return metodoPago;
+
     }
 
     /*
@@ -282,7 +326,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El monto pagado o null si todavía no se ha registrado ningún pago
      */
     public Double getMontoPagado() {
+
         return montoPagado;
+
     }
 
     /*
@@ -291,7 +337,9 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El monto recibido en efectivo o null cuando el pago no fue realizado en efectivo
      */
     public Double getMontoRecibido() {
+
         return montoRecibido;
+
     }
 
     /*
@@ -300,23 +348,53 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: El vuelto correspondiente o null cuando el pago no fue realizado en efectivo
      */
     public Double getVuelto() {
+
         return vuelto;
+
     }
 
+    /*
+     * Qué hace: Obtiene el método de pago utilizado por el cliente al realizar el pago de la devolución
+     * Recibe: No recibe parámetros
+     * Retorna: El método de pago utilizado en la devolución
+     */
     public MetodoPago getMetodoPagoDevolucion() {
+
         return metodoPagoDevolucion;
+
     }
 
+    /*
+     * Qué hace: Obtiene el monto que debe devolverse al cliente como vuelto por el pago de la devolución
+     * Recibe: No recibe parámetros
+     * Retorna: El vuelto correspondiente o null cuando el pago no fue realizado en efectivo
+     */
     public Double getVueltoDevolucion() {
+
         return vueltoDevolucion;
+
     }
 
+    /*
+     * Qué hace: Obtiene la cantidad de dinero en efectivo entregada por el cliente al realizar el pago de la devolución
+     * Recibe: No recibe parámetros
+     * Retorna: El monto recibido en efectivo o null cuando el pago no fue realizado en efectivo
+     */
     public Double getMontoRecibidoDevolucion() {
+
         return montoRecibidoDevolucion;
+
     }
 
+    /*
+     * Qué hace: Obtiene el monto total pagado por el cliente al realizar la devolución del vehículo
+     * Recibe: No recibe parámetros
+     * Retorna: El monto pagado correspondiente a la devolución
+     */
     public Double getMontoPagadoDevolucion() {
+
         return montoPagadoDevolucion;
+
     }
 
     /*
@@ -326,7 +404,9 @@ public class Alquiler implements Calculable, Serializable {
      */
     @Override
     public String toString() {
+
         return "Alquiler #" + numeroAlquiler + " - " + cliente.getNombreCompleto() + " - " + vehiculo.getPlaca();
+
     }
 
 }

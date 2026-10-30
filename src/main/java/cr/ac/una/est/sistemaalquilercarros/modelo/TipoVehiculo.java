@@ -16,11 +16,17 @@ public class TipoVehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public TipoVehiculo(String nombre, CategoriaVehiculo categoria, boolean requierePasajeros, boolean requiereTraccion, boolean requiereCapacidadCarga) {
+
         this.nombre = nombre;
+
         this.categoria = categoria;
+
         this.requierePasajeros = requierePasajeros;
+
         this.requiereTraccion = requiereTraccion;
+
         this.requiereCapacidadCarga = requiereCapacidadCarga;
+
     }
 
     /*
@@ -29,7 +35,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: El nombre del tipo de vehículo
      */
     public String getNombre() {
+
         return nombre;
+
     }
 
     /*
@@ -38,7 +46,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
+
     }
 
     /*
@@ -47,7 +57,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: La categoría del tipo de vehículo
      */
     public CategoriaVehiculo getCategoria() {
+
         return categoria;
+
     }
 
     /*
@@ -56,7 +68,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setCategoria(CategoriaVehiculo categoria) {
+
         this.categoria = categoria;
+
     }
 
     /*
@@ -65,7 +79,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: Verdadero si requiere cantidad de pasajeros o falso si no la requiere
      */
     public boolean isRequierePasajeros() {
+
         return requierePasajeros;
+
     }
 
     /*
@@ -74,7 +90,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setRequierePasajeros(boolean requierePasajeros) {
+
         this.requierePasajeros = requierePasajeros;
+
     }
 
     /*
@@ -83,7 +101,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: Verdadero si requiere tipo de tracción o falso si no lo requiere
      */
     public boolean isRequiereTraccion() {
+
         return requiereTraccion;
+
     }
 
     /*
@@ -92,7 +112,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setRequiereTraccion(boolean requiereTraccion) {
+
         this.requiereTraccion = requiereTraccion;
+
     }
 
     /*
@@ -101,7 +123,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: Verdadero si requiere capacidad de carga o falso si no la requiere
      */
     public boolean isRequiereCapacidadCarga() {
+
         return requiereCapacidadCarga;
+
     }
 
     /*
@@ -110,7 +134,9 @@ public class TipoVehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setRequiereCapacidadCarga(boolean requiereCapacidadCarga) {
+
         this.requiereCapacidadCarga = requiereCapacidadCarga;
+
     }
 
     /*
@@ -120,6 +146,9 @@ public class TipoVehiculo implements Serializable {
      */
     @Override
     public String toString() {
+
         return nombre;
+
     }
+
 }

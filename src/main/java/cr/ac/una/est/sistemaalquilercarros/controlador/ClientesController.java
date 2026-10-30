@@ -59,27 +59,18 @@ public class ClientesController {
     @FXML
     private void initialize() {
 
-        colCedula.setCellValueFactory(
-                dato -> new SimpleStringProperty(dato.getValue().getCedula())
-        );
+        colCedula.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCedula()));
 
-        colNombre.setCellValueFactory(
-                dato -> new SimpleStringProperty(dato.getValue().getNombreCompleto())
-        );
+        colNombre.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getNombreCompleto()));
 
-        colTelefono.setCellValueFactory(
-                dato -> new SimpleStringProperty(dato.getValue().getTelefono())
-        );
+        colTelefono.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getTelefono()));
 
-        colCorreo.setCellValueFactory(
-                dato -> new SimpleStringProperty(dato.getValue().getCorreo())
-        );
+        colCorreo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCorreo()));
 
         tablaClientes.setOnMouseClicked(evento -> cargarClienteSeleccionado());
 
-        txtBuscar.textProperty().addListener(
-                (observable, textoAnterior, textoNuevo) -> filtrarClientes(textoNuevo)
-        );
+        txtBuscar.textProperty().addListener((observable, textoAnterior, textoNuevo) -> filtrarClientes(textoNuevo));
+
     }
 
     /*
@@ -92,6 +83,7 @@ public class ClientesController {
         this.clienteServicio = clienteServicio;
 
         actualizarTabla();
+
     }
 
     /*
@@ -109,15 +101,21 @@ public class ClientesController {
             clienteServicio.registrarCliente(cliente);
 
             actualizarTabla();
+
             limpiarFormulario();
 
             mostrarInformacion("Cliente registrado correctamente");
 
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
         } catch (RuntimeException e) {
+
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -135,27 +133,31 @@ public class ClientesController {
             mostrarError("Debe seleccionar un cliente.");
 
             return;
+
         }
 
         try {
 
             Cliente modificado = crearClienteDesdeFormulario();
 
-            clienteServicio.modificarCliente(
-                    seleccionado.getCedula(),
-                    modificado
-            );
+            clienteServicio.modificarCliente(seleccionado.getCedula(), modificado);
 
             actualizarTabla();
+
             limpiarFormulario();
 
             mostrarInformacion("Cliente modificado correctamente.");
 
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
         } catch (RuntimeException e) {
+
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -173,6 +175,7 @@ public class ClientesController {
             mostrarError("Debe seleccionar un cliente.");
 
             return;
+
         }
 
         try {
@@ -180,15 +183,21 @@ public class ClientesController {
             clienteServicio.eliminarCliente(seleccionado.getCedula());
 
             actualizarTabla();
+
             limpiarFormulario();
 
             mostrarInformacion("Cliente eliminado correctamente.");
 
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
         } catch (RuntimeException e) {
+
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -200,13 +209,17 @@ public class ClientesController {
     private void limpiarFormulario() {
 
         txtCedula.clear();
+
         txtNombre.clear();
+
         txtTelefono.clear();
+
         txtCorreo.clear();
 
         txtCedula.setDisable(false);
 
         tablaClientes.getSelectionModel().clearSelection();
+
     }
 
     /*
@@ -216,12 +229,8 @@ public class ClientesController {
      */
     private Cliente crearClienteDesdeFormulario() {
 
-        return new Cliente(
-                txtCedula.getText().trim(),
-                txtNombre.getText().trim(),
-                txtTelefono.getText().trim(),
-                txtCorreo.getText().trim()
-        );
+        return new Cliente(txtCedula.getText().trim(), txtNombre.getText().trim(), txtTelefono.getText().trim(), txtCorreo.getText().trim());
+
     }
 
     /*
@@ -234,15 +243,21 @@ public class ClientesController {
         Cliente cliente = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (cliente == null) {
+
             return;
+
         }
 
         txtCedula.setText(cliente.getCedula());
+
         txtNombre.setText(cliente.getNombreCompleto());
+
         txtTelefono.setText(cliente.getTelefono());
+
         txtCorreo.setText(cliente.getCorreo());
 
         txtCedula.setDisable(true);
+
     }
 
     /*
@@ -253,27 +268,27 @@ public class ClientesController {
     private void actualizarTabla() {
 
         if (clienteServicio == null) {
+
             return;
+
         }
 
         try {
 
-            listaClientes = FXCollections.observableArrayList(
-                    clienteServicio.obtenerTodos()
-            );
+            listaClientes = FXCollections.observableArrayList(clienteServicio.obtenerTodos());
 
-            clientesFiltrados = new FilteredList<>(
-                    listaClientes,
-                    cliente -> true
-            );
+            clientesFiltrados = new FilteredList<>(listaClientes, cliente -> true);
 
             tablaClientes.setItems(clientesFiltrados);
 
             filtrarClientes(txtBuscar.getText());
 
         } catch (RuntimeException e) {
+
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -284,13 +299,17 @@ public class ClientesController {
     private void filtrarClientes(String textoBusqueda) {
 
         if (clientesFiltrados == null) {
+
             return;
+
         }
 
         clientesFiltrados.setPredicate(cliente -> {
 
             if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
+
                 return true;
+
             }
 
             String busqueda = textoBusqueda.toLowerCase().trim();
@@ -299,7 +318,9 @@ public class ClientesController {
                     || cliente.getNombreCompleto().toLowerCase().contains(busqueda)
                     || cliente.getTelefono().toLowerCase().contains(busqueda)
                     || cliente.getCorreo().toLowerCase().contains(busqueda);
+
         });
+
     }
 
     /*
@@ -312,10 +333,13 @@ public class ClientesController {
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
         alerta.setTitle("Error");
+
         alerta.setHeaderText(null);
+
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -328,9 +352,13 @@ public class ClientesController {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
         alerta.setTitle("Información");
+
         alerta.setHeaderText(null);
+
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
+
 }

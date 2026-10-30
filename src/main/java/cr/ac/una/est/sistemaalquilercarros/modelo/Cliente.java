@@ -15,10 +15,15 @@ public class Cliente implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public Cliente(String cedula, String nombreCompleto, String telefono, String correo) {
+
         this.cedula = cedula;
+
         this.nombreCompleto = nombreCompleto;
+
         this.telefono = telefono;
+
         this.correo = correo;
+
     }
 
     /*
@@ -27,7 +32,9 @@ public class Cliente implements Serializable {
      * Retorna: La cédula del cliente
      */
     public String getCedula() {
+
         return cedula;
+
     }
 
     /*
@@ -36,7 +43,9 @@ public class Cliente implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setCedula(String cedula) {
+
         this.cedula = cedula;
+
     }
 
     /*
@@ -45,7 +54,9 @@ public class Cliente implements Serializable {
      * Retorna: El nombre completo del cliente
      */
     public String getNombreCompleto() {
+
         return nombreCompleto;
+
     }
 
     /*
@@ -54,7 +65,9 @@ public class Cliente implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setNombreCompleto(String nombreCompleto) {
+
         this.nombreCompleto = nombreCompleto;
+
     }
 
     /*
@@ -63,7 +76,9 @@ public class Cliente implements Serializable {
      * Retorna: El número de teléfono del cliente
      */
     public String getTelefono() {
+
         return telefono;
+
     }
 
     /*
@@ -72,7 +87,9 @@ public class Cliente implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setTelefono(String telefono) {
+
         this.telefono = telefono;
+
     }
 
     /*
@@ -81,7 +98,9 @@ public class Cliente implements Serializable {
      * Retorna: El correo electrónico del cliente
      */
     public String getCorreo() {
+
         return correo;
+
     }
 
     /*
@@ -90,7 +109,9 @@ public class Cliente implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setCorreo(String correo) {
+
         this.correo = correo;
+
     }
 
     /*
@@ -100,6 +121,9 @@ public class Cliente implements Serializable {
      */
     @Override
     public String toString() {
+
         return cedula + " - " + nombreCompleto;
+
     }
+
 }

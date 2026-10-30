@@ -18,13 +18,21 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public Vehiculo(String placa, String marca, String modelo, int anio, double tarifaDiaria, TipoVehiculo tipoVehiculo) {
+
         this.placa = placa;
+
         this.marca = marca;
+
         this.modelo = modelo;
+
         this.anio = anio;
+
         this.tarifaDiaria = tarifaDiaria;
+
         this.tipoVehiculo = tipoVehiculo;
+
         this.estado = EstadoVehiculo.DISPONIBLE;
+
     }
 
     /*
@@ -33,7 +41,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: La placa del vehículo
      */
     public String getPlaca() {
+
         return placa;
+
     }
 
     /*
@@ -42,7 +52,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setPlaca(String placa) {
+
         this.placa = placa;
+
     }
 
     /*
@@ -51,7 +63,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: La marca del vehículo
      */
     public String getMarca() {
+
         return marca;
+
     }
 
     /*
@@ -60,7 +74,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setMarca(String marca) {
+
         this.marca = marca;
+
     }
 
     /*
@@ -69,7 +85,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: El modelo del vehículo
      */
     public String getModelo() {
+
         return modelo;
+
     }
 
     /*
@@ -78,7 +96,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setModelo(String modelo) {
+
         this.modelo = modelo;
+
     }
 
     /*
@@ -87,7 +107,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: El año del vehículo
      */
     public int getAnio() {
+
         return anio;
+
     }
 
     /*
@@ -96,7 +118,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setAnio(int anio) {
+
         this.anio = anio;
+
     }
 
     /*
@@ -105,7 +129,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: La tarifa diaria del vehículo
      */
     public double getTarifaDiaria() {
+
         return tarifaDiaria;
+
     }
 
     /*
@@ -114,7 +140,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setTarifaDiaria(double tarifaDiaria) {
+
         this.tarifaDiaria = tarifaDiaria;
+
     }
 
     /*
@@ -123,7 +151,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: El estado actual del vehículo
      */
     public EstadoVehiculo getEstado() {
+
         return estado;
+
     }
 
     /*
@@ -132,7 +162,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setEstado(EstadoVehiculo estado) {
+
         this.estado = estado;
+
     }
 
     /*
@@ -141,7 +173,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: El tipo de vehículo asociado
      */
     public TipoVehiculo getTipoVehiculo() {
+
         return tipoVehiculo;
+
     }
 
     /*
@@ -150,6 +184,9 @@ public abstract class Vehiculo implements Serializable {
      * Retorna: No retorna ningún valor
      */
     public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
+
         this.tipoVehiculo = tipoVehiculo;
+
     }
+
 }

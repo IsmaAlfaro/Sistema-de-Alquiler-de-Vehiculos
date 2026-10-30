@@ -26,9 +26,13 @@ public class AlquilerServicio {
      * Retorna: No retorna ningún valor
      */
     public AlquilerServicio(AlquilerRepositorio alquilerRepositorio, VehiculoServicio vehiculoServicio, ClienteServicio clienteServicio) {
+
         this.alquilerRepositorio = alquilerRepositorio;
+
         this.vehiculoServicio = vehiculoServicio;
+
         this.clienteServicio = clienteServicio;
+
     }
 
     /*
@@ -41,29 +45,41 @@ public class AlquilerServicio {
         Cliente cliente = clienteServicio.buscarPorCedula(cedulaCliente);
 
         if (cliente == null) {
+
             throw new IllegalArgumentException("El cliente no existe.");
+
         }
 
         Vehiculo vehiculo = vehiculoServicio.buscarPorPlaca(placaVehiculo);
 
         if (vehiculo == null) {
+
             throw new IllegalArgumentException("El vehículo no existe.");
+
         }
 
         if (vehiculo.getEstado() != EstadoVehiculo.DISPONIBLE) {
+
             throw new IllegalArgumentException("El vehículo no está disponible.");
+
         }
 
         if (fechaInicio == null) {
+
             throw new IllegalArgumentException("La fecha de inicio es obligatoria.");
+
         }
 
         if (cantidadDias <= 0) {
+
             throw new IllegalArgumentException("La cantidad de días debe ser mayor que cero.");
+
         }
 
         if (metodoPago == null) {
+
             throw new IllegalArgumentException("Debe seleccionar una forma de pago.");
+
         }
 
         double total = vehiculo.getTarifaDiaria() * cantidadDias + DEPOSITO_GARANTIA;
@@ -73,34 +89,39 @@ public class AlquilerServicio {
         if (metodoPago == MetodoPago.EFECTIVO) {
 
             if (montoRecibido == null) {
+
                 throw new IllegalArgumentException("Debe ingresar el monto recibido en efectivo.");
+
             }
 
             if (montoRecibido < 0) {
+
                 throw new IllegalArgumentException("El monto recibido no puede ser negativo.");
+
             }
 
             if (montoRecibido % 10 != 0) {
+
                 throw new IllegalArgumentException("El monto recibido debe ser múltiplo de ₡10.");
+
             }
 
             if (montoRecibido < total) {
+
                 throw new IllegalArgumentException("El monto recibido es menor al total del alquiler.");
+
             }
 
             vuelto = montoRecibido - total;
+
         }
 
         Alquiler alquiler = new Alquiler(0, cliente, vehiculo, fechaInicio, cantidadDias, DEPOSITO_GARANTIA);
 
-        alquiler.registrarPago(
-                metodoPago,
-                total,
-                metodoPago == MetodoPago.EFECTIVO ? montoRecibido : null,
-                metodoPago == MetodoPago.EFECTIVO ? vuelto : null
-        );
+        alquiler.registrarPago(metodoPago, total, metodoPago == MetodoPago.EFECTIVO ? montoRecibido : null, metodoPago == MetodoPago.EFECTIVO ? vuelto : null);
 
         return alquilerRepositorio.agregar(alquiler);
+
     }
 
     /*
@@ -113,19 +134,27 @@ public class AlquilerServicio {
         Alquiler alquiler = buscarPorNumero(numeroAlquiler);
 
         if (alquiler == null) {
+
             throw new IllegalArgumentException("El alquiler no existe.");
+
         }
 
         if (alquiler.getEstado() == EstadoAlquiler.FINALIZADO) {
+
             throw new IllegalArgumentException("El alquiler ya fue finalizado.");
+
         }
 
         if (fechaDevolucion == null) {
+
             throw new IllegalArgumentException("La fecha de devolución es obligatoria.");
+
         }
 
         if (fechaDevolucion.isBefore(alquiler.getFechaInicio())) {
+
             throw new IllegalArgumentException("La fecha de devolución no puede ser anterior al inicio.");
+
         }
 
         long diasAtraso = alquiler.calcularDiasAtraso(fechaDevolucion);
@@ -139,7 +168,9 @@ public class AlquilerServicio {
         if (saldoPendiente > 0) {
 
             if (metodoPago == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar una forma de pago para cancelar el saldo pendiente.");
+
             }
 
             Double vuelto = null;
@@ -147,30 +178,35 @@ public class AlquilerServicio {
             if (metodoPago == MetodoPago.EFECTIVO) {
 
                 if (montoRecibido == null) {
+
                     throw new IllegalArgumentException("Debe ingresar el monto recibido en efectivo.");
+
                 }
 
                 if (montoRecibido < 0) {
+
                     throw new IllegalArgumentException("El monto recibido no puede ser negativo.");
+
                 }
 
                 if (montoRecibido % 10 != 0) {
+
                     throw new IllegalArgumentException("El monto recibido debe ser múltiplo de ₡10.");
+
                 }
 
                 if (montoRecibido < saldoPendiente) {
+
                     throw new IllegalArgumentException("El monto recibido es menor al saldo pendiente.");
+
                 }
 
                 vuelto = montoRecibido - saldoPendiente;
+
             }
 
-            alquiler.registrarPagoDevolucion(
-                    metodoPago,
-                    saldoPendiente,
-                    metodoPago == MetodoPago.EFECTIVO ? montoRecibido : null,
-                    metodoPago == MetodoPago.EFECTIVO ? vuelto : null
-            );
+            alquiler.registrarPagoDevolucion(metodoPago, saldoPendiente, metodoPago == MetodoPago.EFECTIVO ? montoRecibido : null, metodoPago == MetodoPago.EFECTIVO ? vuelto : null);
+
         }
 
         alquiler.finalizar(fechaDevolucion);
@@ -178,6 +214,7 @@ public class AlquilerServicio {
         alquilerRepositorio.finalizar(alquiler);
 
         return new ResultadoDevolucion(diasAtraso, multa, depositoDevuelto, saldoPendiente);
+
     }
 
     /*
@@ -185,10 +222,10 @@ public class AlquilerServicio {
      * Recibe: El número de alquiler que se desea buscar
      * Retorna: El alquiler encontrado o null si no existe un alquiler con ese número
      */
-    public Alquiler buscarPorNumero(
-            int numeroAlquiler) {
+    public Alquiler buscarPorNumero(int numeroAlquiler) {
 
         return alquilerRepositorio.buscarPorNumero(numeroAlquiler);
+
     }
 
     /*
@@ -199,6 +236,7 @@ public class AlquilerServicio {
     public List<Alquiler> obtenerTodos() {
 
         return alquilerRepositorio.obtenerTodos();
+
     }
 
     /*
@@ -209,6 +247,7 @@ public class AlquilerServicio {
     public List<Alquiler> obtenerActivos() {
 
         return alquilerRepositorio.obtenerActivos();
+
     }
 
     /*
@@ -219,6 +258,7 @@ public class AlquilerServicio {
     public int cantidadAlquileresActivos() {
 
         return obtenerActivos().size();
+
     }
 
     /*
@@ -229,5 +269,7 @@ public class AlquilerServicio {
     public double getDepositoGarantia() {
 
         return DEPOSITO_GARANTIA;
+
     }
+
 }

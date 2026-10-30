@@ -34,9 +34,13 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
      * Retorna: No retorna ningún valor
      */
     public AlquilerRepositorioJdbc(ConexionBD conexionBD, ClienteRepositorio clienteRepositorio, VehiculoRepositorio vehiculoRepositorio) {
+
         this.conexionBD = conexionBD;
+
         this.clienteRepositorio = clienteRepositorio;
+
         this.vehiculoRepositorio = vehiculoRepositorio;
+
     }
 
     /*
@@ -62,14 +66,23 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                 try (PreparedStatement ps = cn.prepareStatement(sqlAlquiler, Statement.RETURN_GENERATED_KEYS)) {
 
                     ps.setString(1, alquiler.getCliente().getCedula());
+
                     ps.setString(2, alquiler.getVehiculo().getPlaca());
+
                     ps.setDate(3, Date.valueOf(alquiler.getFechaInicio()));
+
                     ps.setInt(4, alquiler.getCantidadDias());
+
                     ps.setNull(5, Types.DATE);
+
                     ps.setDouble(6, alquiler.getTarifaDiariaAplicada());
+
                     ps.setDouble(7, alquiler.getDepositoGarantia());
+
                     ps.setString(8, alquiler.getEstado().name());
+
                     ps.setString(9, alquiler.getMetodoPago().name());
+
                     ps.setDouble(10, alquiler.getMontoPagado());
 
                     if (alquiler.getMontoRecibido() != null) {
@@ -77,7 +90,9 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         ps.setDouble(11, alquiler.getMontoRecibido());
 
                     } else {
+
                         ps.setNull(11, Types.DECIMAL);
+
                     }
 
                     if (alquiler.getVuelto() != null) {
@@ -85,7 +100,9 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         ps.setDouble(12, alquiler.getVuelto());
 
                     } else {
+
                         ps.setNull(12, Types.DECIMAL);
+
                     }
 
                     ps.executeUpdate();
@@ -93,52 +110,57 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                     try (ResultSet claves = ps.getGeneratedKeys()) {
 
                         if (!claves.next()) {
+
                             throw new SQLException("No se pudo generar el número del alquiler.");
+
                         }
 
                         numeroAlquiler = claves.getInt(1);
+
                     }
+
                 }
 
                 try (PreparedStatement ps = cn.prepareStatement(sqlVehiculo)) {
 
                     ps.setString(1, EstadoVehiculo.ALQUILADO.name());
+
                     ps.setString(2, alquiler.getVehiculo().getPlaca());
+
                     ps.setString(3, EstadoVehiculo.DISPONIBLE.name());
+
 
                     int filas = ps.executeUpdate();
 
                     if (filas != 1) {
+
                         throw new SQLException("El vehículo ya no está disponible.");
+
                     }
+
                 }
 
                 cn.commit();
 
-                return new Alquiler(
-                        numeroAlquiler,
-                        alquiler.getCliente(),
-                        alquiler.getVehiculo(),
-                        alquiler.getFechaInicio(),
-                        alquiler.getCantidadDias(),
-                        alquiler.getFechaDevolucionReal(),
-                        alquiler.getTarifaDiariaAplicada(),
-                        alquiler.getDepositoGarantia(),
-                        alquiler.getEstado(),
-                        alquiler.getMetodoPago(),
-                        alquiler.getMontoPagado(),
-                        alquiler.getMontoRecibido(),
-                        alquiler.getVuelto()
-                );
+                return new Alquiler(numeroAlquiler, alquiler.getCliente(), alquiler.getVehiculo(), alquiler.getFechaInicio(),
+                        alquiler.getCantidadDias(), alquiler.getFechaDevolucionReal(), alquiler.getTarifaDiariaAplicada(),
+                        alquiler.getDepositoGarantia(), alquiler.getEstado(), alquiler.getMetodoPago(), alquiler.getMontoPagado(),
+                        alquiler.getMontoRecibido(), alquiler.getVuelto());
 
             } catch (SQLException e) {
+
                 cn.rollback();
+
                 throw e;
+
             }
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo registrar el alquiler.", e);
+
         }
+
     }
 
     /*
@@ -158,15 +180,21 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
+
                     return crearAlquiler(rs);
+
                 }
+
             }
 
             return null;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo buscar el alquiler.", e);
+
         }
+
     }
 
     /*
@@ -184,14 +212,19 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
         try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+
                 alquileres.add(crearAlquiler(rs));
+
             }
 
             return alquileres;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudieron cargar los alquileres.", e);
+
         }
+
     }
 
     /*
@@ -213,15 +246,21 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             try (ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
+
                     alquileres.add(crearAlquiler(rs));
+
                 }
+
             }
 
             return alquileres;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudieron cargar los alquileres activos.", e);
+
         }
+
     }
 
     /*
@@ -245,6 +284,7 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                 try (PreparedStatement ps = cn.prepareStatement(sqlAlquiler)) {
 
                     ps.setDate(1, Date.valueOf(alquiler.getFechaDevolucionReal()));
+
                     ps.setString(2, EstadoAlquiler.FINALIZADO.name());
 
                     if (alquiler.getMetodoPagoDevolucion() != null) {
@@ -252,7 +292,9 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         ps.setString(3, alquiler.getMetodoPagoDevolucion().name());
 
                     } else {
+
                         ps.setNull(3, Types.VARCHAR);
+
                     }
 
                     if (alquiler.getMontoPagadoDevolucion() != null) {
@@ -260,7 +302,9 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         ps.setDouble(4, alquiler.getMontoPagadoDevolucion());
 
                     } else {
+
                         ps.setNull(4, Types.DECIMAL);
+
                     }
 
                     if (alquiler.getMontoRecibidoDevolucion() != null) {
@@ -268,7 +312,9 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         ps.setDouble(5, alquiler.getMontoRecibidoDevolucion());
 
                     } else {
+
                         ps.setNull(5, Types.DECIMAL);
+
                     }
 
                     if (alquiler.getVueltoDevolucion() != null) {
@@ -276,7 +322,9 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                         ps.setDouble(6, alquiler.getVueltoDevolucion());
 
                     } else {
+
                         ps.setNull(6, Types.DECIMAL);
+
                     }
 
                     ps.setInt(7, alquiler.getNumeroAlquiler());
@@ -286,21 +334,29 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
                     int filas = ps.executeUpdate();
 
                     if (filas != 1) {
+
                         throw new SQLException("El alquiler ya no está activo.");
+
                     }
+
                 }
 
                 try (PreparedStatement ps = cn.prepareStatement(sqlVehiculo)) {
 
                     ps.setString(1, EstadoVehiculo.DISPONIBLE.name());
+
                     ps.setString(2, alquiler.getVehiculo().getPlaca());
+
                     ps.setString(3, EstadoVehiculo.ALQUILADO.name());
 
                     int filas = ps.executeUpdate();
 
                     if (filas != 1) {
+
                         throw new SQLException("No se pudo liberar el vehículo.");
+
                     }
+
                 }
 
                 cn.commit();
@@ -308,13 +364,17 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             } catch (SQLException e) {
 
                 cn.rollback();
+
                 throw e;
 
             }
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo finalizar el alquiler.", e);
+
         }
+
     }
 
     /*
@@ -334,8 +394,11 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
             throw new RuntimeException("No se pudo eliminar el alquiler.", e);
+
         }
+
     }
 
     /*
@@ -346,6 +409,7 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
     private Alquiler crearAlquiler(ResultSet rs) throws SQLException {
 
         Cliente cliente = clienteRepositorio.buscarPorCedula(rs.getString("cedula_cliente"));
+
         Vehiculo vehiculo = vehiculoRepositorio.buscarPorPlaca(rs.getString("placa_vehiculo"));
 
         Date fechaReal = rs.getDate("fecha_devolucion_real");
@@ -384,32 +448,18 @@ public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
 
         Double vueltoDevolucion = vueltoDevolucionBD == null ? null : vueltoDevolucionBD.doubleValue();
 
-        Alquiler alquiler = new Alquiler(
-                rs.getInt("numero_alquiler"),
-                cliente,
-                vehiculo,
-                rs.getDate("fecha_inicio").toLocalDate(),
-                rs.getInt("cantidad_dias"),
-                fechaDevolucionReal,
-                rs.getDouble("tarifa_diaria_aplicada"),
-                rs.getDouble("deposito_garantia"),
-                EstadoAlquiler.valueOf(rs.getString("estado")),
-                metodoPago,
-                montoPagado,
-                montoRecibido,
-                vuelto
-        );
+        Alquiler alquiler = new Alquiler(rs.getInt("numero_alquiler"), cliente, vehiculo, rs.getDate("fecha_inicio").toLocalDate(),
+                rs.getInt("cantidad_dias"), fechaDevolucionReal, rs.getDouble("tarifa_diaria_aplicada"), rs.getDouble("deposito_garantia"),
+                EstadoAlquiler.valueOf(rs.getString("estado")), metodoPago, montoPagado, montoRecibido, vuelto);
 
         if (metodoPagoDevolucion != null) {
 
-            alquiler.registrarPagoDevolucion(
-                    metodoPagoDevolucion,
-                    montoPagadoDevolucion,
-                    montoRecibidoDevolucion,
-                    vueltoDevolucion
-            );
+            alquiler.registrarPagoDevolucion(metodoPagoDevolucion, montoPagadoDevolucion, montoRecibidoDevolucion, vueltoDevolucion);
+
         }
 
         return alquiler;
+
     }
+
 }

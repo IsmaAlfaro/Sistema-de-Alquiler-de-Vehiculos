@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-
 import java.io.IOException;
 
 public class PrincipalController {
@@ -52,9 +51,13 @@ public class PrincipalController {
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar la pantalla de inicio.");
+
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -66,6 +69,7 @@ public class PrincipalController {
     private void mostrarVehiculos() {
 
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/cr/ac/una/est/sistemaalquilercarros/fxml/vehiculos.fxml"));
 
             Parent vista = loader.load();
@@ -77,9 +81,13 @@ public class PrincipalController {
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar la pantalla de vehículos.");
+
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -103,9 +111,13 @@ public class PrincipalController {
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar la pantalla de tipos de vehículos.");
+
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -115,6 +127,7 @@ public class PrincipalController {
      */
     @FXML
     private void mostrarClientes() {
+
         try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/cr/ac/una/est/sistemaalquilercarros/fxml/cliente.fxml"));
@@ -128,9 +141,13 @@ public class PrincipalController {
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar la pantalla de clientes.");
+
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -154,9 +171,13 @@ public class PrincipalController {
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar la pantalla de alquileres.");
+
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -180,9 +201,13 @@ public class PrincipalController {
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar la pantalla de devolución.");
+
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -212,7 +237,9 @@ public class PrincipalController {
             mostrarMensaje("No se pudo cargar el historial.");
 
             e.printStackTrace();
+
         }
+
     }
 
     /*
@@ -222,7 +249,9 @@ public class PrincipalController {
      */
     @FXML
     private void cerrarAplicacion() {
+
         Platform.exit();
+
     }
 
     /*
@@ -237,5 +266,7 @@ public class PrincipalController {
         label.setStyle("-fx-font-size: 24px;");
 
         panelPrincipal.setCenter(label);
+
     }
+
 }

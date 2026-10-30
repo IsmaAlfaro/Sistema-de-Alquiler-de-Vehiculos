@@ -126,130 +126,53 @@ public class AlquileresController {
         lblTotal.setText("₡0.00");
         lblVuelto.setText("₡0.00");
 
-        cmbMetodoPago.setItems(
-                FXCollections.observableArrayList(
-                        MetodoPago.values()
-                )
-        );
+        cmbMetodoPago.setItems(FXCollections.observableArrayList(MetodoPago.values()));
 
-        txtMontoRecibido.setDisable(
-                true
-        );
+        txtMontoRecibido.setDisable(true);
 
-        cmbFiltroEstado.setItems(
-                FXCollections.observableArrayList(
-                        "TODOS",
-                        "ACTIVO",
-                        "FINALIZADO"
-                )
-        );
+        cmbFiltroEstado.setItems(FXCollections.observableArrayList("TODOS", "ACTIVO", "FINALIZADO"));
 
         cmbFiltroEstado.setValue("TODOS");
 
-        colNumero.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getNumeroAlquiler()
-                )
-        );
+        colNumero.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getNumeroAlquiler()));
 
-        colCliente.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getCliente()
-                                .getNombreCompleto()
-                )
-        );
+        colCliente.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCliente().getNombreCompleto()));
 
-        colVehiculo.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getVehiculo()
-                                .toString()
-                )
-        );
+        colVehiculo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getVehiculo().toString()));
 
-        colFechaInicio.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getFechaInicio()
-                )
-        );
+        colFechaInicio.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaInicio()));
 
-        colFechaEsperada.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue()
-                                .getFechaDevolucionEsperada()
-                )
-        );
+        colFechaEsperada.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaDevolucionEsperada()));
 
-        colDias.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getCantidadDias()
-                )
-        );
+        colDias.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getCantidadDias()));
 
-        colTotal.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        String.format(
-                                "₡%,.2f",
-                                dato.getValue().calcularTotal()
-                        )
-                )
-        );
+        colTotal.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().calcularTotal())));
 
-        colEstado.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getEstado()
-                                .toString()
-                )
-        );
+        colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
 
-        cmbVehiculo.valueProperty().addListener(
-                (observable, vehiculoAnterior, vehiculoNuevo) ->
-                        actualizarTarifaDiaria()
-        );
+        cmbVehiculo.valueProperty().addListener((observable, vehiculoAnterior, vehiculoNuevo) -> actualizarTarifaDiaria());
 
-        cmbMetodoPago.valueProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        actualizarFormaPago()
-        );
+        cmbMetodoPago.valueProperty().addListener((observable, anterior, nuevo) -> actualizarFormaPago());
 
-        txtMontoRecibido.textProperty().addListener(
-                (observable, anterior, nuevo) -> {
+        txtMontoRecibido.textProperty().addListener((observable, anterior, nuevo) -> {
 
                     if (!nuevo.matches("\\d*")) {
-
-                        txtMontoRecibido.setText(
-                                nuevo.replaceAll(
-                                        "[^\\d]",
-                                        ""
-                                )
-                        );
+                        txtMontoRecibido.setText(nuevo.replaceAll("[^\\d]", ""));
                     }
 
                     calcularVuelto();
+
                 }
         );
 
-        txtBuscarCliente.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarClientes(nuevo)
-        );
+        txtBuscarCliente.textProperty().addListener((observable, anterior, nuevo) -> filtrarClientes(nuevo));
 
-        txtBuscarVehiculo.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarVehiculos(nuevo)
-        );
+        txtBuscarVehiculo.textProperty().addListener((observable, anterior, nuevo) -> filtrarVehiculos(nuevo));
 
-        txtBuscarAlquiler.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarAlquileres()
-        );
+        txtBuscarAlquiler.textProperty().addListener((observable, anterior, nuevo) -> filtrarAlquileres());
 
-        cmbFiltroEstado.valueProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarAlquileres()
-        );
+        cmbFiltroEstado.valueProperty().addListener((observable, anterior, nuevo) -> filtrarAlquileres());
+
     }
 
     /*
@@ -257,16 +180,14 @@ public class AlquileresController {
      * Recibe: El servicio de clientes, el servicio de vehículos y el servicio de alquileres
      * Retorna: No retorna ningún valor
      */
-    public void setServicios(
-            ClienteServicio clienteServicio,
-            VehiculoServicio vehiculoServicio,
-            AlquilerServicio alquilerServicio) {
+    public void setServicios(ClienteServicio clienteServicio, VehiculoServicio vehiculoServicio, AlquilerServicio alquilerServicio) {
 
         this.clienteServicio = clienteServicio;
         this.vehiculoServicio = vehiculoServicio;
         this.alquilerServicio = alquilerServicio;
 
         cargarDatos();
+
     }
 
     /*
@@ -276,57 +197,32 @@ public class AlquileresController {
      */
     private void cargarDatos() {
 
-        listaClientes = FXCollections.observableArrayList(
-                clienteServicio.obtenerTodos()
-        );
+        listaClientes = FXCollections.observableArrayList(clienteServicio.obtenerTodos());
 
-        clientesFiltrados = new FilteredList<>(
-                listaClientes,
-                cliente -> true
-        );
+        clientesFiltrados = new FilteredList<>(listaClientes, cliente -> true);
 
         cmbCliente.setItems(clientesFiltrados);
 
-        listaVehiculos = FXCollections.observableArrayList(
-                vehiculoServicio.obtenerDisponibles()
-        );
+        listaVehiculos = FXCollections.observableArrayList(vehiculoServicio.obtenerDisponibles());
 
-        vehiculosFiltrados = new FilteredList<>(
-                listaVehiculos,
-                vehiculo -> true
-        );
+        vehiculosFiltrados = new FilteredList<>(listaVehiculos, vehiculo -> true);
 
         cmbVehiculo.setItems(vehiculosFiltrados);
 
-        listaAlquileres = FXCollections.observableArrayList(
-                alquilerServicio.obtenerTodos()
-        );
+        listaAlquileres = FXCollections.observableArrayList(alquilerServicio.obtenerTodos());
 
-        alquileresFiltrados = new FilteredList<>(
-                listaAlquileres,
-                alquiler -> true
-        );
+        alquileresFiltrados = new FilteredList<>(listaAlquileres, alquiler -> true);
 
-        tablaAlquileres.setItems(
-                alquileresFiltrados
-        );
+        tablaAlquileres.setItems(alquileresFiltrados);
 
-        lblDeposito.setText(
-                String.format(
-                        "₡%,.2f",
-                        alquilerServicio.getDepositoGarantia()
-                )
-        );
+        lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
 
-        filtrarClientes(
-                txtBuscarCliente.getText()
-        );
+        filtrarClientes(txtBuscarCliente.getText());
 
-        filtrarVehiculos(
-                txtBuscarVehiculo.getText()
-        );
+        filtrarVehiculos(txtBuscarVehiculo.getText());
 
         filtrarAlquileres();
+
     }
 
     /*
@@ -342,28 +238,20 @@ public class AlquileresController {
 
         clientesFiltrados.setPredicate(cliente -> {
 
-            if (textoBusqueda == null
-                    || textoBusqueda.trim().isEmpty()) {
+            if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
 
                 return true;
+
             }
 
-            String busqueda =
-                    textoBusqueda
-                            .toLowerCase()
-                            .trim();
+            String busqueda = textoBusqueda.toLowerCase().trim();
 
-            return cliente.getCedula()
-                    .toLowerCase()
-                    .contains(busqueda)
+            return cliente.getCedula().toLowerCase().contains(busqueda) || cliente.getNombreCompleto().toLowerCase().contains(busqueda);
 
-                    || cliente.getNombreCompleto()
-                    .toLowerCase()
-                    .contains(busqueda);
         });
 
-        cmbCliente.getSelectionModel()
-                .clearSelection();
+        cmbCliente.getSelectionModel().clearSelection();
+
     }
 
     /*
@@ -379,34 +267,24 @@ public class AlquileresController {
 
         vehiculosFiltrados.setPredicate(vehiculo -> {
 
-            if (textoBusqueda == null
-                    || textoBusqueda.trim().isEmpty()) {
+            if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
 
                 return true;
+
             }
 
-            String busqueda =
-                    textoBusqueda
-                            .toLowerCase()
-                            .trim();
+            String busqueda = textoBusqueda.toLowerCase().trim();
 
-            return vehiculo.getPlaca()
-                    .toLowerCase()
-                    .contains(busqueda)
+            return vehiculo.getPlaca().toLowerCase().contains(busqueda)
+                    || vehiculo.getMarca().toLowerCase().contains(busqueda)
+                    || vehiculo.getModelo().toLowerCase().contains(busqueda);
 
-                    || vehiculo.getMarca()
-                    .toLowerCase()
-                    .contains(busqueda)
-
-                    || vehiculo.getModelo()
-                    .toLowerCase()
-                    .contains(busqueda);
         });
 
-        cmbVehiculo.getSelectionModel()
-                .clearSelection();
+        cmbVehiculo.getSelectionModel().clearSelection();
 
         actualizarTarifaDiaria();
+
     }
 
     /*
@@ -420,119 +298,73 @@ public class AlquileresController {
             return;
         }
 
-        String textoBusqueda =
-                txtBuscarAlquiler.getText();
+        String textoBusqueda = txtBuscarAlquiler.getText();
 
-        String estadoSeleccionado =
-                cmbFiltroEstado.getValue();
+        String estadoSeleccionado = cmbFiltroEstado.getValue();
 
-        String busqueda =
-                textoBusqueda == null
-                        ? ""
-                        : textoBusqueda
-                        .toLowerCase()
-                        .trim();
+        String busqueda = textoBusqueda == null ? "" : textoBusqueda.toLowerCase().trim();
 
-        boolean busquedaPorNumero =
-                busqueda.startsWith("#");
+        boolean busquedaPorNumero = busqueda.startsWith("#");
 
-        Integer numeroAlquiler =
-                null;
+        Integer numeroAlquiler = null;
 
         if (busquedaPorNumero) {
 
-            String textoNumero =
-                    busqueda
-                            .substring(1)
-                            .trim();
+            String textoNumero = busqueda.substring(1).trim();
 
             if (textoNumero.matches("\\d+")) {
 
                 try {
 
-                    numeroAlquiler =
-                            Integer.parseInt(
-                                    textoNumero
-                            );
+                    numeroAlquiler = Integer.parseInt(textoNumero);
 
                 } catch (NumberFormatException e) {
 
-                    numeroAlquiler =
-                            null;
+                    numeroAlquiler = null;
+
                 }
+
             }
+
         }
 
-        final Integer numeroExacto =
-                numeroAlquiler;
+        final Integer numeroExacto = numeroAlquiler;
 
         alquileresFiltrados.setPredicate(alquiler -> {
 
-            boolean coincideBusqueda =
-                    true;
+            boolean coincideBusqueda = true;
 
-            boolean coincideEstado =
-                    true;
+            boolean coincideEstado = true;
 
             if (!busqueda.isEmpty()) {
 
                 if (busquedaPorNumero) {
 
-                    coincideBusqueda =
-                            numeroExacto != null
-                                    && alquiler.getNumeroAlquiler()
-                                    == numeroExacto;
+                    coincideBusqueda = numeroExacto != null && alquiler.getNumeroAlquiler() == numeroExacto;
 
                 } else {
 
-                    coincideBusqueda =
-                            String.valueOf(
-                                    alquiler.getNumeroAlquiler()
-                            ).contains(busqueda)
+                    coincideBusqueda = String.valueOf(alquiler.getNumeroAlquiler()).contains(busqueda)
+                            || alquiler.getCliente().getCedula().toLowerCase().contains(busqueda)
+                            || alquiler.getCliente().getNombreCompleto().toLowerCase().contains(busqueda)
+                            || alquiler.getVehiculo().getPlaca().toLowerCase().contains(busqueda)
+                            || alquiler.getVehiculo().getMarca().toLowerCase().contains(busqueda)
+                            || alquiler.getVehiculo().getModelo().toLowerCase().contains(busqueda);
 
-                                    || alquiler.getCliente()
-                                    .getCedula()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getCliente()
-                                    .getNombreCompleto()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getVehiculo()
-                                    .getPlaca()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getVehiculo()
-                                    .getMarca()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getVehiculo()
-                                    .getModelo()
-                                    .toLowerCase()
-                                    .contains(busqueda);
                 }
+
             }
 
-            if (estadoSeleccionado != null
-                    && !estadoSeleccionado.equals(
-                    "TODOS"
-            )) {
+            if (estadoSeleccionado != null && !estadoSeleccionado.equals("TODOS")) {
 
-                coincideEstado =
-                        alquiler.getEstado()
-                                .toString()
-                                .equals(
-                                        estadoSeleccionado
-                                );
+                coincideEstado = alquiler.getEstado().toString().equals(estadoSeleccionado);
+
             }
 
-            return coincideBusqueda
-                    && coincideEstado;
+            return coincideBusqueda && coincideEstado;
+
         });
+
     }
 
     /*
@@ -542,24 +374,18 @@ public class AlquileresController {
      */
     private void actualizarTarifaDiaria() {
 
-        Vehiculo vehiculo =
-                cmbVehiculo.getValue();
+        Vehiculo vehiculo = cmbVehiculo.getValue();
 
         if (vehiculo == null) {
 
-            lblTarifaDiaria.setText(
-                    "₡0.00"
-            );
+            lblTarifaDiaria.setText("₡0.00");
 
             return;
+
         }
 
-        lblTarifaDiaria.setText(
-                String.format(
-                        "₡%,.2f",
-                        vehiculo.getTarifaDiaria()
-                )
-        );
+        lblTarifaDiaria.setText(String.format("₡%,.2f", vehiculo.getTarifaDiaria()));
+
     }
 
     /*
@@ -572,76 +398,46 @@ public class AlquileresController {
 
         try {
 
-            Vehiculo vehiculo =
-                    cmbVehiculo.getValue();
+            Vehiculo vehiculo = cmbVehiculo.getValue();
 
             if (vehiculo == null) {
 
-                throw new IllegalArgumentException(
-                        "Debe seleccionar un vehículo."
-                );
+                throw new IllegalArgumentException("Debe seleccionar un vehículo.");
+
             }
 
-            int dias =
-                    Integer.parseInt(
-                            txtCantidadDias
-                                    .getText()
-                                    .trim()
-                    );
+            int dias = Integer.parseInt(txtCantidadDias.getText().trim());
 
             if (dias <= 0) {
 
-                throw new IllegalArgumentException(
-                        "La cantidad de días debe ser mayor a cero."
-                );
+                throw new IllegalArgumentException("La cantidad de días debe ser mayor a cero.");
+
             }
 
-            double subtotal =
-                    vehiculo.getTarifaDiaria()
-                            * dias;
+            double subtotal = vehiculo.getTarifaDiaria() * dias;
 
-            double deposito =
-                    alquilerServicio
-                            .getDepositoGarantia();
+            double deposito = alquilerServicio.getDepositoGarantia();
 
-            double total =
-                    subtotal + deposito;
+            double total = subtotal + deposito;
 
-            lblSubtotal.setText(
-                    String.format(
-                            "₡%,.2f",
-                            subtotal
-                    )
-            );
+            lblSubtotal.setText(String.format("₡%,.2f", subtotal));
 
-            lblDeposito.setText(
-                    String.format(
-                            "₡%,.2f",
-                            deposito
-                    )
-            );
+            lblDeposito.setText(String.format("₡%,.2f", deposito));
 
-            lblTotal.setText(
-                    String.format(
-                            "₡%,.2f",
-                            total
-                    )
-            );
+            lblTotal.setText(String.format("₡%,.2f", total));
 
             calcularVuelto();
 
         } catch (NumberFormatException e) {
 
-            mostrarError(
-                    "La cantidad de días debe de ser un numero entero."
-            );
+            mostrarError("La cantidad de días debe de ser un numero entero.");
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -651,28 +447,24 @@ public class AlquileresController {
      */
     private void actualizarFormaPago() {
 
-        MetodoPago metodoPago =
-                cmbMetodoPago.getValue();
+        MetodoPago metodoPago = cmbMetodoPago.getValue();
 
-        boolean efectivo =
-                metodoPago == MetodoPago.EFECTIVO;
+        boolean efectivo = metodoPago == MetodoPago.EFECTIVO;
 
-        txtMontoRecibido.setDisable(
-                !efectivo
-        );
+        txtMontoRecibido.setDisable(!efectivo);
 
         if (!efectivo) {
 
             txtMontoRecibido.clear();
 
-            lblVuelto.setText(
-                    "₡0.00"
-            );
+            lblVuelto.setText("₡0.00");
 
             return;
+
         }
 
         calcularVuelto();
+
     }
 
     /*
@@ -682,71 +474,42 @@ public class AlquileresController {
      */
     private void calcularVuelto() {
 
-        if (cmbMetodoPago.getValue()
-                != MetodoPago.EFECTIVO) {
+        if (cmbMetodoPago.getValue() != MetodoPago.EFECTIVO) {
 
-            lblVuelto.setText(
-                    "₡0.00"
-            );
+            lblVuelto.setText("₡0.00");
 
             return;
+
         }
 
-        Vehiculo vehiculo =
-                cmbVehiculo.getValue();
+        Vehiculo vehiculo = cmbVehiculo.getValue();
 
-        if (vehiculo == null
-                || txtCantidadDias.getText().trim().isEmpty()
-                || txtMontoRecibido.getText().trim().isEmpty()) {
+        if (vehiculo == null || txtCantidadDias.getText().trim().isEmpty() || txtMontoRecibido.getText().trim().isEmpty()) {
 
-            lblVuelto.setText(
-                    "₡0.00"
-            );
+            lblVuelto.setText("₡0.00");
 
             return;
+
         }
 
         try {
 
-            int dias =
-                    Integer.parseInt(
-                            txtCantidadDias
-                                    .getText()
-                                    .trim()
-                    );
+            int dias = Integer.parseInt(txtCantidadDias.getText().trim());
 
-            double total =
-                    vehiculo.getTarifaDiaria()
-                            * dias
-                            + alquilerServicio
-                            .getDepositoGarantia();
+            double total = vehiculo.getTarifaDiaria() * dias + alquilerServicio.getDepositoGarantia();
 
-            double recibido =
-                    Double.parseDouble(
-                            txtMontoRecibido
-                                    .getText()
-                                    .trim()
-                    );
+            double recibido = Double.parseDouble(txtMontoRecibido.getText().trim());
 
-            double vuelto =
-                    Math.max(
-                            0,
-                            recibido - total
-                    );
+            double vuelto = Math.max(0, recibido - total);
 
-            lblVuelto.setText(
-                    String.format(
-                            "₡%,.2f",
-                            vuelto
-                    )
-            );
+            lblVuelto.setText(String.format("₡%,.2f", vuelto));
 
         } catch (NumberFormatException e) {
 
-            lblVuelto.setText(
-                    "₡0.00"
-            );
+            lblVuelto.setText("₡0.00");
+
         }
+
     }
 
     /*
@@ -759,127 +522,77 @@ public class AlquileresController {
 
         try {
 
-            Cliente cliente =
-                    cmbCliente.getValue();
+            Cliente cliente = cmbCliente.getValue();
 
-            Vehiculo vehiculo =
-                    cmbVehiculo.getValue();
+            Vehiculo vehiculo = cmbVehiculo.getValue();
 
-            LocalDate fecha =
-                    dpFechaInicio.getValue();
+            LocalDate fecha = dpFechaInicio.getValue();
 
             if (cliente == null) {
 
-                throw new IllegalArgumentException(
-                        "Debe seleccionar un cliente."
-                );
+                throw new IllegalArgumentException("Debe seleccionar un cliente.");
+
             }
 
             if (vehiculo == null) {
 
-                throw new IllegalArgumentException(
-                        "Debe seleccionar un vehículo."
-                );
+                throw new IllegalArgumentException("Debe seleccionar un vehículo.");
+
             }
 
-            int dias =
-                    Integer.parseInt(
-                            txtCantidadDias
-                                    .getText()
-                                    .trim()
-                    );
+            int dias = Integer.parseInt(txtCantidadDias.getText().trim());
 
-            MetodoPago metodoPago =
-                    cmbMetodoPago.getValue();
+            MetodoPago metodoPago = cmbMetodoPago.getValue();
 
             if (metodoPago == null) {
 
-                throw new IllegalArgumentException(
-                        "Debe seleccionar una forma de pago."
-                );
+                throw new IllegalArgumentException("Debe seleccionar una forma de pago.");
+
             }
 
-            double total =
-                    vehiculo.getTarifaDiaria()
-                            * dias
-                            + alquilerServicio
-                            .getDepositoGarantia();
+            double total = vehiculo.getTarifaDiaria() * dias + alquilerServicio.getDepositoGarantia();
 
-            Double montoRecibido =
-                    null;
+            Double montoRecibido = null;
 
-            if (metodoPago
-                    == MetodoPago.EFECTIVO) {
+            if (metodoPago == MetodoPago.EFECTIVO) {
 
-                String textoMonto =
-                        txtMontoRecibido
-                                .getText()
-                                .trim();
+                String textoMonto = txtMontoRecibido.getText().trim();
 
                 if (textoMonto.isEmpty()) {
 
-                    throw new IllegalArgumentException(
-                            "Debe ingresar el monto recibido en efectivo."
-                    );
+                    throw new IllegalArgumentException("Debe ingresar el monto recibido en efectivo.");
+
                 }
 
-                montoRecibido =
-                        Double.parseDouble(
-                                textoMonto
-                        );
+                montoRecibido = Double.parseDouble(textoMonto);
 
                 if (montoRecibido % 10 != 0) {
 
-                    throw new IllegalArgumentException(
-                            "El monto recibido debe ser múltiplo de ₡10."
-                    );
+                    throw new IllegalArgumentException("El monto recibido debe ser múltiplo de ₡10.");
+
                 }
 
                 if (montoRecibido < total) {
 
-                    throw new IllegalArgumentException(
-                            "El monto recibido es menor al total del alquiler."
-                    );
+                    throw new IllegalArgumentException("El monto recibido es menor al total del alquiler.");
+
                 }
+
             }
 
             Alquiler alquiler = alquilerServicio.crearAlquiler(cliente.getCedula(), vehiculo.getPlaca(), fecha, dias, metodoPago, montoRecibido);
 
-            String informacionPago =
-                    "\nForma de pago: "
-                            + metodoPago;
+            String informacionPago = "\nForma de pago: " + metodoPago;
 
-            if (metodoPago
-                    == MetodoPago.EFECTIVO) {
+            if (metodoPago == MetodoPago.EFECTIVO) {
 
-                double vuelto =
-                        montoRecibido - total;
+                double vuelto = montoRecibido - total;
 
-                informacionPago +=
-                        "\nMonto recibido: "
-                                + String.format(
-                                "₡%,.2f",
-                                montoRecibido
-                        )
+                informacionPago += "\nMonto recibido: " + String.format("₡%,.2f", montoRecibido) + "\nVuelto: " + String.format("₡%,.2f", vuelto);
 
-                                + "\nVuelto: "
-                                + String.format(
-                                "₡%,.2f",
-                                vuelto
-                        );
             }
 
-            mostrarInformacion(
-                    "Alquiler #"
-                            + alquiler.getNumeroAlquiler()
-                            + " registrado correctamente.\n\n"
-                            + "Total pagado: "
-                            + String.format(
-                            "₡%,.2f",
-                            total
-                    )
-                            + informacionPago
-            );
+            mostrarInformacion("Alquiler #" + alquiler.getNumeroAlquiler() + " registrado correctamente.\n\n" + "Total pagado: " + String.format("₡%,.2f", total) + informacionPago);
 
             limpiarFormulario();
 
@@ -887,22 +600,18 @@ public class AlquileresController {
 
         } catch (NumberFormatException e) {
 
-            mostrarError(
-                    "La cantidad de dias y el monto recibido deben ser números válidos."
-            );
+            mostrarError("La cantidad de dias y el monto recibido deben ser números válidos.");
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
 
         } catch (RuntimeException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -913,64 +622,42 @@ public class AlquileresController {
     @FXML
     private void limpiarFormulario() {
 
-        cmbCliente.getSelectionModel()
-                .clearSelection();
+        cmbCliente.getSelectionModel().clearSelection();
 
-        cmbVehiculo.getSelectionModel()
-                .clearSelection();
+        cmbVehiculo.getSelectionModel().clearSelection();
 
         txtBuscarCliente.clear();
 
         txtBuscarVehiculo.clear();
 
-        dpFechaInicio.setValue(
-                LocalDate.now()
-        );
+        dpFechaInicio.setValue(LocalDate.now());
 
         txtCantidadDias.clear();
 
-        cmbMetodoPago
-                .getSelectionModel()
-                .clearSelection();
+        cmbMetodoPago.getSelectionModel().clearSelection();
 
         txtMontoRecibido.clear();
 
-        txtMontoRecibido.setDisable(
-                true
-        );
+        txtMontoRecibido.setDisable(true);
 
-        lblVuelto.setText(
-                "₡0.00"
-        );
+        lblVuelto.setText("₡0.00");
 
-        lblTarifaDiaria.setText(
-                "₡0.00"
-        );
+        lblTarifaDiaria.setText("₡0.00");
 
-        lblSubtotal.setText(
-                "₡0.00"
-        );
+        lblSubtotal.setText("₡0.00");
 
         if (alquilerServicio != null) {
 
-            lblDeposito.setText(
-                    String.format(
-                            "₡%,.2f",
-                            alquilerServicio
-                                    .getDepositoGarantia()
-                    )
-            );
+            lblDeposito.setText(String.format("₡%,.2f", alquilerServicio.getDepositoGarantia()));
 
         } else {
 
-            lblDeposito.setText(
-                    "₡0.00"
-            );
+            lblDeposito.setText("₡0.00");
+
         }
 
-        lblTotal.setText(
-                "₡0.00"
-        );
+        lblTotal.setText("₡0.00");
+
     }
 
     /*
@@ -980,24 +667,16 @@ public class AlquileresController {
      */
     private void mostrarError(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.ERROR
-                );
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
 
-        alerta.setTitle(
-                "Error"
-        );
+        alerta.setTitle("Error");
 
-        alerta.setHeaderText(
-                null
-        );
+        alerta.setHeaderText(null);
 
-        alerta.setContentText(
-                mensaje
-        );
+        alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -1005,26 +684,18 @@ public class AlquileresController {
      * Recibe: El mensaje informativo que se desea mostrar en pantalla
      * Retorna: No retorna ningún valor
      */
-    private void mostrarInformacion(
-            String mensaje) {
+    private void mostrarInformacion(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.INFORMATION
-                );
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
-        alerta.setTitle(
-                "Información"
-        );
+        alerta.setTitle("Información");
 
-        alerta.setHeaderText(
-                null
-        );
+        alerta.setHeaderText(null);
 
-        alerta.setContentText(
-                mensaje
-        );
+        alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
+
 }

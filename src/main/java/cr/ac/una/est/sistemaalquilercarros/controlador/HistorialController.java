@@ -15,7 +15,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -75,90 +74,32 @@ public class HistorialController {
     @FXML
     private void initialize() {
 
-        colNumero.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getNumeroAlquiler()
-                )
-        );
+        colNumero.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getNumeroAlquiler()));
 
-        colCliente.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getCliente()
-                                .getNombreCompleto()
-                )
-        );
+        colCliente.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCliente().getNombreCompleto()));
 
-        colVehiculo.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getVehiculo()
-                                .toString()
-                )
-        );
+        colVehiculo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getVehiculo().toString()));
 
-        colFechaInicio.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getFechaInicio()
-                )
-        );
+        colFechaInicio.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaInicio()));
 
-        colFechaEsperada.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue()
-                                .getFechaDevolucionEsperada()
-                )
-        );
+        colFechaEsperada.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaDevolucionEsperada()));
 
-        colFechaDevolucion.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue()
-                                .getFechaDevolucionReal()
-                )
-        );
+        colFechaDevolucion.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getFechaDevolucionReal()));
 
-        colDias.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getCantidadDias()
-                )
-        );
+        colDias.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getCantidadDias()));
 
-        colTotal.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        String.format(
-                                "₡%,.2f",
-                                dato.getValue().calcularTotal()
-                        )
-                )
-        );
+        colTotal.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().calcularTotal())));
 
-        colEstado.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getEstado()
-                                .toString()
-                )
-        );
+        colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
 
-        cmbFiltroEstado.setItems(
-                FXCollections.observableArrayList(
-                        "TODOS",
-                        "ACTIVO",
-                        "FINALIZADO"
-                )
-        );
+        cmbFiltroEstado.setItems(FXCollections.observableArrayList("TODOS", "ACTIVO", "FINALIZADO"));
 
         cmbFiltroEstado.setValue("TODOS");
 
-        txtBuscar.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarHistorial()
-        );
+        txtBuscar.textProperty().addListener((observable, anterior, nuevo) -> filtrarHistorial());
 
-        cmbFiltroEstado.valueProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarHistorial()
-        );
+        cmbFiltroEstado.valueProperty().addListener((observable, anterior, nuevo) -> filtrarHistorial());
+
     }
 
     /*
@@ -166,13 +107,12 @@ public class HistorialController {
      * Recibe: El servicio de alquileres que utilizará el controlador
      * Retorna: No retorna ningún valor
      */
-    public void setAlquilerServicio(
-            AlquilerServicio alquilerServicio) {
+    public void setAlquilerServicio(AlquilerServicio alquilerServicio) {
 
-        this.alquilerServicio =
-                alquilerServicio;
+        this.alquilerServicio = alquilerServicio;
 
         actualizarTabla();
+
     }
 
     /*
@@ -180,11 +120,10 @@ public class HistorialController {
      * Recibe: El servicio de facturas que utilizará el controlador
      * Retorna: No retorna ningún valor
      */
-    public void setFacturaServicio(
-            FacturaServicio facturaServicio) {
+    public void setFacturaServicio(FacturaServicio facturaServicio) {
 
-        this.facturaServicio =
-                facturaServicio;
+        this.facturaServicio = facturaServicio;
+
     }
 
     /*
@@ -194,22 +133,14 @@ public class HistorialController {
      */
     private void actualizarTabla() {
 
-        listaAlquileres =
-                FXCollections.observableArrayList(
-                        alquilerServicio.obtenerTodos()
-                );
+        listaAlquileres = FXCollections.observableArrayList(alquilerServicio.obtenerTodos());
 
-        alquileresFiltrados =
-                new FilteredList<>(
-                        listaAlquileres,
-                        alquiler -> true
-                );
+        alquileresFiltrados = new FilteredList<>(listaAlquileres, alquiler -> true);
 
-        tablaHistorial.setItems(
-                alquileresFiltrados
-        );
+        tablaHistorial.setItems(alquileresFiltrados);
 
         filtrarHistorial();
+
     }
 
     /*
@@ -220,122 +151,78 @@ public class HistorialController {
     private void filtrarHistorial() {
 
         if (alquileresFiltrados == null) {
+
             return;
+
         }
 
-        String textoBusqueda =
-                txtBuscar.getText();
+        String textoBusqueda = txtBuscar.getText();
 
-        String estadoSeleccionado =
-                cmbFiltroEstado.getValue();
+        String estadoSeleccionado = cmbFiltroEstado.getValue();
 
-        String busqueda =
-                textoBusqueda == null
-                        ? ""
-                        : textoBusqueda
-                        .toLowerCase()
-                        .trim();
+        String busqueda = textoBusqueda == null ? "" : textoBusqueda.toLowerCase().trim();
 
-        boolean busquedaPorNumero =
-                busqueda.startsWith("#");
+        boolean busquedaPorNumero = busqueda.startsWith("#");
 
-        Integer numeroAlquiler =
-                null;
+        Integer numeroAlquiler = null;
 
         if (busquedaPorNumero) {
 
-            String textoNumero =
-                    busqueda
-                            .substring(1)
-                            .trim();
+            String textoNumero = busqueda.substring(1).trim();
 
             if (textoNumero.matches("\\d+")) {
 
                 try {
 
-                    numeroAlquiler =
-                            Integer.parseInt(
-                                    textoNumero
-                            );
+                    numeroAlquiler = Integer.parseInt(textoNumero);
 
                 } catch (NumberFormatException e) {
 
-                    numeroAlquiler =
-                            null;
+                    numeroAlquiler = null;
+
                 }
+
             }
+
         }
 
-        final Integer numeroExacto =
-                numeroAlquiler;
+        final Integer numeroExacto = numeroAlquiler;
 
         alquileresFiltrados.setPredicate(alquiler -> {
 
-            boolean coincideBusqueda =
-                    true;
+            boolean coincideBusqueda = true;
 
-            boolean coincideEstado =
-                    true;
+            boolean coincideEstado = true;
 
             if (!busqueda.isEmpty()) {
 
                 if (busquedaPorNumero) {
 
-                    coincideBusqueda =
-                            numeroExacto != null
-                                    && alquiler.getNumeroAlquiler()
-                                    == numeroExacto;
+                    coincideBusqueda = numeroExacto != null && alquiler.getNumeroAlquiler() == numeroExacto;
 
                 } else {
 
-                    coincideBusqueda =
-                            String.valueOf(
-                                    alquiler.getNumeroAlquiler()
-                            ).contains(busqueda)
+                    coincideBusqueda = String.valueOf(alquiler.getNumeroAlquiler()).contains(busqueda)
+                            || alquiler.getCliente().getCedula().toLowerCase().contains(busqueda)
+                            || alquiler.getCliente().getNombreCompleto().toLowerCase().contains(busqueda)
+                            || alquiler.getVehiculo().getPlaca().toLowerCase().contains(busqueda)
+                            || alquiler.getVehiculo().getMarca().toLowerCase().contains(busqueda)
+                            || alquiler.getVehiculo().getModelo().toLowerCase().contains(busqueda);
 
-                                    || alquiler.getCliente()
-                                    .getCedula()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getCliente()
-                                    .getNombreCompleto()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getVehiculo()
-                                    .getPlaca()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getVehiculo()
-                                    .getMarca()
-                                    .toLowerCase()
-                                    .contains(busqueda)
-
-                                    || alquiler.getVehiculo()
-                                    .getModelo()
-                                    .toLowerCase()
-                                    .contains(busqueda);
                 }
+
             }
 
-            if (estadoSeleccionado != null
-                    && !estadoSeleccionado.equals(
-                    "TODOS"
-            )) {
+            if (estadoSeleccionado != null && !estadoSeleccionado.equals("TODOS")) {
 
-                coincideEstado =
-                        alquiler.getEstado()
-                                .toString()
-                                .equals(
-                                        estadoSeleccionado
-                                );
+                coincideEstado = alquiler.getEstado().toString().equals(estadoSeleccionado);
+
             }
 
-            return coincideBusqueda
-                    && coincideEstado;
+            return coincideBusqueda && coincideEstado;
+
         });
+
     }
 
     /*
@@ -348,62 +235,46 @@ public class HistorialController {
 
         try {
 
-            Alquiler alquiler =
-                    tablaHistorial
-                            .getSelectionModel()
-                            .getSelectedItem();
+            Alquiler alquiler = tablaHistorial.getSelectionModel().getSelectedItem();
 
             if (alquiler == null) {
-                throw new IllegalArgumentException(
-                        "Debe seleccionar un alquiler para generar la factura."
-                );
+
+                throw new IllegalArgumentException("Debe seleccionar un alquiler para generar la factura.");
+
             }
 
             if (facturaServicio == null) {
-                throw new IllegalStateException(
-                        "El servicio de facturas no ha sido configurado."
-                );
+
+                throw new IllegalStateException("El servicio de facturas no ha sido configurado.");
+
             }
 
-            File archivo =
-                    facturaServicio.generarFactura(
-                            alquiler
-                    );
+            File archivo = facturaServicio.generarFactura(alquiler);
 
             if (!Desktop.isDesktopSupported()) {
-                throw new RuntimeException(
-                        "El sistema no permite abrir la factura automáticamente."
-                );
+
+                throw new RuntimeException("El sistema no permite abrir la factura automáticamente.");
+
             }
 
-            Desktop.getDesktop().open(
-                    archivo
-            );
+            Desktop.getDesktop().open(archivo);
 
-            mostrarInformacion(
-                    "Factura generada y abierta correctamente.\n\n"
-                            + "Archivo: "
-                            + archivo.getAbsolutePath()
-            );
+            mostrarInformacion("Factura generada y abierta correctamente.\n\n" + "Archivo: " + archivo.getAbsolutePath());
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
 
         } catch (IOException e) {
 
-            mostrarError(
-                    "La factura fue generada, pero no se pudo abrir automáticamente."
-            );
+            mostrarError("La factura fue generada, pero no se pudo abrir automáticamente.");
 
         } catch (RuntimeException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -411,27 +282,18 @@ public class HistorialController {
      * Recibe: El mensaje de error que se desea mostrar
      * Retorna: No retorna ningún valor
      */
-    private void mostrarError(
-            String mensaje) {
+    private void mostrarError(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.ERROR
-                );
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
 
-        alerta.setTitle(
-                "Error"
-        );
+        alerta.setTitle("Error");
 
-        alerta.setHeaderText(
-                null
-        );
+        alerta.setHeaderText(null);
 
-        alerta.setContentText(
-                mensaje
-        );
+        alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -439,26 +301,18 @@ public class HistorialController {
      * Recibe: El mensaje informativo que se desea mostrar
      * Retorna: No retorna ningún valor
      */
-    private void mostrarInformacion(
-            String mensaje) {
+    private void mostrarInformacion(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.INFORMATION
-                );
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
-        alerta.setTitle(
-                "Información"
-        );
+        alerta.setTitle("Información");
 
-        alerta.setHeaderText(
-                null
-        );
+        alerta.setHeaderText(null);
 
-        alerta.setContentText(
-                mensaje
-        );
+        alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
+
 }

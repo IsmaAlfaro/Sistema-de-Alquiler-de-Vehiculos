@@ -20,10 +20,6 @@
       <StackPane prefHeight="78.0"
                  styleClass="main-topbar">
 
-         <!-- =========================
-              PATRÓN DECORATIVO
-              ========================= -->
-
          <Pane mouseTransparent="true">
 
             <Line startX="560.0"
@@ -55,10 +51,6 @@
                   strokeWidth="18.0" />
 
          </Pane>
-
-         <!-- =========================
-              CONTENIDO DE LA BARRA
-              ========================= -->
 
          <HBox alignment="CENTER_LEFT"
                spacing="12.0">
@@ -103,7 +95,6 @@
                     top="18.0" />
          </padding>
 
-         <!-- LOGO DEL SISTEMA -->
          <HBox alignment="CENTER">
 
             <ImageView fitHeight="175.0"

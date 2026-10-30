@@ -16,4 +16,5 @@ public interface AlquilerRepositorio {
     void finalizar(Alquiler alquiler);
 
     boolean eliminar(int numeroAlquiler);
+
 }

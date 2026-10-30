@@ -128,6 +128,7 @@ public class DevolucionController {
             calcularVuelto();
 
         });
+
     }
 
     /*
@@ -140,6 +141,7 @@ public class DevolucionController {
         this.alquilerServicio = alquilerServicio;
 
         cargarDatos();
+
     }
 
     /*
@@ -158,6 +160,7 @@ public class DevolucionController {
         tablaAlquileresActivos.setItems(alquileresFiltrados);
 
         filtrarAlquileres();
+
     }
 
     /*
@@ -168,109 +171,78 @@ public class DevolucionController {
     private void filtrarAlquileres() {
 
         if (alquileresFiltrados == null) {
+
             return;
+
         }
 
-        String textoBusqueda =
-                txtBuscarDevolucion.getText();
+        String textoBusqueda = txtBuscarDevolucion.getText();
 
-        String busqueda =
-                textoBusqueda == null
-                        ? ""
-                        : textoBusqueda
-                        .toLowerCase()
-                        .trim();
+        String busqueda = textoBusqueda == null ? "" : textoBusqueda.toLowerCase().trim();
 
-        boolean busquedaPorNumero =
-                busqueda.startsWith("#");
+        boolean busquedaPorNumero = busqueda.startsWith("#");
 
-        Integer numeroAlquiler =
-                null;
+        Integer numeroAlquiler = null;
 
         if (busquedaPorNumero) {
 
-            String textoNumero =
-                    busqueda
-                            .substring(1)
-                            .trim();
+            String textoNumero = busqueda.substring(1).trim();
 
             if (textoNumero.matches("\\d+")) {
 
                 try {
 
-                    numeroAlquiler =
-                            Integer.parseInt(
-                                    textoNumero
-                            );
+                    numeroAlquiler = Integer.parseInt(textoNumero);
 
                 } catch (NumberFormatException e) {
 
-                    numeroAlquiler =
-                            null;
+                    numeroAlquiler = null;
+
                 }
+
             }
+
         }
 
-        final Integer numeroExacto =
-                numeroAlquiler;
+        final Integer numeroExacto = numeroAlquiler;
 
         alquileresFiltrados.setPredicate(alquiler -> {
 
             if (busqueda.isEmpty()) {
 
                 return true;
+
             }
 
             if (busquedaPorNumero) {
 
-                return numeroExacto != null
-                        && alquiler.getNumeroAlquiler()
-                        == numeroExacto;
+                return numeroExacto != null && alquiler.getNumeroAlquiler() == numeroExacto;
+
             }
 
-            return String.valueOf(
-                    alquiler.getNumeroAlquiler()
-            ).contains(busqueda)
+            return String.valueOf(alquiler.getNumeroAlquiler()).contains(busqueda)
+                    || alquiler.getCliente().getCedula().toLowerCase().contains(busqueda)
+                    || alquiler.getCliente().getNombreCompleto().toLowerCase().contains(busqueda)
+                    || alquiler.getVehiculo().getPlaca().toLowerCase().contains(busqueda)
+                    || alquiler.getVehiculo().getMarca().toLowerCase().contains(busqueda)
+                    || alquiler.getVehiculo().getModelo().toLowerCase().contains(busqueda);
 
-                    || alquiler.getCliente()
-                    .getCedula()
-                    .toLowerCase()
-                    .contains(busqueda)
-
-                    || alquiler.getCliente()
-                    .getNombreCompleto()
-                    .toLowerCase()
-                    .contains(busqueda)
-
-                    || alquiler.getVehiculo()
-                    .getPlaca()
-                    .toLowerCase()
-                    .contains(busqueda)
-
-                    || alquiler.getVehiculo()
-                    .getMarca()
-                    .toLowerCase()
-                    .contains(busqueda)
-
-                    || alquiler.getVehiculo()
-                    .getModelo()
-                    .toLowerCase()
-                    .contains(busqueda);
         });
 
-        cmbAlquiler.getSelectionModel()
-                .clearSelection();
+        cmbAlquiler.getSelectionModel().clearSelection();
 
-        tablaAlquileresActivos
-                .getSelectionModel()
-                .clearSelection();
+        tablaAlquileresActivos.getSelectionModel().clearSelection();
 
         lblCliente.setText("-");
+
         lblVehiculo.setText("-");
+
         lblFechaEsperada.setText("-");
 
         reiniciarResultados();
+
         reiniciarPago();
+
     }
 
     /*
@@ -283,10 +255,13 @@ public class DevolucionController {
         Alquiler alquiler = cmbAlquiler.getValue();
 
         if (alquiler == null) {
+
             return;
+
         }
 
         mostrarDatosAlquiler(alquiler);
+
     }
 
     /*
@@ -299,12 +274,15 @@ public class DevolucionController {
         Alquiler alquiler = tablaAlquileresActivos.getSelectionModel().getSelectedItem();
 
         if (alquiler == null) {
+
             return;
+
         }
 
         cmbAlquiler.setValue(alquiler);
 
         mostrarDatosAlquiler(alquiler);
+
     }
 
     /*
@@ -321,7 +299,9 @@ public class DevolucionController {
         lblFechaEsperada.setText(alquiler.getFechaDevolucionEsperada().toString());
 
         reiniciarResultados();
+
         reiniciarPago();
+
     }
 
     /*
@@ -337,17 +317,23 @@ public class DevolucionController {
             Alquiler alquiler = cmbAlquiler.getValue();
 
             if (alquiler == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar un alquiler activo.");
+
             }
 
             LocalDate fecha = dpFechaDevolucion.getValue();
 
             if (fecha == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar la fecha de devolución.");
+
             }
 
             if (fecha.isBefore(alquiler.getFechaInicio())) {
+
                 throw new IllegalArgumentException("La fecha de devolución no puede ser anterior al inicio.");
+
             }
 
             long diasAtraso = alquiler.calcularDiasAtraso(fecha);
@@ -373,13 +359,17 @@ public class DevolucionController {
             } else {
 
                 reiniciarPago();
+
             }
 
             actualizarFormaPago();
 
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -402,6 +392,7 @@ public class DevolucionController {
             lblVuelto.setText("₡0.00");
 
             return;
+
         }
 
         double saldo = alquiler.calcularSaldoPendiente(fecha);
@@ -419,6 +410,7 @@ public class DevolucionController {
             lblVuelto.setText("₡0.00");
 
             return;
+
         }
 
         cmbMetodoPago.setDisable(false);
@@ -436,9 +428,11 @@ public class DevolucionController {
             lblVuelto.setText("₡0.00");
 
             return;
+
         }
 
         calcularVuelto();
+
     }
 
     /*
@@ -479,8 +473,11 @@ public class DevolucionController {
             lblVuelto.setText(String.format("₡%,.2f", vuelto));
 
         } catch (NumberFormatException e) {
+
             lblVuelto.setText("₡0.00");
+
         }
+
     }
 
     /*
@@ -496,17 +493,23 @@ public class DevolucionController {
             Alquiler alquiler = cmbAlquiler.getValue();
 
             if (alquiler == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar un alquiler activo.");
+
             }
 
             LocalDate fecha = dpFechaDevolucion.getValue();
 
             if (fecha == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar la fecha de devolución.");
+
             }
 
             if (fecha.isBefore(alquiler.getFechaInicio())) {
+
                 throw new IllegalArgumentException("La fecha de devolución no puede ser anterior al inicio.");
+
             }
 
             double saldo = alquiler.calcularSaldoPendiente(fecha);
@@ -520,7 +523,9 @@ public class DevolucionController {
                 metodoPago = cmbMetodoPago.getValue();
 
                 if (metodoPago == null) {
+
                     throw new IllegalArgumentException("Debe seleccionar una forma de pago para cancelar el saldo pendiente.");
+
                 }
 
                 if (metodoPago == MetodoPago.EFECTIVO) {
@@ -528,7 +533,9 @@ public class DevolucionController {
                     String textoMonto = txtMontoRecibido.getText().trim();
 
                     if (textoMonto.isEmpty()) {
+
                         throw new IllegalArgumentException("Debe ingresar el monto recibido en efectivo.");
+
                     }
 
                     try {
@@ -536,17 +543,25 @@ public class DevolucionController {
                         montoRecibido = Double.parseDouble(textoMonto);
 
                     } catch (NumberFormatException e) {
+
                         throw new IllegalArgumentException("El monto recibido debe ser un número válido.");
+
                     }
 
                     if (montoRecibido % 10 != 0) {
+
                         throw new IllegalArgumentException("El monto recibido debe ser múltiplo de ₡10.");
+
                     }
 
                     if (montoRecibido < saldo) {
+
                         throw new IllegalArgumentException("El monto recibido es menor al saldo pendiente.");
+
                     }
+
                 }
+
             }
 
             ResultadoDevolucion resultado = alquilerServicio.devolverAlquiler(alquiler.getNumeroAlquiler(), fecha, metodoPago, montoRecibido);
@@ -566,19 +581,33 @@ public class DevolucionController {
                     informacionPago += "\nMonto recibido: " + String.format("₡%,.2f", recibido) + "\nVuelto: " + String.format("₡%,.2f", vuelto);
 
                 }
+
             }
 
-            mostrarInformacion("Devolución registrada correctamente.\n\n" + "Días de atraso: " + resultado.getDiasAtraso() + "\nMulta: " + String.format("₡%,.2f", resultado.getMulta()) + "\nDepósito devuelto: " + String.format("₡%,.2f", resultado.getDepositoDevuelto()) + "\nSaldo pendiente: " + String.format("₡%,.2f", resultado.getSaldoPendiente()) + informacionPago);
+            mostrarInformacion("Devolución registrada correctamente.\n\n"
+                    + "Días de atraso: " + resultado.getDiasAtraso()
+                    + "\nMulta: "
+                    + String.format("₡%,.2f", resultado.getMulta())
+                    + "\nDepósito devuelto: "
+                    + String.format("₡%,.2f", resultado.getDepositoDevuelto())
+                    + "\nSaldo pendiente: "
+                    + String.format("₡%,.2f", resultado.getSaldoPendiente())
+                    + informacionPago);
 
             limpiarFormulario();
 
             cargarDatos();
 
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
         } catch (RuntimeException e) {
+
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -598,11 +627,15 @@ public class DevolucionController {
         dpFechaDevolucion.setValue(LocalDate.now());
 
         lblCliente.setText("-");
+
         lblVehiculo.setText("-");
+
         lblFechaEsperada.setText("-");
 
         reiniciarResultados();
+
         reiniciarPago();
+
     }
 
     /*
@@ -619,6 +652,7 @@ public class DevolucionController {
         lblDepositoDevuelto.setText("₡0.00");
 
         lblSaldoPendiente.setText("₡0.00");
+
     }
 
     /*
@@ -637,6 +671,7 @@ public class DevolucionController {
         txtMontoRecibido.setDisable(true);
 
         lblVuelto.setText("₡0.00");
+
     }
 
     /*
@@ -655,6 +690,7 @@ public class DevolucionController {
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -673,5 +709,7 @@ public class DevolucionController {
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
+
 }

@@ -20,5 +20,6 @@ public class ConexionBD {
     public Connection obtenerConexion() throws SQLException {
 
         return DriverManager.getConnection(URL, USUARIO, CONTRASENA);
+
     }
 }

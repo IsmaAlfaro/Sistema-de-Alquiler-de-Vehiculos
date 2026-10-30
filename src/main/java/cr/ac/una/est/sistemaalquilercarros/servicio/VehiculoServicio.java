@@ -20,7 +20,9 @@ public class VehiculoServicio {
      * Retorna: No retorna ningún valor
      */
     public VehiculoServicio(VehiculoRepositorio vehiculoRepositorio) {
+
         this.vehiculoRepositorio = vehiculoRepositorio;
+
     }
 
     /*
@@ -31,16 +33,21 @@ public class VehiculoServicio {
     public void registrarVehiculo(Vehiculo vehiculo) {
 
         if (vehiculo == null) {
+
             throw new IllegalArgumentException("El vehículo no puede ser nulo.");
+
         }
 
         validarVehiculo(vehiculo);
 
         if (buscarPorPlaca(vehiculo.getPlaca()) != null) {
+
             throw new IllegalArgumentException("Ya existe un vehículo con esa placa.");
+
         }
 
         vehiculoRepositorio.agregar(vehiculo);
+
     }
 
     /*
@@ -51,12 +58,13 @@ public class VehiculoServicio {
     public Vehiculo buscarPorPlaca(String placa) {
 
         if (placa == null || placa.trim().isEmpty()) {
+
             return null;
+
         }
 
-        return vehiculoRepositorio.buscarPorPlaca(
-                placa.trim()
-        );
+        return vehiculoRepositorio.buscarPorPlaca(placa.trim());
+
     }
 
     /*
@@ -65,7 +73,9 @@ public class VehiculoServicio {
      * Retorna: La lista completa de vehículos registrados
      */
     public List<Vehiculo> obtenerTodos() {
+
         return vehiculoRepositorio.obtenerTodos();
+
     }
 
     /*
@@ -74,7 +84,9 @@ public class VehiculoServicio {
      * Retorna: Una lista con todos los vehículos que se encuentran disponibles para alquiler
      */
     public List<Vehiculo> obtenerDisponibles() {
+
         return vehiculoRepositorio.obtenerDisponibles();
+
     }
 
     /*
@@ -87,19 +99,27 @@ public class VehiculoServicio {
         Vehiculo vehiculoActual = buscarPorPlaca(placa);
 
         if (vehiculoActual == null) {
+
             throw new IllegalArgumentException("El vehículo no existe.");
+
         }
 
         if (vehiculoActual.getEstado() == EstadoVehiculo.ALQUILADO) {
+
             throw new IllegalArgumentException("No se puede modificar un vehículo alquilado.");
+
         }
 
         if (vehiculoModificado == null) {
+
             throw new IllegalArgumentException("Los nuevos datos del vehículo no son válidos.");
+
         }
 
         if (!vehiculoActual.getPlaca().equalsIgnoreCase(vehiculoModificado.getPlaca())) {
+
             throw new IllegalArgumentException("La placa del vehículo no se puede modificar.");
+
         }
 
         validarVehiculo(vehiculoModificado);
@@ -120,11 +140,15 @@ public class VehiculoServicio {
         Vehiculo vehiculo = buscarPorPlaca(placa);
 
         if (vehiculo == null) {
+
             throw new IllegalArgumentException("El vehículo no existe.");
+
         }
 
         if (vehiculo.getEstado() == EstadoVehiculo.ALQUILADO) {
+
             throw new IllegalArgumentException("No se puede eliminar un vehículo alquilado.");
+
         }
 
         vehiculoRepositorio.eliminar(placa);
@@ -140,7 +164,9 @@ public class VehiculoServicio {
         Vehiculo vehiculo = buscarPorPlaca(placa);
 
         if (vehiculo == null) {
+
             throw new IllegalArgumentException("El vehículo no existe.");
+
         }
 
         vehiculoRepositorio.cambiarEstado(placa, estado);
@@ -152,7 +178,9 @@ public class VehiculoServicio {
      * Retorna: La cantidad total de vehículos registrados
      */
     public int cantidadVehiculos() {
+
         return vehiculoRepositorio.obtenerTodos().size();
+
     }
 
     /*
@@ -161,7 +189,9 @@ public class VehiculoServicio {
      * Retorna: La cantidad de vehículos disponibles
      */
     public int cantidadDisponibles() {
+
         return vehiculoRepositorio.obtenerDisponibles().size();
+
     }
 
     /*
@@ -170,7 +200,9 @@ public class VehiculoServicio {
      * Retorna: La cantidad de vehículos que se encuentran alquilados
      */
     public int cantidadAlquilados() {
+
         return cantidadVehiculos() - cantidadDisponibles();
+
     }
 
     /*
@@ -181,25 +213,35 @@ public class VehiculoServicio {
     private void validarVehiculo(Vehiculo vehiculo) {
 
         if (vehiculo.getPlaca() == null || vehiculo.getPlaca().trim().isEmpty()) {
+
             throw new IllegalArgumentException("La placa es obligatoria.");
+
         }
 
         if (vehiculo.getMarca() == null || vehiculo.getMarca().trim().isEmpty()) {
+
             throw new IllegalArgumentException("La marca es obligatoria.");
+
         }
 
         if (vehiculo.getModelo() == null || vehiculo.getModelo().trim().isEmpty()) {
+
             throw new IllegalArgumentException("El modelo es obligatorio.");
+
         }
 
         int anioMaximo = Year.now().getValue() + 1;
 
         if (vehiculo.getAnio() < 1900 || vehiculo.getAnio() > anioMaximo) {
+
             throw new IllegalArgumentException("El año del vehículo no es válido.");
+
         }
 
         if (vehiculo.getTarifaDiaria() <= 0) {
+
             throw new IllegalArgumentException("La tarifa diaria debe ser mayor que cero.");
+
         }
 
         if (vehiculo instanceof VehiculoPasajeros pasajeros) {
@@ -207,16 +249,23 @@ public class VehiculoServicio {
             TipoVehiculo tipo = pasajeros.getTipoVehiculo();
 
             if (tipo == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar un tipo de vehículo.");
+
             }
 
             if (tipo.isRequierePasajeros() && (pasajeros.getCantidadPasajeros() <= 0 || pasajeros.getCantidadPasajeros() > 20)) {
+
                 throw new IllegalArgumentException("La cantidad de pasajeros debe estar entre 1 y 20.");
+
             }
 
             if (tipo.isRequiereTraccion() && (pasajeros.getTipoTraccion() == null || pasajeros.getTipoTraccion().trim().isEmpty())) {
+
                 throw new IllegalArgumentException("El tipo de tracción es obligatorio.");
+
             }
+
         }
 
         if (vehiculo instanceof VehiculoCarga carga) {
@@ -224,16 +273,25 @@ public class VehiculoServicio {
             TipoVehiculo tipo = carga.getTipoVehiculo();
 
             if (tipo == null) {
+
                 throw new IllegalArgumentException("Debe seleccionar un tipo de vehículo.");
+
             }
 
             if (tipo.isRequiereCapacidadCarga() && carga.getCapacidadCarga() <= 0) {
+
                 throw new IllegalArgumentException("La capacidad de carga debe ser mayor que cero.");
+
             }
 
             if (tipo.isRequiereTraccion() && (carga.getTipoTraccion() == null || carga.getTipoTraccion().trim().isEmpty())) {
+
                 throw new IllegalArgumentException("El tipo de tracción es obligatorio.");
+
             }
+
         }
+
     }
+
 }

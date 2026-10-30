@@ -1,4 +1,3 @@
-
 package cr.ac.una.est.sistemaalquilercarros.servicio;
 
 import cr.ac.una.est.sistemaalquilercarros.modelo.TipoVehiculo;
@@ -15,9 +14,10 @@ public class TipoVehiculoServicio {
      * Recibe: El repositorio encargado de administrar los tipos de vehículo
      * Retorna: No retorna ningún valor
      */
-    public TipoVehiculoServicio(
-            TipoVehiculoRepositorio tipoVehiculoRepositorio) {
+    public TipoVehiculoServicio(TipoVehiculoRepositorio tipoVehiculoRepositorio) {
+
         this.tipoVehiculoRepositorio = tipoVehiculoRepositorio;
+
     }
 
     /*
@@ -30,12 +30,13 @@ public class TipoVehiculoServicio {
         validarTipo(tipo);
 
         if (buscarPorNombre(tipo.getNombre()) != null) {
-            throw new IllegalArgumentException(
-                    "Ya existe un tipo de vehículo con ese nombre."
-            );
+
+            throw new IllegalArgumentException("Ya existe un tipo de vehículo con ese nombre.");
+
         }
 
         tipoVehiculoRepositorio.agregar(tipo);
+
     }
 
     /*
@@ -46,12 +47,13 @@ public class TipoVehiculoServicio {
     public TipoVehiculo buscarPorNombre(String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
+
             return null;
+
         }
 
-        return tipoVehiculoRepositorio.buscarPorNombre(
-                nombre.trim()
-        );
+        return tipoVehiculoRepositorio.buscarPorNombre(nombre.trim());
+
     }
 
     /*
@@ -60,7 +62,9 @@ public class TipoVehiculoServicio {
      * Retorna: La lista completa de tipos de vehículo registrados
      */
     public List<TipoVehiculo> obtenerTodos() {
+
         return tipoVehiculoRepositorio.obtenerTodos();
+
     }
 
     /*
@@ -73,12 +77,13 @@ public class TipoVehiculoServicio {
         validarTipo(tipo);
 
         if (buscarPorNombre(tipo.getNombre()) == null) {
-            throw new IllegalArgumentException(
-                    "El tipo de vehículo no existe."
-            );
+
+            throw new IllegalArgumentException("El tipo de vehículo no existe.");
+
         }
 
         tipoVehiculoRepositorio.modificar(tipo);
+
     }
 
     /*
@@ -91,12 +96,13 @@ public class TipoVehiculoServicio {
         TipoVehiculo tipo = buscarPorNombre(nombre);
 
         if (tipo == null) {
-            throw new IllegalArgumentException(
-                    "El tipo de vehículo no existe."
-            );
+
+            throw new IllegalArgumentException("El tipo de vehículo no existe.");
+
         }
 
         tipoVehiculoRepositorio.eliminar(nombre);
+
     }
 
     /*
@@ -107,23 +113,23 @@ public class TipoVehiculoServicio {
     private void validarTipo(TipoVehiculo tipo) {
 
         if (tipo == null) {
-            throw new IllegalArgumentException(
-                    "El tipo de vehículo no puede ser nulo."
-            );
+
+            throw new IllegalArgumentException("El tipo de vehículo no puede ser nulo.");
+
         }
 
-        if (tipo.getNombre() == null
-                || tipo.getNombre().trim().isEmpty()) {
+        if (tipo.getNombre() == null || tipo.getNombre().trim().isEmpty()) {
 
-            throw new IllegalArgumentException(
-                    "El nombre del tipo es obligatorio."
-            );
+            throw new IllegalArgumentException("El nombre del tipo es obligatorio.");
+
         }
 
         if (tipo.getCategoria() == null) {
-            throw new IllegalArgumentException(
-                    "La categoría del vehículo es obligatoria."
-            );
+
+            throw new IllegalArgumentException("La categoría del vehículo es obligatoria.");
+
         }
+
     }
+
 }

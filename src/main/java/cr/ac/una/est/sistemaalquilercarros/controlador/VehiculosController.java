@@ -102,99 +102,38 @@ public class VehiculosController {
     @FXML
     private void initialize() {
 
-        cmbTraccion.setItems(
-                FXCollections.observableArrayList(
-                        "Delantera",
-                        "Trasera",
-                        "AWD",
-                        "4x4"
-                )
-        );
+        cmbTraccion.setItems(FXCollections.observableArrayList("Delantera", "Trasera", "AWD", "4x4"));
 
-        cmbFiltroEstado.setItems(
-                FXCollections.observableArrayList(
-                        "TODOS",
-                        "DISPONIBLE",
-                        "ALQUILADO"
-                )
-        );
+        cmbFiltroEstado.setItems(FXCollections.observableArrayList("TODOS", "DISPONIBLE", "ALQUILADO"));
 
         cmbFiltroEstado.setValue("TODOS");
 
-        colPlaca.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getPlaca()
-                )
-        );
+        colPlaca.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getPlaca()));
 
-        colMarca.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getMarca()
-                )
-        );
+        colMarca.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getMarca()));
 
-        colModelo.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getModelo()
-                )
-        );
+        colModelo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getModelo()));
 
-        colAnio.setCellValueFactory(
-                dato -> new ReadOnlyObjectWrapper<>(
-                        dato.getValue().getAnio()
-                )
-        );
+        colAnio.setCellValueFactory(dato -> new ReadOnlyObjectWrapper<>(dato.getValue().getAnio()));
 
-        colTipo.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getTipoVehiculo()
-                                .getNombre()
-                )
-        );
+        colTipo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getTipoVehiculo().getNombre()));
 
-        colTarifa.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        String.format(
-                                "₡%,.2f",
-                                dato.getValue()
-                                        .getTarifaDiaria()
-                        )
-                )
-        );
+        colTarifa.setCellValueFactory(dato -> new SimpleStringProperty(String.format("₡%,.2f", dato.getValue().getTarifaDiaria())));
 
-        colEstado.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue()
-                                .getEstado()
-                                .toString()
-                )
-        );
+        colEstado.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEstado().toString()));
 
-        cmbTipo.setOnAction(
-                evento -> actualizarCamposPorTipo()
-        );
+        cmbTipo.setOnAction(evento -> actualizarCamposPorTipo());
 
-        tablaVehiculos.setOnMouseClicked(
-                evento -> cargarVehiculoSeleccionado()
-        );
+        tablaVehiculos.setOnMouseClicked(evento -> cargarVehiculoSeleccionado());
 
-        txtBuscar.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarVehiculos()
-        );
+        txtBuscar.textProperty().addListener((observable, anterior, nuevo) -> filtrarVehiculos());
 
-        cmbFiltroEstado.valueProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarVehiculos()
-        );
+        cmbFiltroEstado.valueProperty().addListener((observable, anterior, nuevo) -> filtrarVehiculos());
 
-        txtBuscarTipo.textProperty().addListener(
-                (observable, anterior, nuevo) ->
-                        filtrarTipos(nuevo)
-        );
+        txtBuscarTipo.textProperty().addListener((observable, anterior, nuevo) -> filtrarTipos(nuevo));
 
         actualizarCamposPorTipo();
+
     }
 
     /*
@@ -202,15 +141,16 @@ public class VehiculosController {
      * Recibe: El servicio de vehículos y el servicio de tipos de vehículo
      * Retorna: No retorna ningún valor
      */
-    public void setServicios(
-            VehiculoServicio vehiculoServicio,
-            TipoVehiculoServicio tipoVehiculoServicio) {
+    public void setServicios(VehiculoServicio vehiculoServicio, TipoVehiculoServicio tipoVehiculoServicio) {
 
         this.vehiculoServicio = vehiculoServicio;
+
         this.tipoVehiculoServicio = tipoVehiculoServicio;
 
         cargarTipos();
+
         actualizarTabla();
+
     }
 
     /*
@@ -220,16 +160,12 @@ public class VehiculosController {
      */
     private void cargarTipos() {
 
-        listaTipos = FXCollections.observableArrayList(
-                tipoVehiculoServicio.obtenerTodos()
-        );
+        listaTipos = FXCollections.observableArrayList(tipoVehiculoServicio.obtenerTodos());
 
-        tiposFiltrados = new FilteredList<>(
-                listaTipos,
-                tipo -> true
-        );
+        tiposFiltrados = new FilteredList<>(listaTipos, tipo -> true);
 
         cmbTipo.setItems(tiposFiltrados);
+
     }
 
     /*
@@ -240,30 +176,29 @@ public class VehiculosController {
     private void filtrarTipos(String textoBusqueda) {
 
         if (tiposFiltrados == null) {
+
             return;
+
         }
 
         tiposFiltrados.setPredicate(tipo -> {
 
-            if (textoBusqueda == null
-                    || textoBusqueda.trim().isEmpty()) {
+            if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
 
                 return true;
+
             }
 
-            String busqueda =
-                    textoBusqueda
-                            .toLowerCase()
-                            .trim();
+            String busqueda = textoBusqueda.toLowerCase().trim();
 
-            return tipo.getNombre()
-                    .toLowerCase()
-                    .contains(busqueda);
+            return tipo.getNombre().toLowerCase().contains(busqueda);
+
         });
 
         cmbTipo.getSelectionModel().clearSelection();
 
         actualizarCamposPorTipo();
+
     }
 
     /*
@@ -276,25 +211,19 @@ public class VehiculosController {
 
         try {
 
-            Vehiculo vehiculo =
-                    crearVehiculoDesdeFormulario();
+            Vehiculo vehiculo = crearVehiculoDesdeFormulario();
 
-            vehiculoServicio.registrarVehiculo(
-                    vehiculo
-            );
+            vehiculoServicio.registrarVehiculo(vehiculo);
 
             actualizarTabla();
+
             limpiarFormulario();
 
-            mostrarInformacion(
-                    "Vehículo registrado correctamente."
-            );
+            mostrarInformacion("Vehículo registrado correctamente.");
 
         } catch (NumberFormatException e) {
 
-            mostrarError(
-                    "Año, tarifa, pasajeros y capacidad deben contener valores numéricos válidos."
-            );
+            mostrarError("Año, tarifa, pasajeros y capacidad deben contener valores numéricos válidos.");
 
         } catch (IllegalArgumentException e) {
 
@@ -303,7 +232,9 @@ public class VehiculosController {
         } catch (RuntimeException e) {
 
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -314,42 +245,31 @@ public class VehiculosController {
     @FXML
     private void modificarVehiculo() {
 
-        Vehiculo seleccionado =
-                tablaVehiculos
-                        .getSelectionModel()
-                        .getSelectedItem();
+        Vehiculo seleccionado = tablaVehiculos.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
 
-            mostrarError(
-                    "Debe seleccionar un vehículo."
-            );
+            mostrarError("Debe seleccionar un vehículo.");
 
             return;
+
         }
 
         try {
 
-            Vehiculo modificado =
-                    crearVehiculoDesdeFormulario();
+            Vehiculo modificado = crearVehiculoDesdeFormulario();
 
-            vehiculoServicio.modificarVehiculo(
-                    seleccionado.getPlaca(),
-                    modificado
-            );
+            vehiculoServicio.modificarVehiculo(seleccionado.getPlaca(), modificado);
 
             actualizarTabla();
+
             limpiarFormulario();
 
-            mostrarInformacion(
-                    "Vehículo modificado correctamente."
-            );
+            mostrarInformacion("Vehículo modificado correctamente.");
 
         } catch (NumberFormatException e) {
 
-            mostrarError(
-                    "Los campos numéricos contienen valores inválidos."
-            );
+            mostrarError("Los campos numéricos contienen valores inválidos.");
 
         } catch (IllegalArgumentException e) {
 
@@ -358,7 +278,9 @@ public class VehiculosController {
         } catch (RuntimeException e) {
 
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -369,32 +291,25 @@ public class VehiculosController {
     @FXML
     private void eliminarVehiculo() {
 
-        Vehiculo seleccionado =
-                tablaVehiculos
-                        .getSelectionModel()
-                        .getSelectedItem();
+        Vehiculo seleccionado = tablaVehiculos.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
 
-            mostrarError(
-                    "Debe seleccionar un vehículo."
-            );
+            mostrarError("Debe seleccionar un vehículo.");
 
             return;
+
         }
 
         try {
 
-            vehiculoServicio.eliminarVehiculo(
-                    seleccionado.getPlaca()
-            );
+            vehiculoServicio.eliminarVehiculo(seleccionado.getPlaca());
 
             actualizarTabla();
+
             limpiarFormulario();
 
-            mostrarInformacion(
-                    "Vehículo eliminado correctamente."
-            );
+            mostrarInformacion("Vehículo eliminado correctamente.");
 
         } catch (IllegalArgumentException e) {
 
@@ -403,7 +318,9 @@ public class VehiculosController {
         } catch (RuntimeException e) {
 
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -415,27 +332,33 @@ public class VehiculosController {
     private void limpiarFormulario() {
 
         txtPlaca.clear();
+
         txtMarca.clear();
+
         txtModelo.clear();
+
         txtAnio.clear();
+
         txtTarifa.clear();
+
         txtPasajeros.clear();
+
         txtCapacidadCarga.clear();
+
         txtBuscarTipo.clear();
 
-        cmbTipo.getSelectionModel()
-                .clearSelection();
+        cmbTipo.getSelectionModel().clearSelection();
 
-        cmbTraccion.getSelectionModel()
-                .clearSelection();
+        cmbTraccion.getSelectionModel().clearSelection();
 
-        tablaVehiculos.getSelectionModel()
-                .clearSelection();
+        tablaVehiculos.getSelectionModel().clearSelection();
 
         txtPlaca.setDisable(false);
+
         cmbTipo.setDisable(false);
 
         actualizarCamposPorTipo();
+
     }
 
     /*
@@ -445,95 +368,56 @@ public class VehiculosController {
      */
     private Vehiculo crearVehiculoDesdeFormulario() {
 
-        String placa =
-                txtPlaca.getText().trim();
+        String placa = txtPlaca.getText().trim();
 
-        String marca =
-                txtMarca.getText().trim();
+        String marca = txtMarca.getText().trim();
 
-        String modelo =
-                txtModelo.getText().trim();
+        String modelo = txtModelo.getText().trim();
 
-        int anio =
-                Integer.parseInt(
-                        txtAnio.getText().trim()
-                );
+        int anio = Integer.parseInt(txtAnio.getText().trim());
 
-        double tarifa =
-                Double.parseDouble(
-                        txtTarifa.getText().trim()
-                );
+        double tarifa = Double.parseDouble(txtTarifa.getText().trim());
 
-        TipoVehiculo tipo =
-                cmbTipo.getValue();
+        TipoVehiculo tipo = cmbTipo.getValue();
 
         if (tipo == null) {
 
-            throw new IllegalArgumentException(
-                    "Debe seleccionar un tipo de vehículo."
-            );
+            throw new IllegalArgumentException("Debe seleccionar un tipo de vehículo.");
+
         }
 
-        String traccion =
-                cmbTraccion.getValue();
+        String traccion = cmbTraccion.getValue();
 
-        if (tipo.getCategoria()
-                == CategoriaVehiculo.PASAJEROS) {
+        if (tipo.getCategoria() == CategoriaVehiculo.PASAJEROS) {
 
             int pasajeros = 0;
 
             if (tipo.isRequierePasajeros()) {
 
-                pasajeros =
-                        Integer.parseInt(
-                                txtPasajeros
-                                        .getText()
-                                        .trim()
-                        );
+                pasajeros = Integer.parseInt(txtPasajeros.getText().trim());
+
             }
 
-            return new VehiculoPasajeros(
-                    placa,
-                    marca,
-                    modelo,
-                    anio,
-                    tarifa,
-                    tipo,
-                    pasajeros,
-                    traccion
-            );
+            return new VehiculoPasajeros(placa, marca, modelo, anio, tarifa, tipo, pasajeros, traccion);
+
         }
 
-        if (tipo.getCategoria()
-                == CategoriaVehiculo.CARGA) {
+        if (tipo.getCategoria() == CategoriaVehiculo.CARGA) {
 
             double capacidad = 0;
 
             if (tipo.isRequiereCapacidadCarga()) {
 
-                capacidad =
-                        Double.parseDouble(
-                                txtCapacidadCarga
-                                        .getText()
-                                        .trim()
-                        );
+                capacidad = Double.parseDouble(txtCapacidadCarga.getText().trim());
+
             }
 
-            return new VehiculoCarga(
-                    placa,
-                    marca,
-                    modelo,
-                    anio,
-                    tarifa,
-                    tipo,
-                    capacidad,
-                    traccion
-            );
+            return new VehiculoCarga(placa, marca, modelo, anio, tarifa, tipo, capacidad, traccion);
+
         }
 
-        throw new IllegalArgumentException(
-                "La categoría del vehículo no es válida."
-        );
+        throw new IllegalArgumentException("La categoría del vehículo no es válida.");
+
     }
 
     /*
@@ -544,32 +428,27 @@ public class VehiculosController {
     private void actualizarTabla() {
 
         if (vehiculoServicio == null) {
+
             return;
+
         }
 
         try {
 
-            listaVehiculos =
-                    FXCollections.observableArrayList(
-                            vehiculoServicio.obtenerTodos()
-                    );
+            listaVehiculos = FXCollections.observableArrayList(vehiculoServicio.obtenerTodos());
 
-            vehiculosFiltrados =
-                    new FilteredList<>(
-                            listaVehiculos,
-                            vehiculo -> true
-                    );
+            vehiculosFiltrados = new FilteredList<>(listaVehiculos, vehiculo -> true);
 
-            tablaVehiculos.setItems(
-                    vehiculosFiltrados
-            );
+            tablaVehiculos.setItems(vehiculosFiltrados);
 
             filtrarVehiculos();
 
         } catch (RuntimeException e) {
 
             mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -580,67 +459,44 @@ public class VehiculosController {
     private void filtrarVehiculos() {
 
         if (vehiculosFiltrados == null) {
+
             return;
+
         }
 
-        String textoBusqueda =
-                txtBuscar.getText();
+        String textoBusqueda = txtBuscar.getText();
 
-        String estadoSeleccionado =
-                cmbFiltroEstado.getValue();
+        String estadoSeleccionado = cmbFiltroEstado.getValue();
 
-        vehiculosFiltrados.setPredicate(
-                vehiculo -> {
+        vehiculosFiltrados.setPredicate(vehiculo -> {
 
                     boolean coincideBusqueda = true;
 
                     boolean coincideEstado = true;
 
-                    if (textoBusqueda != null
-                            && !textoBusqueda.trim().isEmpty()) {
+                    if (textoBusqueda != null && !textoBusqueda.trim().isEmpty()) {
 
-                        String busqueda =
-                                textoBusqueda
-                                        .toLowerCase()
-                                        .trim();
+                        String busqueda = textoBusqueda.toLowerCase().trim();
 
-                        coincideBusqueda =
-                                vehiculo.getPlaca()
-                                        .toLowerCase()
-                                        .contains(busqueda)
+                        coincideBusqueda = vehiculo.getPlaca().toLowerCase().contains(busqueda)
+                                || vehiculo.getMarca().toLowerCase().contains(busqueda)
+                                || vehiculo.getModelo().toLowerCase().contains(busqueda)
+                                || vehiculo.getTipoVehiculo().getNombre().toLowerCase().contains(busqueda);
 
-                                        || vehiculo.getMarca()
-                                        .toLowerCase()
-                                        .contains(busqueda)
-
-                                        || vehiculo.getModelo()
-                                        .toLowerCase()
-                                        .contains(busqueda)
-
-                                        || vehiculo
-                                        .getTipoVehiculo()
-                                        .getNombre()
-                                        .toLowerCase()
-                                        .contains(busqueda);
                     }
 
-                    if (estadoSeleccionado != null
-                            && !estadoSeleccionado.equals(
-                            "TODOS"
-                    )) {
+                    if (estadoSeleccionado != null && !estadoSeleccionado.equals("TODOS")) {
 
-                        coincideEstado =
-                                vehiculo.getEstado()
-                                        .toString()
-                                        .equals(
-                                                estadoSeleccionado
-                                        );
+                        coincideEstado = vehiculo.getEstado().toString().equals(estadoSeleccionado);
+
                     }
 
-                    return coincideBusqueda
-                            && coincideEstado;
+                    return coincideBusqueda && coincideEstado;
+
                 }
+
         );
+
     }
 
     /*
@@ -650,29 +506,26 @@ public class VehiculosController {
      */
     private void actualizarCamposPorTipo() {
 
-        TipoVehiculo tipo =
-                cmbTipo.getValue();
+        TipoVehiculo tipo = cmbTipo.getValue();
 
         if (tipo == null) {
 
             txtPasajeros.setDisable(true);
+
             txtCapacidadCarga.setDisable(true);
+
             cmbTraccion.setDisable(true);
 
             return;
+
         }
 
-        txtPasajeros.setDisable(
-                !tipo.isRequierePasajeros()
-        );
+        txtPasajeros.setDisable(!tipo.isRequierePasajeros());
 
-        txtCapacidadCarga.setDisable(
-                !tipo.isRequiereCapacidadCarga()
-        );
+        txtCapacidadCarga.setDisable(!tipo.isRequiereCapacidadCarga());
 
-        cmbTraccion.setDisable(
-                !tipo.isRequiereTraccion()
-        );
+        cmbTraccion.setDisable(!tipo.isRequiereTraccion());
+
     }
 
     /*
@@ -682,81 +535,54 @@ public class VehiculosController {
      */
     private void cargarVehiculoSeleccionado() {
 
-        Vehiculo vehiculo =
-                tablaVehiculos
-                        .getSelectionModel()
-                        .getSelectedItem();
+        Vehiculo vehiculo = tablaVehiculos.getSelectionModel().getSelectedItem();
 
         if (vehiculo == null) {
+
             return;
+
         }
 
-        txtPlaca.setText(
-                vehiculo.getPlaca()
-        );
+        txtPlaca.setText(vehiculo.getPlaca());
 
-        txtMarca.setText(
-                vehiculo.getMarca()
-        );
+        txtMarca.setText(vehiculo.getMarca());
 
-        txtModelo.setText(
-                vehiculo.getModelo()
-        );
+        txtModelo.setText(vehiculo.getModelo());
 
-        txtAnio.setText(
-                String.valueOf(
-                        vehiculo.getAnio()
-                )
-        );
+        txtAnio.setText(String.valueOf(vehiculo.getAnio()));
 
-        txtTarifa.setText(
-                String.valueOf(
-                        vehiculo.getTarifaDiaria()
-                )
-        );
+        txtTarifa.setText(String.valueOf(vehiculo.getTarifaDiaria()));
 
         txtPlaca.setDisable(true);
+
         cmbTipo.setDisable(false);
 
         txtBuscarTipo.clear();
 
-        cmbTipo.setValue(
-                vehiculo.getTipoVehiculo()
-        );
+        cmbTipo.setValue(vehiculo.getTipoVehiculo());
 
-        if (vehiculo
-                instanceof VehiculoPasajeros pasajeros) {
+        if (vehiculo instanceof VehiculoPasajeros pasajeros) {
 
-            txtPasajeros.setText(
-                    String.valueOf(
-                            pasajeros.getCantidadPasajeros()
-                    )
-            );
+            txtPasajeros.setText(String.valueOf(pasajeros.getCantidadPasajeros()));
 
             txtCapacidadCarga.clear();
 
-            cmbTraccion.setValue(
-                    pasajeros.getTipoTraccion()
-            );
+            cmbTraccion.setValue(pasajeros.getTipoTraccion());
+
         }
 
-        if (vehiculo
-                instanceof VehiculoCarga carga) {
+        if (vehiculo instanceof VehiculoCarga carga) {
 
-            txtCapacidadCarga.setText(
-                    String.valueOf(
-                            carga.getCapacidadCarga()
-                    )
-            );
+            txtCapacidadCarga.setText(String.valueOf(carga.getCapacidadCarga()));
 
             txtPasajeros.clear();
 
-            cmbTraccion.setValue(
-                    carga.getTipoTraccion()
-            );
+            cmbTraccion.setValue(carga.getTipoTraccion());
+
         }
 
         actualizarCamposPorTipo();
+
     }
 
     /*
@@ -766,16 +592,16 @@ public class VehiculosController {
      */
     private void mostrarError(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.ERROR
-                );
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
 
         alerta.setTitle("Error");
+
         alerta.setHeaderText(null);
+
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -783,18 +609,18 @@ public class VehiculosController {
      * Recibe: El mensaje informativo que se desea mostrar
      * Retorna: No retorna ningún valor
      */
-    private void mostrarInformacion(
-            String mensaje) {
+    private void mostrarInformacion(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.INFORMATION
-                );
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
         alerta.setTitle("Información");
+
         alerta.setHeaderText(null);
+
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
+
 }

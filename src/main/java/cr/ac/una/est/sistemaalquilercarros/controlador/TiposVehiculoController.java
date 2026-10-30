@@ -68,58 +68,22 @@ public class TiposVehiculoController {
     @FXML
     private void initialize() {
 
-        cmbCategoria.setItems(
-                FXCollections.observableArrayList(
-                        CategoriaVehiculo.values()
-                )
-        );
+        cmbCategoria.setItems(FXCollections.observableArrayList(CategoriaVehiculo.values()));
 
-        colNombre.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getNombre()
-                )
-        );
+        colNombre.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getNombre()));
 
-        colCategoria.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getCategoria().toString()
-                )
-        );
+        colCategoria.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCategoria().toString()));
 
-        colPasajeros.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().isRequierePasajeros()
-                                ? "Sí"
-                                : "No"
-                )
-        );
+        colPasajeros.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().isRequierePasajeros() ? "Sí" : "No"));
 
-        colTraccion.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().isRequiereTraccion()
-                                ? "Sí"
-                                : "No"
-                )
-        );
+        colTraccion.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().isRequiereTraccion() ? "Sí" : "No"));
 
-        colCarga.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().isRequiereCapacidadCarga()
-                                ? "Sí"
-                                : "No"
-                )
-        );
+        colCarga.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().isRequiereCapacidadCarga() ? "Sí" : "No"));
 
-        txtBuscar
-                .textProperty()
-                .addListener(
-                        (observable, anterior, nuevo) ->
-                                filtrarTipos(nuevo)
-                );
+        txtBuscar.textProperty().addListener((observable, anterior, nuevo) -> filtrarTipos(nuevo));
 
-        tablaTipos.setOnMouseClicked(
-                evento -> cargarTipoSeleccionado()
-        );
+        tablaTipos.setOnMouseClicked(evento -> cargarTipoSeleccionado());
+
     }
 
     /*
@@ -127,13 +91,12 @@ public class TiposVehiculoController {
      * Recibe: El servicio de tipos de vehículo que utilizará el controlador
      * Retorna: No retorna ningún valor
      */
-    public void setTipoVehiculoServicio(
-            TipoVehiculoServicio tipoVehiculoServicio) {
+    public void setTipoVehiculoServicio(TipoVehiculoServicio tipoVehiculoServicio) {
 
-        this.tipoVehiculoServicio =
-                tipoVehiculoServicio;
+        this.tipoVehiculoServicio = tipoVehiculoServicio;
 
         actualizarTabla();
+
     }
 
     /*
@@ -146,45 +109,30 @@ public class TiposVehiculoController {
 
         try {
 
-            String nombre =
-                    txtNombre.getText().trim();
+            String nombre = txtNombre.getText().trim();
 
-            CategoriaVehiculo categoria =
-                    cmbCategoria.getValue();
+            CategoriaVehiculo categoria = cmbCategoria.getValue();
 
-            TipoVehiculo tipo =
-                    new TipoVehiculo(
-                            nombre,
-                            categoria,
-                            chkPasajeros.isSelected(),
-                            chkTraccion.isSelected(),
-                            chkCapacidadCarga.isSelected()
-                    );
+            TipoVehiculo tipo = new TipoVehiculo(nombre, categoria, chkPasajeros.isSelected(), chkTraccion.isSelected(), chkCapacidadCarga.isSelected());
 
-            tipoVehiculoServicio.registrarTipo(
-                    tipo
-            );
+            tipoVehiculoServicio.registrarTipo(tipo);
 
             actualizarTabla();
 
             limpiarFormulario();
 
-            mostrarInformacion(
-                    "Tipo de vehículo registrado correctamente."
-            );
+            mostrarInformacion("Tipo de vehículo registrado correctamente.");
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
 
         } catch (RuntimeException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -194,34 +142,24 @@ public class TiposVehiculoController {
      */
     private void cargarTipoSeleccionado() {
 
-        TipoVehiculo seleccionado =
-                tablaTipos
-                        .getSelectionModel()
-                        .getSelectedItem();
+        TipoVehiculo seleccionado = tablaTipos.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
+
             return;
+
         }
 
-        txtNombre.setText(
-                seleccionado.getNombre()
-        );
+        txtNombre.setText(seleccionado.getNombre());
 
-        cmbCategoria.setValue(
-                seleccionado.getCategoria()
-        );
+        cmbCategoria.setValue(seleccionado.getCategoria());
 
-        chkPasajeros.setSelected(
-                seleccionado.isRequierePasajeros()
-        );
+        chkPasajeros.setSelected(seleccionado.isRequierePasajeros());
 
-        chkTraccion.setSelected(
-                seleccionado.isRequiereTraccion()
-        );
+        chkTraccion.setSelected(seleccionado.isRequiereTraccion());
 
-        chkCapacidadCarga.setSelected(
-                seleccionado.isRequiereCapacidadCarga()
-        );
+        chkCapacidadCarga.setSelected(seleccionado.isRequiereCapacidadCarga());
+
     }
 
     /*
@@ -232,72 +170,48 @@ public class TiposVehiculoController {
     @FXML
     private void modificarTipo() {
 
-        TipoVehiculo seleccionado =
-                tablaTipos
-                        .getSelectionModel()
-                        .getSelectedItem();
+        TipoVehiculo seleccionado = tablaTipos.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
 
-            mostrarError(
-                    "Debe seleccionar un tipo de vehículo."
-            );
+            mostrarError("Debe seleccionar un tipo de vehículo.");
 
             return;
+
         }
 
         try {
 
-            String nombre =
-                    txtNombre
-                            .getText()
-                            .trim();
+            String nombre = txtNombre.getText().trim();
 
-            CategoriaVehiculo categoria =
-                    cmbCategoria.getValue();
+            CategoriaVehiculo categoria = cmbCategoria.getValue();
 
-            if (!seleccionado
-                    .getNombre()
-                    .equalsIgnoreCase(nombre)) {
+            if (!seleccionado.getNombre().equalsIgnoreCase(nombre)) {
 
-                throw new IllegalArgumentException(
-                        "El nombre del tipo de vehículo no se puede modificar."
-                );
+                throw new IllegalArgumentException("El nombre del tipo de vehículo no se puede modificar.");
+
             }
 
-            TipoVehiculo tipoModificado =
-                    new TipoVehiculo(
-                            nombre,
-                            categoria,
-                            chkPasajeros.isSelected(),
-                            chkTraccion.isSelected(),
-                            chkCapacidadCarga.isSelected()
-                    );
+            TipoVehiculo tipoModificado = new TipoVehiculo(nombre, categoria, chkPasajeros.isSelected(), chkTraccion.isSelected(), chkCapacidadCarga.isSelected());
 
-            tipoVehiculoServicio.modificarTipo(
-                    tipoModificado
-            );
+            tipoVehiculoServicio.modificarTipo(tipoModificado);
 
             actualizarTabla();
 
             limpiarFormulario();
 
-            mostrarInformacion(
-                    "Tipo de vehículo modificado correctamente."
-            );
+            mostrarInformacion("Tipo de vehículo modificado correctamente.");
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
 
         } catch (RuntimeException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -308,46 +222,36 @@ public class TiposVehiculoController {
     @FXML
     private void eliminarTipo() {
 
-        TipoVehiculo seleccionado =
-                tablaTipos
-                        .getSelectionModel()
-                        .getSelectedItem();
+        TipoVehiculo seleccionado = tablaTipos.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
 
-            mostrarError(
-                    "Debe seleccionar un tipo de vehículo."
-            );
+            mostrarError("Debe seleccionar un tipo de vehículo.");
 
             return;
+
         }
 
         try {
 
-            tipoVehiculoServicio.eliminarTipo(
-                    seleccionado.getNombre()
-            );
+            tipoVehiculoServicio.eliminarTipo(seleccionado.getNombre());
 
             actualizarTabla();
 
             limpiarFormulario();
 
-            mostrarInformacion(
-                    "Tipo de vehículo eliminado correctamente."
-            );
+            mostrarInformacion("Tipo de vehículo eliminado correctamente.");
 
         } catch (IllegalArgumentException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
 
         } catch (RuntimeException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -360,9 +264,7 @@ public class TiposVehiculoController {
 
         txtNombre.clear();
 
-        cmbCategoria
-                .getSelectionModel()
-                .clearSelection();
+        cmbCategoria.getSelectionModel().clearSelection();
 
         chkPasajeros.setSelected(false);
 
@@ -370,9 +272,8 @@ public class TiposVehiculoController {
 
         chkCapacidadCarga.setSelected(false);
 
-        tablaTipos
-                .getSelectionModel()
-                .clearSelection();
+        tablaTipos.getSelectionModel().clearSelection();
+
     }
 
     /*
@@ -383,36 +284,27 @@ public class TiposVehiculoController {
     private void actualizarTabla() {
 
         if (tipoVehiculoServicio == null) {
+
             return;
+
         }
 
         try {
 
-            listaTipos =
-                    FXCollections.observableArrayList(
-                            tipoVehiculoServicio.obtenerTodos()
-                    );
+            listaTipos = FXCollections.observableArrayList(tipoVehiculoServicio.obtenerTodos());
 
-            tiposFiltrados =
-                    new FilteredList<>(
-                            listaTipos,
-                            tipo -> true
-                    );
+            tiposFiltrados = new FilteredList<>(listaTipos, tipo -> true);
 
-            tablaTipos.setItems(
-                    tiposFiltrados
-            );
+            tablaTipos.setItems(tiposFiltrados);
 
-            filtrarTipos(
-                    txtBuscar.getText()
-            );
+            filtrarTipos(txtBuscar.getText());
 
         } catch (RuntimeException e) {
 
-            mostrarError(
-                    e.getMessage()
-            );
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -420,56 +312,38 @@ public class TiposVehiculoController {
      * Recibe: El texto utilizado para realizar la búsqueda
      * Retorna: No retorna ningún valor
      */
-    private void filtrarTipos(
-            String textoBusqueda) {
+    private void filtrarTipos(String textoBusqueda) {
 
         if (tiposFiltrados == null) {
+
             return;
+
         }
 
         tiposFiltrados.setPredicate(tipo -> {
 
-            if (textoBusqueda == null
-                    || textoBusqueda.trim().isEmpty()) {
+            if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
 
                 return true;
+
             }
 
-            String busqueda =
-                    textoBusqueda
-                            .toLowerCase()
-                            .trim();
+            String busqueda = textoBusqueda.toLowerCase().trim();
 
-            String pasajeros =
-                    tipo.isRequierePasajeros()
-                            ? "sí"
-                            : "no";
+            String pasajeros = tipo.isRequierePasajeros() ? "sí" : "no";
 
-            String traccion =
-                    tipo.isRequiereTraccion()
-                            ? "sí"
-                            : "no";
+            String traccion = tipo.isRequiereTraccion() ? "sí" : "no";
 
-            String carga =
-                    tipo.isRequiereCapacidadCarga()
-                            ? "sí"
-                            : "no";
+            String carga = tipo.isRequiereCapacidadCarga() ? "sí" : "no";
 
-            return tipo.getNombre()
-                    .toLowerCase()
-                    .contains(busqueda)
-
-                    || tipo.getCategoria()
-                    .toString()
-                    .toLowerCase()
-                    .contains(busqueda)
-
+            return tipo.getNombre().toLowerCase().contains(busqueda)
+                    || tipo.getCategoria().toString().toLowerCase().contains(busqueda)
                     || pasajeros.contains(busqueda)
-
                     || traccion.contains(busqueda)
-
                     || carga.contains(busqueda);
+
         });
+
     }
 
     /*
@@ -477,27 +351,18 @@ public class TiposVehiculoController {
      * Recibe: El mensaje de error que se desea mostrar
      * Retorna: No retorna ningún valor
      */
-    private void mostrarError(
-            String mensaje) {
+    private void mostrarError(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.ERROR
-                );
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
 
-        alerta.setTitle(
-                "Error"
-        );
+        alerta.setTitle("Error");
 
-        alerta.setHeaderText(
-                null
-        );
+        alerta.setHeaderText(null);
 
-        alerta.setContentText(
-                mensaje
-        );
+        alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -505,26 +370,18 @@ public class TiposVehiculoController {
      * Recibe: El mensaje informativo que se desea mostrar
      * Retorna: No retorna ningún valor
      */
-    private void mostrarInformacion(
-            String mensaje) {
+    private void mostrarInformacion(String mensaje) {
 
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.INFORMATION
-                );
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
-        alerta.setTitle(
-                "Información"
-        );
+        alerta.setTitle("Información");
 
-        alerta.setHeaderText(
-                null
-        );
+        alerta.setHeaderText(null);
 
-        alerta.setContentText(
-                mensaje
-        );
+        alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
+
 }
