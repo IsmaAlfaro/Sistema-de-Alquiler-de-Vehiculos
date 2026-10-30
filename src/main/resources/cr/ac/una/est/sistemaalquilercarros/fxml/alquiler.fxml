@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="700.0"
+<BorderPane prefHeight="760.0"
             prefWidth="1000.0"
             styleClass="page"
             stylesheets="@../css/styles.css"
@@ -171,7 +171,7 @@
                 </VBox>
 
                 <VBox spacing="5.0"
-                      styleClass="summary-card summary-total-card"
+                      styleClass="summary-card, summary-total-card"
                       HBox.hgrow="ALWAYS">
 
                     <Label text="Total"
@@ -185,28 +185,98 @@
 
             </HBox>
 
-            <HBox alignment="CENTER_RIGHT"
-                  spacing="10.0">
+            <VBox spacing="12.0"
+                  styleClass="card">
 
-                <Button mnemonicParsing="false"
-                        onAction="#calcularAlquiler"
-                        text="Calcular"
-                        prefHeight="35.0"
-                        styleClass="button-secondary" />
+                <Label text="Forma de pago"
+                       styleClass="section-title" />
 
-                <Button mnemonicParsing="false"
-                        onAction="#confirmarAlquiler"
-                        text="Confirmar alquiler"
-                        prefHeight="35.0"
-                        styleClass="button-primary" />
+                <GridPane hgap="16.0"
+                          vgap="8.0">
 
-                <Button mnemonicParsing="false"
-                        onAction="#limpiarFormulario"
-                        text="Limpiar"
-                        prefHeight="35.0"
-                        styleClass="button-secondary" />
+                    <columnConstraints>
 
-            </HBox>
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="30.0" />
+
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="30.0" />
+
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="12.0" />
+
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           percentWidth="28.0" />
+
+                    </columnConstraints>
+
+                    <Label text="Método de pago"
+                           styleClass="form-label"
+                           GridPane.columnIndex="0"
+                           GridPane.rowIndex="0" />
+
+                    <Label text="Monto recibido"
+                           styleClass="form-label"
+                           GridPane.columnIndex="1"
+                           GridPane.rowIndex="0" />
+
+                    <Label text="Vuelto"
+                           styleClass="form-label"
+                           GridPane.columnIndex="2"
+                           GridPane.rowIndex="0" />
+
+                    <ComboBox fx:id="cmbMetodoPago"
+                              promptText="Seleccione..."
+                              prefHeight="34.0"
+                              maxWidth="Infinity"
+                              GridPane.columnIndex="0"
+                              GridPane.rowIndex="1" />
+
+                    <TextField fx:id="txtMontoRecibido"
+                               promptText="Ejemplo: 250000"
+                               prefHeight="34.0"
+                               maxWidth="Infinity"
+                               GridPane.columnIndex="1"
+                               GridPane.rowIndex="1" />
+
+                    <Label fx:id="lblVuelto"
+                           text="₡0.00"
+                           styleClass="summary-total-value"
+                           GridPane.columnIndex="2"
+                           GridPane.rowIndex="1" />
+
+                    <HBox alignment="CENTER_RIGHT"
+                          spacing="8.0"
+                          GridPane.columnIndex="3"
+                          GridPane.rowIndex="0"
+                          GridPane.rowSpan="2">
+
+                        <Button mnemonicParsing="false"
+                                onAction="#calcularAlquiler"
+                                text="Calcular"
+                                prefHeight="35.0"
+                                styleClass="button-secondary" />
+
+                        <Button mnemonicParsing="false"
+                                onAction="#confirmarAlquiler"
+                                text="Confirmar alquiler"
+                                prefHeight="35.0"
+                                styleClass="button-primary" />
+
+                        <Button mnemonicParsing="false"
+                                onAction="#limpiarFormulario"
+                                text="Limpiar"
+                                prefHeight="35.0"
+                                styleClass="button-secondary" />
+
+                    </HBox>
+
+                </GridPane>
+
+                <Label text="Para pagos en efectivo, el monto recibido debe ser múltiplo de ₡10"
+                       styleClass="page-subtitle" />
+
+            </VBox>
 
             <HBox alignment="CENTER_LEFT"
                   spacing="12.0"

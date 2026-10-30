@@ -2,6 +2,7 @@ package cr.ac.una.est.sistemaalquilercarros.controlador;
 
 import cr.ac.una.est.sistemaalquilercarros.modelo.Alquiler;
 import cr.ac.una.est.sistemaalquilercarros.modelo.Cliente;
+import cr.ac.una.est.sistemaalquilercarros.modelo.MetodoPago;
 import cr.ac.una.est.sistemaalquilercarros.modelo.Vehiculo;
 import cr.ac.una.est.sistemaalquilercarros.servicio.AlquilerServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
@@ -56,6 +57,15 @@ public class AlquileresController {
     private Label lblTotal;
 
     @FXML
+    private ComboBox<MetodoPago> cmbMetodoPago;
+
+    @FXML
+    private TextField txtMontoRecibido;
+
+    @FXML
+    private Label lblVuelto;
+
+    @FXML
     private TableView<Alquiler> tablaAlquileres;
 
     @FXML
@@ -101,7 +111,7 @@ public class AlquileresController {
     private FilteredList<Alquiler> alquileresFiltrados;
 
     /*
-     * Qué hace: Inicializa la pantalla de alquileres configurando la fecha actual, los valores iniciales de los labels, las columnas de la tabla y los eventos que actualizan automáticamente los filtros y la tarifa diaria
+     * Qué hace: Inicializa la pantalla de alquileres configurando la fecha actual, los valores iniciales de los labels, las formas de pago disponibles, las columnas de la tabla y los eventos que actualizan automáticamente los filtros, la tarifa diaria y los datos del pago
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
@@ -114,6 +124,17 @@ public class AlquileresController {
         lblSubtotal.setText("₡0.00");
         lblDeposito.setText("₡0.00");
         lblTotal.setText("₡0.00");
+        lblVuelto.setText("₡0.00");
+
+        cmbMetodoPago.setItems(
+                FXCollections.observableArrayList(
+                        MetodoPago.values()
+                )
+        );
+
+        txtMontoRecibido.setDisable(
+                true
+        );
 
         cmbFiltroEstado.setItems(
                 FXCollections.observableArrayList(
@@ -186,6 +207,28 @@ public class AlquileresController {
         cmbVehiculo.valueProperty().addListener(
                 (observable, vehiculoAnterior, vehiculoNuevo) ->
                         actualizarTarifaDiaria()
+        );
+
+        cmbMetodoPago.valueProperty().addListener(
+                (observable, anterior, nuevo) ->
+                        actualizarFormaPago()
+        );
+
+        txtMontoRecibido.textProperty().addListener(
+                (observable, anterior, nuevo) -> {
+
+                    if (!nuevo.matches("\\d*")) {
+
+                        txtMontoRecibido.setText(
+                                nuevo.replaceAll(
+                                        "[^\\d]",
+                                        ""
+                                )
+                        );
+                    }
+
+                    calcularVuelto();
+                }
         );
 
         txtBuscarCliente.textProperty().addListener(
@@ -539,6 +582,8 @@ public class AlquileresController {
                     )
             );
 
+            calcularVuelto();
+
         } catch (NumberFormatException e) {
 
             mostrarError(
@@ -554,7 +599,112 @@ public class AlquileresController {
     }
 
     /*
-     * Qué hace: Registra definitivamente un nuevo alquiler utilizando el cliente, vehículo, fecha y cantidad de días seleccionados, y después limpia y actualiza la pantalla
+     * Qué hace: Ajusta los controles relacionados con el pago dependiendo del método seleccionado, permitiendo ingresar el monto recibido únicamente cuando el pago se realiza en efectivo
+     * Recibe: No recibe parámetros directamente, utiliza el método de pago seleccionado
+     * Retorna: No retorna ningún valor
+     */
+    private void actualizarFormaPago() {
+
+        MetodoPago metodoPago =
+                cmbMetodoPago.getValue();
+
+        boolean efectivo =
+                metodoPago == MetodoPago.EFECTIVO;
+
+        txtMontoRecibido.setDisable(
+                !efectivo
+        );
+
+        if (!efectivo) {
+
+            txtMontoRecibido.clear();
+
+            lblVuelto.setText(
+                    "₡0.00"
+            );
+
+            return;
+        }
+
+        calcularVuelto();
+    }
+
+    /*
+     * Qué hace: Calcula visualmente el vuelto correspondiente utilizando el total actual del alquiler y el monto recibido cuando el método de pago seleccionado es efectivo
+     * Recibe: No recibe parámetros directamente, utiliza el vehículo, la cantidad de días y el monto recibido
+     * Retorna: No retorna ningún valor
+     */
+    private void calcularVuelto() {
+
+        if (cmbMetodoPago.getValue()
+                != MetodoPago.EFECTIVO) {
+
+            lblVuelto.setText(
+                    "₡0.00"
+            );
+
+            return;
+        }
+
+        Vehiculo vehiculo =
+                cmbVehiculo.getValue();
+
+        if (vehiculo == null
+                || txtCantidadDias.getText().trim().isEmpty()
+                || txtMontoRecibido.getText().trim().isEmpty()) {
+
+            lblVuelto.setText(
+                    "₡0.00"
+            );
+
+            return;
+        }
+
+        try {
+
+            int dias =
+                    Integer.parseInt(
+                            txtCantidadDias
+                                    .getText()
+                                    .trim()
+                    );
+
+            double total =
+                    vehiculo.getTarifaDiaria()
+                            * dias
+                            + alquilerServicio
+                            .getDepositoGarantia();
+
+            double recibido =
+                    Double.parseDouble(
+                            txtMontoRecibido
+                                    .getText()
+                                    .trim()
+                    );
+
+            double vuelto =
+                    Math.max(
+                            0,
+                            recibido - total
+                    );
+
+            lblVuelto.setText(
+                    String.format(
+                            "₡%,.2f",
+                            vuelto
+                    )
+            );
+
+        } catch (NumberFormatException e) {
+
+            lblVuelto.setText(
+                    "₡0.00"
+            );
+        }
+    }
+
+    /*
+     * Qué hace: Registra definitivamente un nuevo alquiler utilizando el cliente, vehículo, fecha, cantidad de días y forma de pago seleccionados, valida el pago correspondiente y después limpia y actualiza la pantalla
      * Recibe: No recibe parámetros directamente, utiliza los datos ingresados y seleccionados en el formulario
      * Retorna: No retorna ningún valor
      */
@@ -593,18 +743,96 @@ public class AlquileresController {
                                     .trim()
                     );
 
-            Alquiler alquiler =
-                    alquilerServicio.crearAlquiler(
-                            cliente.getCedula(),
-                            vehiculo.getPlaca(),
-                            fecha,
-                            dias
+            MetodoPago metodoPago =
+                    cmbMetodoPago.getValue();
+
+            if (metodoPago == null) {
+
+                throw new IllegalArgumentException(
+                        "Debe seleccionar una forma de pago."
+                );
+            }
+
+            double total =
+                    vehiculo.getTarifaDiaria()
+                            * dias
+                            + alquilerServicio
+                            .getDepositoGarantia();
+
+            Double montoRecibido =
+                    null;
+
+            if (metodoPago
+                    == MetodoPago.EFECTIVO) {
+
+                String textoMonto =
+                        txtMontoRecibido
+                                .getText()
+                                .trim();
+
+                if (textoMonto.isEmpty()) {
+
+                    throw new IllegalArgumentException(
+                            "Debe ingresar el monto recibido en efectivo."
                     );
+                }
+
+                montoRecibido =
+                        Double.parseDouble(
+                                textoMonto
+                        );
+
+                if (montoRecibido % 10 != 0) {
+
+                    throw new IllegalArgumentException(
+                            "El monto recibido debe ser múltiplo de ₡10."
+                    );
+                }
+
+                if (montoRecibido < total) {
+
+                    throw new IllegalArgumentException(
+                            "El monto recibido es menor al total del alquiler."
+                    );
+                }
+            }
+
+            Alquiler alquiler = alquilerServicio.crearAlquiler(cliente.getCedula(), vehiculo.getPlaca(), fecha, dias, metodoPago, montoRecibido);
+
+            String informacionPago =
+                    "\nForma de pago: "
+                            + metodoPago;
+
+            if (metodoPago
+                    == MetodoPago.EFECTIVO) {
+
+                double vuelto =
+                        montoRecibido - total;
+
+                informacionPago +=
+                        "\nMonto recibido: "
+                                + String.format(
+                                "₡%,.2f",
+                                montoRecibido
+                        )
+
+                                + "\nVuelto: "
+                                + String.format(
+                                "₡%,.2f",
+                                vuelto
+                        );
+            }
 
             mostrarInformacion(
                     "Alquiler #"
                             + alquiler.getNumeroAlquiler()
-                            + " registrado correctamente."
+                            + " registrado correctamente.\n\n"
+                            + "Total pagado: "
+                            + String.format(
+                            "₡%,.2f",
+                            total
+                    )
+                            + informacionPago
             );
 
             limpiarFormulario();
@@ -614,7 +842,7 @@ public class AlquileresController {
         } catch (NumberFormatException e) {
 
             mostrarError(
-                    "La cantidad de dias debe de ser un número entero."
+                    "La cantidad de dias y el monto recibido deben ser números válidos."
             );
 
         } catch (IllegalArgumentException e) {
@@ -632,7 +860,7 @@ public class AlquileresController {
     }
 
     /*
-     * Qué hace: Limpia todos los campos y selecciones del formulario de alquiler, restablece la fecha actual y devuelve los valores mostrados a su estado inicial
+     * Qué hace: Limpia todos los campos y selecciones del formulario de alquiler, restablece la fecha actual, limpia la información del pago y devuelve los valores mostrados a su estado inicial
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
@@ -654,6 +882,20 @@ public class AlquileresController {
         );
 
         txtCantidadDias.clear();
+
+        cmbMetodoPago
+                .getSelectionModel()
+                .clearSelection();
+
+        txtMontoRecibido.clear();
+
+        txtMontoRecibido.setDisable(
+                true
+        );
+
+        lblVuelto.setText(
+                "₡0.00"
+        );
 
         lblTarifaDiaria.setText(
                 "₡0.00"

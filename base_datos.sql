@@ -5,7 +5,7 @@ USE sistema_alquiler_carros;
 
 CREATE TABLE IF NOT EXISTS cliente (
 
-    cedula VARCHAR(30) PRIMARY KEY,
+                                       cedula VARCHAR(30) PRIMARY KEY,
     nombre_completo VARCHAR(100) NOT NULL,
     telefono VARCHAR(30) NOT NULL,
     correo VARCHAR(100) NOT NULL
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS cliente (
 
 CREATE TABLE IF NOT EXISTS tipo_vehiculo (
 
-    nombre VARCHAR(50) PRIMARY KEY,
+                                             nombre VARCHAR(50) PRIMARY KEY,
     categoria VARCHAR(20) NOT NULL,
     requiere_pasajeros BOOLEAN NOT NULL,
     requiere_traccion BOOLEAN NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS tipo_vehiculo (
 
 CREATE TABLE IF NOT EXISTS vehiculo (
 
-    placa VARCHAR(20) PRIMARY KEY,
+                                        placa VARCHAR(20) PRIMARY KEY,
     marca VARCHAR(50) NOT NULL,
     modelo VARCHAR(50) NOT NULL,
     anio INT NOT NULL,
@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS vehiculo (
 
 CREATE TABLE IF NOT EXISTS alquiler (
 
-    numero_alquiler INT AUTO_INCREMENT PRIMARY KEY,
+                                        numero_alquiler INT AUTO_INCREMENT PRIMARY KEY,
 
-    cedula_cliente VARCHAR(30) NOT NULL,
+                                        cedula_cliente VARCHAR(30) NOT NULL,
     placa_vehiculo VARCHAR(20) NOT NULL,
 
     fecha_inicio DATE NOT NULL,
@@ -60,6 +60,16 @@ CREATE TABLE IF NOT EXISTS alquiler (
     deposito_garantia DECIMAL(12,2) NOT NULL,
 
     estado VARCHAR(20) NOT NULL,
+
+    metodo_pago VARCHAR(20),
+    monto_pagado DECIMAL(12,2),
+    monto_recibido DECIMAL(12,2),
+    vuelto DECIMAL(12,2),
+
+    metodo_pago_devolucion VARCHAR(20),
+    monto_pagado_devolucion DECIMAL(12,2),
+    monto_recibido_devolucion DECIMAL(12,2),
+    vuelto_devolucion DECIMAL(12,2),
 
     FOREIGN KEY (cedula_cliente)
     REFERENCES cliente(cedula),

@@ -18,6 +18,16 @@ public class Alquiler implements Calculable, Serializable {
     private double depositoGarantia;
     private EstadoAlquiler estado;
 
+    private MetodoPago metodoPago;
+    private Double montoPagado;
+    private Double montoRecibido;
+    private Double vuelto;
+
+    private MetodoPago metodoPagoDevolucion;
+    private Double montoPagadoDevolucion;
+    private Double montoRecibidoDevolucion;
+    private Double vueltoDevolucion;
+
     /*
      * Qué hace: Crea un nuevo alquiler utilizando los datos del cliente, el vehículo seleccionado, la fecha de inicio y la cantidad de días, además calcula la fecha esperada de devolución, guarda la tarifa diaria actual del vehículo y establece el alquiler inicialmente como activo
      * Recibe: El número de alquiler, el cliente, el vehículo, la fecha de inicio, la cantidad de días y el depósito de garantía
@@ -26,7 +36,6 @@ public class Alquiler implements Calculable, Serializable {
     public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, double depositoGarantia) {
 
         this(numeroAlquiler, cliente, vehiculo, fechaInicio, cantidadDias, null, vehiculo.getTarifaDiaria(), depositoGarantia, EstadoAlquiler.ACTIVO);
-
     }
 
     /*
@@ -35,6 +44,16 @@ public class Alquiler implements Calculable, Serializable {
      * Retorna: No retorna ningún valor
      */
     public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, LocalDate fechaDevolucionReal, double tarifaDiariaAplicada, double depositoGarantia, EstadoAlquiler estado) {
+
+        this(numeroAlquiler, cliente, vehiculo, fechaInicio, cantidadDias, fechaDevolucionReal, tarifaDiariaAplicada, depositoGarantia, estado, null, null, null, null);
+    }
+
+    /*
+     * Qué hace: Reconstruye un alquiler utilizando todos sus datos guardados, incluyendo la información de devolución, el estado y los datos relacionados con la forma de pago utilizada
+     * Recibe: El número de alquiler, el cliente, el vehículo, la fecha de inicio, la cantidad de días, la fecha real de devolución, la tarifa diaria aplicada, el depósito de garantía, el estado, el método de pago, el monto pagado, el monto recibido y el vuelto
+     * Retorna: No retorna ningún valor
+     */
+    public Alquiler(int numeroAlquiler, Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio, int cantidadDias, LocalDate fechaDevolucionReal, double tarifaDiariaAplicada, double depositoGarantia, EstadoAlquiler estado, MetodoPago metodoPago, Double montoPagado, Double montoRecibido, Double vuelto) {
 
         this.numeroAlquiler = numeroAlquiler;
         this.cliente = cliente;
@@ -46,7 +65,10 @@ public class Alquiler implements Calculable, Serializable {
         this.tarifaDiariaAplicada = tarifaDiariaAplicada;
         this.depositoGarantia = depositoGarantia;
         this.estado = estado;
-
+        this.metodoPago = metodoPago;
+        this.montoPagado = montoPagado;
+        this.montoRecibido = montoRecibido;
+        this.vuelto = vuelto;
     }
 
     /*
@@ -80,7 +102,6 @@ public class Alquiler implements Calculable, Serializable {
         }
 
         return ChronoUnit.DAYS.between(fechaDevolucionEsperada, fechaDevolucion);
-
     }
 
     /*
@@ -135,6 +156,25 @@ public class Alquiler implements Calculable, Serializable {
 
         this.fechaDevolucionReal = fechaDevolucionReal;
         this.estado = EstadoAlquiler.FINALIZADO;
+    }
+
+    /*
+     * Qué hace: Registra la información relacionada con el pago realizado al finalizar el alquiler
+     * Recibe: El método de pago utilizado, el monto pagado, el monto recibido en efectivo y el vuelto correspondiente
+     * Retorna: No retorna ningún valor
+     */
+    public void registrarPago(MetodoPago metodoPago, double montoPagado, Double montoRecibido, Double vuelto) {
+        this.metodoPago = metodoPago;
+        this.montoPagado = montoPagado;
+        this.montoRecibido = montoRecibido;
+        this.vuelto = vuelto;
+    }
+
+    public void registrarPagoDevolucion(MetodoPago metodoPagoDevolucion, double montoPagadoDevolucion, Double montoRecibidoDevolucion, Double vueltoDevolucion) {
+        this.metodoPagoDevolucion = metodoPagoDevolucion;
+        this.montoPagadoDevolucion = montoPagadoDevolucion;
+        this.montoRecibidoDevolucion = montoRecibidoDevolucion;
+        this.vueltoDevolucion = vueltoDevolucion;
     }
 
     /*
@@ -228,6 +268,58 @@ public class Alquiler implements Calculable, Serializable {
     }
 
     /*
+     * Qué hace: Obtiene el método de pago utilizado para finalizar el alquiler
+     * Recibe: No recibe parámetros
+     * Retorna: El método de pago utilizado o null si el alquiler todavía no ha sido pagado
+     */
+    public MetodoPago getMetodoPago() {
+        return metodoPago;
+    }
+
+    /*
+     * Qué hace: Obtiene el monto que el cliente debía pagar al momento de finalizar el alquiler
+     * Recibe: No recibe parámetros
+     * Retorna: El monto pagado o null si todavía no se ha registrado ningún pago
+     */
+    public Double getMontoPagado() {
+        return montoPagado;
+    }
+
+    /*
+     * Qué hace: Obtiene la cantidad de dinero en efectivo entregada por el cliente al realizar el pago
+     * Recibe: No recibe parámetros
+     * Retorna: El monto recibido en efectivo o null cuando el pago no fue realizado en efectivo
+     */
+    public Double getMontoRecibido() {
+        return montoRecibido;
+    }
+
+    /*
+     * Qué hace: Obtiene el monto que debe devolverse al cliente como vuelto cuando el pago fue realizado en efectivo
+     * Recibe: No recibe parámetros
+     * Retorna: El vuelto correspondiente o null cuando el pago no fue realizado en efectivo
+     */
+    public Double getVuelto() {
+        return vuelto;
+    }
+
+    public MetodoPago getMetodoPagoDevolucion() {
+        return metodoPagoDevolucion;
+    }
+
+    public Double getVueltoDevolucion() {
+        return vueltoDevolucion;
+    }
+
+    public Double getMontoRecibidoDevolucion() {
+        return montoRecibidoDevolucion;
+    }
+
+    public Double getMontoPagadoDevolucion() {
+        return montoPagadoDevolucion;
+    }
+
+    /*
      * Qué hace: Genera una representación en texto del alquiler mostrando su número, el nombre del cliente y la placa del vehículo asociado
      * Recibe: No recibe parámetros
      * Retorna: Una cadena de texto que representa de forma resumida el alquiler
@@ -236,4 +328,5 @@ public class Alquiler implements Calculable, Serializable {
     public String toString() {
         return "Alquiler #" + numeroAlquiler + " - " + cliente.getNombreCompleto() + " - " + vehiculo.getPlaca();
     }
+
 }
