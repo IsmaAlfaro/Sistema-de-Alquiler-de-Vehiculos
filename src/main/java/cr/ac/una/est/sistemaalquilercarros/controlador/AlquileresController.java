@@ -410,7 +410,7 @@ public class AlquileresController {
     }
 
     /*
-     * Qué hace: Filtra los alquileres registrados utilizando el número de alquiler, cliente, cédula, placa o vehículo y permite además filtrar según el estado del alquiler
+     * Qué hace: Filtra los alquileres registrados permitiendo buscar de forma exacta por número de alquiler y de forma general por número, cliente, cédula, placa, marca o modelo, además permite filtrar según el estado del alquiler
      * Recibe: No recibe parámetros directamente, utiliza el buscador general y el estado seleccionado
      * Retorna: No retorna ningún valor
      */
@@ -426,49 +426,95 @@ public class AlquileresController {
         String estadoSeleccionado =
                 cmbFiltroEstado.getValue();
 
+        String busqueda =
+                textoBusqueda == null
+                        ? ""
+                        : textoBusqueda
+                        .toLowerCase()
+                        .trim();
+
+        boolean busquedaPorNumero =
+                busqueda.startsWith("#");
+
+        Integer numeroAlquiler =
+                null;
+
+        if (busquedaPorNumero) {
+
+            String textoNumero =
+                    busqueda
+                            .substring(1)
+                            .trim();
+
+            if (textoNumero.matches("\\d+")) {
+
+                try {
+
+                    numeroAlquiler =
+                            Integer.parseInt(
+                                    textoNumero
+                            );
+
+                } catch (NumberFormatException e) {
+
+                    numeroAlquiler =
+                            null;
+                }
+            }
+        }
+
+        final Integer numeroExacto =
+                numeroAlquiler;
+
         alquileresFiltrados.setPredicate(alquiler -> {
 
-            boolean coincideBusqueda = true;
+            boolean coincideBusqueda =
+                    true;
 
-            boolean coincideEstado = true;
+            boolean coincideEstado =
+                    true;
 
-            if (textoBusqueda != null
-                    && !textoBusqueda.trim().isEmpty()) {
+            if (!busqueda.isEmpty()) {
 
-                String busqueda =
-                        textoBusqueda
-                                .toLowerCase()
-                                .trim();
+                if (busquedaPorNumero) {
 
-                coincideBusqueda =
-                        String.valueOf(
-                                alquiler.getNumeroAlquiler()
-                        ).contains(busqueda)
+                    coincideBusqueda =
+                            numeroExacto != null
+                                    && alquiler.getNumeroAlquiler()
+                                    == numeroExacto;
 
-                                || alquiler.getCliente()
-                                .getCedula()
-                                .toLowerCase()
-                                .contains(busqueda)
+                } else {
 
-                                || alquiler.getCliente()
-                                .getNombreCompleto()
-                                .toLowerCase()
-                                .contains(busqueda)
+                    coincideBusqueda =
+                            String.valueOf(
+                                    alquiler.getNumeroAlquiler()
+                            ).contains(busqueda)
 
-                                || alquiler.getVehiculo()
-                                .getPlaca()
-                                .toLowerCase()
-                                .contains(busqueda)
+                                    || alquiler.getCliente()
+                                    .getCedula()
+                                    .toLowerCase()
+                                    .contains(busqueda)
 
-                                || alquiler.getVehiculo()
-                                .getMarca()
-                                .toLowerCase()
-                                .contains(busqueda)
+                                    || alquiler.getCliente()
+                                    .getNombreCompleto()
+                                    .toLowerCase()
+                                    .contains(busqueda)
 
-                                || alquiler.getVehiculo()
-                                .getModelo()
-                                .toLowerCase()
-                                .contains(busqueda);
+                                    || alquiler.getVehiculo()
+                                    .getPlaca()
+                                    .toLowerCase()
+                                    .contains(busqueda)
+
+                                    || alquiler.getVehiculo()
+                                    .getMarca()
+                                    .toLowerCase()
+                                    .contains(busqueda)
+
+                                    || alquiler.getVehiculo()
+                                    .getModelo()
+                                    .toLowerCase()
+                                    .contains(busqueda);
+                }
             }
 
             if (estadoSeleccionado != null

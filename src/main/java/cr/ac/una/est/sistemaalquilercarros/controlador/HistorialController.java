@@ -2,6 +2,7 @@ package cr.ac.una.est.sistemaalquilercarros.controlador;
 
 import cr.ac.una.est.sistemaalquilercarros.modelo.Alquiler;
 import cr.ac.una.est.sistemaalquilercarros.servicio.AlquilerServicio;
+import cr.ac.una.est.sistemaalquilercarros.servicio.FacturaServicio;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,11 +10,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class HistorialController {
@@ -55,6 +60,8 @@ public class HistorialController {
     private TableColumn<Alquiler, String> colEstado;
 
     private AlquilerServicio alquilerServicio;
+
+    private FacturaServicio facturaServicio;
 
     private ObservableList<Alquiler> listaAlquileres;
 
@@ -169,6 +176,18 @@ public class HistorialController {
     }
 
     /*
+     * Qué hace: Asigna el servicio encargado de generar las facturas PDF de los alquileres
+     * Recibe: El servicio de facturas que utilizará el controlador
+     * Retorna: No retorna ningún valor
+     */
+    public void setFacturaServicio(
+            FacturaServicio facturaServicio) {
+
+        this.facturaServicio =
+                facturaServicio;
+    }
+
+    /*
      * Qué hace: Actualiza la tabla del historial cargando todos los alquileres registrados actualmente en el sistema
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
@@ -194,7 +213,7 @@ public class HistorialController {
     }
 
     /*
-     * Qué hace: Filtra los alquileres mostrados en el historial utilizando el número, cliente, cédula, placa, marca, modelo o estado del alquiler
+     * Qué hace: Filtra los alquileres mostrados en el historial permitiendo buscar de forma exacta por número de alquiler y de forma general por número, cliente, cédula, placa, marca o modelo, además permite filtrar según el estado del alquiler
      * Recibe: No recibe parámetros directamente, utiliza el buscador y el filtro de estado
      * Retorna: No retorna ningún valor
      */
@@ -210,62 +229,236 @@ public class HistorialController {
         String estadoSeleccionado =
                 cmbFiltroEstado.getValue();
 
+        String busqueda =
+                textoBusqueda == null
+                        ? ""
+                        : textoBusqueda
+                        .toLowerCase()
+                        .trim();
+
+        boolean busquedaPorNumero =
+                busqueda.startsWith("#");
+
+        Integer numeroAlquiler =
+                null;
+
+        if (busquedaPorNumero) {
+
+            String textoNumero =
+                    busqueda
+                            .substring(1)
+                            .trim();
+
+            if (textoNumero.matches("\\d+")) {
+
+                try {
+
+                    numeroAlquiler =
+                            Integer.parseInt(
+                                    textoNumero
+                            );
+
+                } catch (NumberFormatException e) {
+
+                    numeroAlquiler =
+                            null;
+                }
+            }
+        }
+
+        final Integer numeroExacto =
+                numeroAlquiler;
+
         alquileresFiltrados.setPredicate(alquiler -> {
 
-            boolean coincideBusqueda = true;
+            boolean coincideBusqueda =
+                    true;
 
-            boolean coincideEstado = true;
+            boolean coincideEstado =
+                    true;
 
-            if (textoBusqueda != null
-                    && !textoBusqueda.trim().isEmpty()) {
+            if (!busqueda.isEmpty()) {
 
-                String busqueda =
-                        textoBusqueda
-                                .toLowerCase()
-                                .trim();
+                if (busquedaPorNumero) {
 
-                coincideBusqueda =
-                        String.valueOf(
-                                alquiler.getNumeroAlquiler()
-                        ).contains(busqueda)
+                    coincideBusqueda =
+                            numeroExacto != null
+                                    && alquiler.getNumeroAlquiler()
+                                    == numeroExacto;
 
-                                || alquiler.getCliente()
-                                .getCedula()
-                                .toLowerCase()
-                                .contains(busqueda)
+                } else {
 
-                                || alquiler.getCliente()
-                                .getNombreCompleto()
-                                .toLowerCase()
-                                .contains(busqueda)
+                    coincideBusqueda =
+                            String.valueOf(
+                                    alquiler.getNumeroAlquiler()
+                            ).contains(busqueda)
 
-                                || alquiler.getVehiculo()
-                                .getPlaca()
-                                .toLowerCase()
-                                .contains(busqueda)
+                                    || alquiler.getCliente()
+                                    .getCedula()
+                                    .toLowerCase()
+                                    .contains(busqueda)
 
-                                || alquiler.getVehiculo()
-                                .getMarca()
-                                .toLowerCase()
-                                .contains(busqueda)
+                                    || alquiler.getCliente()
+                                    .getNombreCompleto()
+                                    .toLowerCase()
+                                    .contains(busqueda)
 
-                                || alquiler.getVehiculo()
-                                .getModelo()
-                                .toLowerCase()
-                                .contains(busqueda);
+                                    || alquiler.getVehiculo()
+                                    .getPlaca()
+                                    .toLowerCase()
+                                    .contains(busqueda)
+
+                                    || alquiler.getVehiculo()
+                                    .getMarca()
+                                    .toLowerCase()
+                                    .contains(busqueda)
+
+                                    || alquiler.getVehiculo()
+                                    .getModelo()
+                                    .toLowerCase()
+                                    .contains(busqueda);
+                }
             }
 
             if (estadoSeleccionado != null
-                    && !estadoSeleccionado.equals("TODOS")) {
+                    && !estadoSeleccionado.equals(
+                    "TODOS"
+            )) {
 
                 coincideEstado =
                         alquiler.getEstado()
                                 .toString()
-                                .equals(estadoSeleccionado);
+                                .equals(
+                                        estadoSeleccionado
+                                );
             }
 
             return coincideBusqueda
                     && coincideEstado;
         });
+    }
+
+    /*
+     * Qué hace: Genera la factura PDF del alquiler seleccionado y la abre automáticamente utilizando el visor de archivos predeterminado del sistema operativo
+     * Recibe: No recibe parámetros directamente, utiliza el alquiler seleccionado actualmente en la tabla del historial
+     * Retorna: No retorna ningún valor
+     */
+    @FXML
+    private void generarFactura() {
+
+        try {
+
+            Alquiler alquiler =
+                    tablaHistorial
+                            .getSelectionModel()
+                            .getSelectedItem();
+
+            if (alquiler == null) {
+                throw new IllegalArgumentException(
+                        "Debe seleccionar un alquiler para generar la factura."
+                );
+            }
+
+            if (facturaServicio == null) {
+                throw new IllegalStateException(
+                        "El servicio de facturas no ha sido configurado."
+                );
+            }
+
+            File archivo =
+                    facturaServicio.generarFactura(
+                            alquiler
+                    );
+
+            if (!Desktop.isDesktopSupported()) {
+                throw new RuntimeException(
+                        "El sistema no permite abrir la factura automáticamente."
+                );
+            }
+
+            Desktop.getDesktop().open(
+                    archivo
+            );
+
+            mostrarInformacion(
+                    "Factura generada y abierta correctamente.\n\n"
+                            + "Archivo: "
+                            + archivo.getAbsolutePath()
+            );
+
+        } catch (IllegalArgumentException e) {
+
+            mostrarError(
+                    e.getMessage()
+            );
+
+        } catch (IOException e) {
+
+            mostrarError(
+                    "La factura fue generada, pero no se pudo abrir automáticamente."
+            );
+
+        } catch (RuntimeException e) {
+
+            mostrarError(
+                    e.getMessage()
+            );
+        }
+    }
+
+    /*
+     * Qué hace: Muestra una ventana de alerta de tipo error para informar al usuario sobre un problema ocurrido durante la generación o apertura de una factura
+     * Recibe: El mensaje de error que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
+    private void mostrarError(
+            String mensaje) {
+
+        Alert alerta =
+                new Alert(
+                        Alert.AlertType.ERROR
+                );
+
+        alerta.setTitle(
+                "Error"
+        );
+
+        alerta.setHeaderText(
+                null
+        );
+
+        alerta.setContentText(
+                mensaje
+        );
+
+        alerta.showAndWait();
+    }
+
+    /*
+     * Qué hace: Muestra una ventana informativa para comunicar al usuario que una factura fue generada y abierta correctamente
+     * Recibe: El mensaje informativo que se desea mostrar
+     * Retorna: No retorna ningún valor
+     */
+    private void mostrarInformacion(
+            String mensaje) {
+
+        Alert alerta =
+                new Alert(
+                        Alert.AlertType.INFORMATION
+                );
+
+        alerta.setTitle(
+                "Información"
+        );
+
+        alerta.setHeaderText(
+                null
+        );
+
+        alerta.setContentText(
+                mensaje
+        );
+
+        alerta.showAndWait();
     }
 }

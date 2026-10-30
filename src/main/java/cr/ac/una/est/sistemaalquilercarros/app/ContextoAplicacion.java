@@ -11,6 +11,7 @@ import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.TipoVehiculoReposito
 import cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc.VehiculoRepositorioJdbc;
 import cr.ac.una.est.sistemaalquilercarros.servicio.AlquilerServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
+import cr.ac.una.est.sistemaalquilercarros.servicio.FacturaServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.TipoVehiculoServicio;
 import cr.ac.una.est.sistemaalquilercarros.servicio.VehiculoServicio;
 
@@ -27,7 +28,7 @@ public class ContextoAplicacion {
     private final ClienteServicio clienteServicio;
     private final AlquilerServicio alquilerServicio;
     private final TipoVehiculoServicio tipoVehiculoServicio;
-
+    private final FacturaServicio facturaServicio;
 
     /*
      * Qué hace: Inicializa el contexto general de la aplicación estableciendo la conexión con MySQL y construyendo los repositorios y servicios que serán compartidos por las diferentes pantallas del programa
@@ -39,20 +40,15 @@ public class ContextoAplicacion {
         conexionBD = new ConexionBD();
 
         clienteRepositorio = new ClienteRepositorioJdbc(conexionBD);
-
         tipoVehiculoRepositorio = new TipoVehiculoRepositorioJdbc(conexionBD);
-
         vehiculoRepositorio = new VehiculoRepositorioJdbc(conexionBD);
-
         alquilerRepositorio = new AlquilerRepositorioJdbc(conexionBD, clienteRepositorio, vehiculoRepositorio);
 
         tipoVehiculoServicio = new TipoVehiculoServicio(tipoVehiculoRepositorio);
-
         vehiculoServicio = new VehiculoServicio(vehiculoRepositorio);
-
         clienteServicio = new ClienteServicio(clienteRepositorio, alquilerRepositorio);
-
         alquilerServicio = new AlquilerServicio(alquilerRepositorio, vehiculoServicio, clienteServicio);
+        facturaServicio = new FacturaServicio();
     }
 
     /*
@@ -93,5 +89,15 @@ public class ContextoAplicacion {
     public AlquilerServicio getAlquilerServicio() {
 
         return alquilerServicio;
+    }
+
+    /*
+     * Qué hace: Obtiene el servicio encargado de generar las facturas PDF de los alquileres del sistema
+     * Recibe: No recibe parámetros
+     * Retorna: El objeto FacturaServicio
+     */
+    public FacturaServicio getFacturaServicio() {
+
+        return facturaServicio;
     }
 }

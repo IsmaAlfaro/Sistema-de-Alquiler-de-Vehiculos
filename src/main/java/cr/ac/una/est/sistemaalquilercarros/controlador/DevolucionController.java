@@ -161,7 +161,7 @@ public class DevolucionController {
     }
 
     /*
-     * Qué hace: Filtra los alquileres activos utilizando el número de alquiler, nombre o cédula del cliente y la placa, marca o modelo del vehículo
+     * Qué hace: Filtra los alquileres activos permitiendo buscar de forma exacta por número de alquiler y de forma general por número, nombre o cédula del cliente y placa, marca o modelo del vehículo
      * Recibe: No recibe parámetros directamente, utiliza el texto ingresado en el buscador
      * Retorna: No retorna ningún valor
      */
@@ -171,26 +171,99 @@ public class DevolucionController {
             return;
         }
 
-        String textoBusqueda = txtBuscarDevolucion.getText();
+        String textoBusqueda =
+                txtBuscarDevolucion.getText();
 
-        alquileresFiltrados.setPredicate(
-                alquiler -> {
+        String busqueda =
+                textoBusqueda == null
+                        ? ""
+                        : textoBusqueda
+                        .toLowerCase()
+                        .trim();
 
-                    if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
+        boolean busquedaPorNumero =
+                busqueda.startsWith("#");
 
-                        return true;
+        Integer numeroAlquiler =
+                null;
 
-                    }
+        if (busquedaPorNumero) {
 
-                    String busqueda = textoBusqueda.toLowerCase().trim();
+            String textoNumero =
+                    busqueda
+                            .substring(1)
+                            .trim();
 
-                    return String.valueOf(alquiler.getNumeroAlquiler()).contains(busqueda) || alquiler.getCliente().getCedula().toLowerCase().contains(busqueda) || alquiler.getCliente().getNombreCompleto().toLowerCase().contains(busqueda) || alquiler.getVehiculo().getPlaca().toLowerCase().contains(busqueda) || alquiler.getVehiculo().getMarca().toLowerCase().contains(busqueda) || alquiler.getVehiculo().getModelo().toLowerCase().contains(busqueda);
+            if (textoNumero.matches("\\d+")) {
 
-                });
+                try {
 
-        cmbAlquiler.getSelectionModel().clearSelection();
+                    numeroAlquiler =
+                            Integer.parseInt(
+                                    textoNumero
+                            );
 
-        tablaAlquileresActivos.getSelectionModel().clearSelection();
+                } catch (NumberFormatException e) {
+
+                    numeroAlquiler =
+                            null;
+                }
+            }
+        }
+
+        final Integer numeroExacto =
+                numeroAlquiler;
+
+        alquileresFiltrados.setPredicate(alquiler -> {
+
+            if (busqueda.isEmpty()) {
+
+                return true;
+            }
+
+            if (busquedaPorNumero) {
+
+                return numeroExacto != null
+                        && alquiler.getNumeroAlquiler()
+                        == numeroExacto;
+            }
+
+            return String.valueOf(
+                    alquiler.getNumeroAlquiler()
+            ).contains(busqueda)
+
+                    || alquiler.getCliente()
+                    .getCedula()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || alquiler.getCliente()
+                    .getNombreCompleto()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || alquiler.getVehiculo()
+                    .getPlaca()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || alquiler.getVehiculo()
+                    .getMarca()
+                    .toLowerCase()
+                    .contains(busqueda)
+
+                    || alquiler.getVehiculo()
+                    .getModelo()
+                    .toLowerCase()
+                    .contains(busqueda);
+        });
+
+        cmbAlquiler.getSelectionModel()
+                .clearSelection();
+
+        tablaAlquileresActivos
+                .getSelectionModel()
+                .clearSelection();
 
         lblCliente.setText("-");
         lblVehiculo.setText("-");

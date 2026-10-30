@@ -20,7 +20,7 @@
             <Label text="Historial de Alquileres"
                    styleClass="page-title" />
 
-            <Label text="Consulta de alquileres registrados y finalizados en el sistema"
+            <Label text="Consulta de alquileres registrados, finalizados y generación de facturas"
                    styleClass="page-subtitle" />
 
         </VBox>
@@ -64,6 +64,19 @@
                     <ComboBox fx:id="cmbFiltroEstado"
                               prefWidth="150.0"
                               prefHeight="35.0" />
+
+                </VBox>
+
+                <VBox spacing="3.0">
+
+                    <Label text="Factura"
+                           styleClass="form-label" />
+
+                    <Button text="Generar factura PDF"
+                            mnemonicParsing="false"
+                            onAction="#generarFactura"
+                            prefHeight="35.0"
+                            styleClass="button-primary" />
 
                 </VBox>
 

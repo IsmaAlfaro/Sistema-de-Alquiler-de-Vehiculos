@@ -203,10 +203,14 @@ public class PrincipalController {
 
             controller.setAlquilerServicio(contexto.getAlquilerServicio());
 
+            controller.setFacturaServicio(contexto.getFacturaServicio());
+
             panelPrincipal.setCenter(vista);
 
         } catch (IOException e) {
+
             mostrarMensaje("No se pudo cargar el historial.");
+
             e.printStackTrace();
         }
     }

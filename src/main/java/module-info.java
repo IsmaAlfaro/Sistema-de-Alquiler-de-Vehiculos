@@ -3,6 +3,8 @@ module cr.ac.una.est.sistemaalquilercarros {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires org.apache.pdfbox;
+    requires java.desktop;
 
     exports cr.ac.una.est.sistemaalquilercarros.app;
     exports cr.ac.una.est.sistemaalquilercarros.modelo;
