@@ -10,7 +10,7 @@ public class ConexionBD {
 
     private static final String USUARIO = "root";
 
-    private static final String CONTRASENA = "admin";
+    private static final String CONTRASENA = "1I2s3m4a5e6l";
 
     /*
      * Qué hace: Establece y retorna una nueva conexión con la base de datos MySQL utilizando la dirección, el usuario y la contraseña configurados para el sistema
