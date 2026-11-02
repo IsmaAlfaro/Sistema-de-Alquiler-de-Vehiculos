@@ -29,314 +29,326 @@
 
     <center>
 
-        <VBox spacing="14.0">
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    vbarPolicy="AS_NEEDED"
+                    pannable="false"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
 
-            <padding>
+            <content>
 
-                <Insets top="16.0"
-                        right="20.0"
-                        bottom="20.0"
-                        left="20.0" />
+                <VBox spacing="14.0"
+                      fillWidth="true">
 
-            </padding>
+                    <padding>
 
-            <VBox spacing="12.0"
-                  styleClass="card">
+                        <Insets top="16.0"
+                                right="20.0"
+                                bottom="20.0"
+                                left="20.0" />
 
-                <Label text="Datos de la devolución"
-                       styleClass="section-title" />
+                    </padding>
 
-                <Label text="Buscar alquiler activo"
-                       styleClass="form-label" />
+                    <VBox spacing="12.0"
+                          styleClass="card">
 
-                <TextField fx:id="txtBuscarDevolucion"
-                           promptText="Buscar por número, cliente, cédula, placa o vehículo..."
-                           prefHeight="35.0"
-                           styleClass="search-field"
-                           maxWidth="Infinity" />
+                        <Label text="Datos de la devolución"
+                               styleClass="section-title" />
 
-                <GridPane hgap="16.0"
-                          vgap="10.0">
+                        <Label text="Buscar alquiler activo"
+                               styleClass="form-label" />
 
-                    <columnConstraints>
+                        <TextField fx:id="txtBuscarDevolucion"
+                                   promptText="Buscar por número, cliente, cédula, placa o vehículo..."
+                                   prefHeight="35.0"
+                                   styleClass="search-field"
+                                   maxWidth="Infinity" />
 
-                        <ColumnConstraints hgrow="ALWAYS"
-                                           percentWidth="50.0" />
+                        <GridPane hgap="16.0"
+                                  vgap="10.0">
 
-                        <ColumnConstraints hgrow="ALWAYS"
-                                           percentWidth="50.0" />
+                            <columnConstraints>
 
-                    </columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS"
+                                                   percentWidth="50.0" />
 
-                    <Label text="Alquiler activo"
-                           styleClass="form-label"
-                           GridPane.columnIndex="0"
-                           GridPane.rowIndex="0" />
+                                <ColumnConstraints hgrow="ALWAYS"
+                                                   percentWidth="50.0" />
 
-                    <Label text="Fecha de devolución"
-                           styleClass="form-label"
-                           GridPane.columnIndex="1"
-                           GridPane.rowIndex="0" />
+                            </columnConstraints>
 
-                    <ComboBox fx:id="cmbAlquiler"
-                              promptText="Seleccione un alquiler..."
-                              prefHeight="34.0"
-                              maxWidth="Infinity"
-                              GridPane.columnIndex="0"
-                              GridPane.rowIndex="1" />
+                            <Label text="Alquiler activo"
+                                   styleClass="form-label"
+                                   GridPane.columnIndex="0"
+                                   GridPane.rowIndex="0" />
 
-                    <DatePicker fx:id="dpFechaDevolucion"
-                                prefHeight="34.0"
-                                maxWidth="Infinity"
-                                GridPane.columnIndex="1"
-                                GridPane.rowIndex="1" />
+                            <Label text="Fecha de devolución"
+                                   styleClass="form-label"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0" />
 
-                </GridPane>
+                            <ComboBox fx:id="cmbAlquiler"
+                                      promptText="Seleccione un alquiler..."
+                                      prefHeight="34.0"
+                                      maxWidth="Infinity"
+                                      GridPane.columnIndex="0"
+                                      GridPane.rowIndex="1" />
 
-            </VBox>
+                            <DatePicker fx:id="dpFechaDevolucion"
+                                        prefHeight="34.0"
+                                        maxWidth="Infinity"
+                                        GridPane.columnIndex="1"
+                                        GridPane.rowIndex="1" />
 
-            <HBox spacing="12.0">
+                        </GridPane>
 
-                <VBox spacing="5.0"
-                      styleClass="summary-card"
-                      HBox.hgrow="ALWAYS">
+                    </VBox>
 
-                    <Label text="Cliente"
-                           styleClass="summary-label" />
+                    <HBox spacing="12.0">
 
-                    <Label fx:id="lblCliente"
-                           text="-"
-                           wrapText="true"
-                           styleClass="summary-value-small" />
+                        <VBox spacing="5.0"
+                              styleClass="summary-card"
+                              HBox.hgrow="ALWAYS">
 
-                </VBox>
+                            <Label text="Cliente"
+                                   styleClass="summary-label" />
 
-                <VBox spacing="5.0"
-                      styleClass="summary-card"
-                      HBox.hgrow="ALWAYS">
+                            <Label fx:id="lblCliente"
+                                   text="-"
+                                   wrapText="true"
+                                   styleClass="summary-value-small" />
 
-                    <Label text="Vehículo"
-                           styleClass="summary-label" />
+                        </VBox>
 
-                    <Label fx:id="lblVehiculo"
-                           text="-"
-                           wrapText="true"
-                           styleClass="summary-value-small" />
+                        <VBox spacing="5.0"
+                              styleClass="summary-card"
+                              HBox.hgrow="ALWAYS">
 
-                </VBox>
+                            <Label text="Vehículo"
+                                   styleClass="summary-label" />
 
-                <VBox spacing="5.0"
-                      styleClass="summary-card"
-                      HBox.hgrow="ALWAYS">
+                            <Label fx:id="lblVehiculo"
+                                   text="-"
+                                   wrapText="true"
+                                   styleClass="summary-value-small" />
 
-                    <Label text="Fecha esperada"
-                           styleClass="summary-label" />
+                        </VBox>
 
-                    <Label fx:id="lblFechaEsperada"
-                           text="-"
-                           styleClass="summary-value-small" />
+                        <VBox spacing="5.0"
+                              styleClass="summary-card"
+                              HBox.hgrow="ALWAYS">
 
-                </VBox>
+                            <Label text="Fecha esperada"
+                                   styleClass="summary-label" />
 
-            </HBox>
+                            <Label fx:id="lblFechaEsperada"
+                                   text="-"
+                                   styleClass="summary-value-small" />
 
-            <HBox spacing="12.0">
-
-                <VBox spacing="5.0"
-                      styleClass="summary-card"
-                      HBox.hgrow="ALWAYS">
-
-                    <Label text="Días de atraso"
-                           styleClass="summary-label" />
-
-                    <Label fx:id="lblDiasAtraso"
-                           text="0"
-                           styleClass="summary-value" />
-
-                </VBox>
-
-                <VBox spacing="5.0"
-                      styleClass="summary-card"
-                      HBox.hgrow="ALWAYS">
-
-                    <Label text="Multa"
-                           styleClass="summary-label" />
-
-                    <Label fx:id="lblMulta"
-                           text="₡0.00"
-                           styleClass="summary-value" />
-
-                </VBox>
-
-                <VBox spacing="5.0"
-                      styleClass="summary-card"
-                      HBox.hgrow="ALWAYS">
-
-                    <Label text="Depósito devuelto"
-                           styleClass="summary-label" />
-
-                    <Label fx:id="lblDepositoDevuelto"
-                           text="₡0.00"
-                           styleClass="summary-value" />
-
-                </VBox>
-
-                <VBox spacing="5.0"
-                      styleClass="summary-card, summary-total-card"
-                      HBox.hgrow="ALWAYS">
-
-                    <Label text="Saldo pendiente"
-                           styleClass="summary-label" />
-
-                    <Label fx:id="lblSaldoPendiente"
-                           text="₡0.00"
-                           styleClass="summary-total-value" />
-
-                </VBox>
-
-            </HBox>
-
-            <VBox spacing="12.0"
-                  styleClass="card">
-
-                <Label text="Forma de pago"
-                       styleClass="section-title" />
-
-                <GridPane hgap="16.0"
-                          vgap="8.0">
-
-                    <columnConstraints>
-
-                        <ColumnConstraints hgrow="ALWAYS"
-                                           percentWidth="28.0" />
-
-                        <ColumnConstraints hgrow="ALWAYS"
-                                           percentWidth="28.0" />
-
-                        <ColumnConstraints hgrow="ALWAYS"
-                                           percentWidth="12.0" />
-
-                        <ColumnConstraints hgrow="ALWAYS"
-                                           percentWidth="32.0" />
-
-                    </columnConstraints>
-
-                    <Label text="Método de pago"
-                           styleClass="form-label"
-                           GridPane.columnIndex="0"
-                           GridPane.rowIndex="0" />
-
-                    <Label text="Monto recibido"
-                           styleClass="form-label"
-                           GridPane.columnIndex="1"
-                           GridPane.rowIndex="0" />
-
-                    <Label text="Vuelto"
-                           styleClass="form-label"
-                           GridPane.columnIndex="2"
-                           GridPane.rowIndex="0" />
-
-                    <ComboBox fx:id="cmbMetodoPago"
-                              promptText="Seleccione..."
-                              prefHeight="34.0"
-                              maxWidth="Infinity"
-                              GridPane.columnIndex="0"
-                              GridPane.rowIndex="1" />
-
-                    <TextField fx:id="txtMontoRecibido"
-                               promptText="Ejemplo: 30000"
-                               prefHeight="34.0"
-                               maxWidth="Infinity"
-                               GridPane.columnIndex="1"
-                               GridPane.rowIndex="1" />
-
-                    <Label fx:id="lblVuelto"
-                           text="₡0.00"
-                           styleClass="summary-total-value"
-                           GridPane.columnIndex="2"
-                           GridPane.rowIndex="1" />
-
-                    <HBox alignment="CENTER_RIGHT"
-                          spacing="8.0"
-                          GridPane.columnIndex="3"
-                          GridPane.rowIndex="0"
-                          GridPane.rowSpan="2">
-
-                        <Button text="Calcular devolución"
-                                mnemonicParsing="false"
-                                onAction="#calcularDevolucion"
-                                prefHeight="35.0"
-                                styleClass="button-secondary" />
-
-                        <Button text="Confirmar devolución"
-                                mnemonicParsing="false"
-                                onAction="#confirmarDevolucion"
-                                prefHeight="35.0"
-                                styleClass="button-primary" />
-
-                        <Button text="Limpiar"
-                                mnemonicParsing="false"
-                                onAction="#limpiarFormulario"
-                                prefHeight="35.0"
-                                styleClass="button-secondary" />
+                        </VBox>
 
                     </HBox>
 
-                </GridPane>
+                    <HBox spacing="12.0">
 
-                <Label text="El monto recibido en efectivo debe ser múltiplo de ₡10"
-                       styleClass="page-subtitle" />
+                        <VBox spacing="5.0"
+                              styleClass="summary-card"
+                              HBox.hgrow="ALWAYS">
 
-            </VBox>
+                            <Label text="Días de atraso"
+                                   styleClass="summary-label" />
 
-            <VBox spacing="8.0"
-                  styleClass="card"
-                  VBox.vgrow="ALWAYS">
+                            <Label fx:id="lblDiasAtraso"
+                                   text="0"
+                                   styleClass="summary-value" />
 
-                <Label text="Alquileres activos"
-                       styleClass="section-title" />
+                        </VBox>
 
-                <TableView fx:id="tablaAlquileresActivos"
-                           prefHeight="300.0"
-                           VBox.vgrow="ALWAYS">
+                        <VBox spacing="5.0"
+                              styleClass="summary-card"
+                              HBox.hgrow="ALWAYS">
 
-                    <columns>
+                            <Label text="Multa"
+                                   styleClass="summary-label" />
 
-                        <TableColumn fx:id="colNumero"
-                                     prefWidth="80.0"
-                                     text="Número" />
+                            <Label fx:id="lblMulta"
+                                   text="₡0.00"
+                                   styleClass="summary-value" />
 
-                        <TableColumn fx:id="colCliente"
-                                     prefWidth="180.0"
-                                     text="Cliente" />
+                        </VBox>
 
-                        <TableColumn fx:id="colVehiculo"
-                                     prefWidth="190.0"
-                                     text="Vehículo" />
+                        <VBox spacing="5.0"
+                              styleClass="summary-card"
+                              HBox.hgrow="ALWAYS">
 
-                        <TableColumn fx:id="colFechaInicio"
-                                     prefWidth="130.0"
-                                     text="Fecha de inicio" />
+                            <Label text="Depósito devuelto"
+                                   styleClass="summary-label" />
 
-                        <TableColumn fx:id="colFechaEsperada"
-                                     prefWidth="140.0"
-                                     text="Fecha esperada" />
+                            <Label fx:id="lblDepositoDevuelto"
+                                   text="₡0.00"
+                                   styleClass="summary-value" />
 
-                        <TableColumn fx:id="colEstado"
-                                     prefWidth="110.0"
-                                     text="Estado" />
+                        </VBox>
 
-                    </columns>
+                        <VBox spacing="5.0"
+                              styleClass="summary-card, summary-total-card"
+                              HBox.hgrow="ALWAYS">
 
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                    </columnResizePolicy>
+                            <Label text="Saldo pendiente"
+                                   styleClass="summary-label" />
 
-                </TableView>
+                            <Label fx:id="lblSaldoPendiente"
+                                   text="₡0.00"
+                                   styleClass="summary-total-value" />
 
-            </VBox>
+                        </VBox>
 
-        </VBox>
+                    </HBox>
+
+                    <VBox spacing="12.0"
+                          styleClass="card">
+
+                        <Label text="Forma de pago"
+                               styleClass="section-title" />
+
+                        <GridPane hgap="16.0"
+                                  vgap="8.0">
+
+                            <columnConstraints>
+
+                                <ColumnConstraints hgrow="ALWAYS"
+                                                   percentWidth="28.0" />
+
+                                <ColumnConstraints hgrow="ALWAYS"
+                                                   percentWidth="28.0" />
+
+                                <ColumnConstraints hgrow="ALWAYS"
+                                                   percentWidth="12.0" />
+
+                                <ColumnConstraints hgrow="ALWAYS"
+                                                   percentWidth="32.0" />
+
+                            </columnConstraints>
+
+                            <Label text="Método de pago"
+                                   styleClass="form-label"
+                                   GridPane.columnIndex="0"
+                                   GridPane.rowIndex="0" />
+
+                            <Label text="Monto recibido"
+                                   styleClass="form-label"
+                                   GridPane.columnIndex="1"
+                                   GridPane.rowIndex="0" />
+
+                            <Label text="Vuelto"
+                                   styleClass="form-label"
+                                   GridPane.columnIndex="2"
+                                   GridPane.rowIndex="0" />
+
+                            <ComboBox fx:id="cmbMetodoPago"
+                                      promptText="Seleccione..."
+                                      prefHeight="34.0"
+                                      maxWidth="Infinity"
+                                      GridPane.columnIndex="0"
+                                      GridPane.rowIndex="1" />
+
+                            <TextField fx:id="txtMontoRecibido"
+                                       promptText="Ejemplo: 30000"
+                                       prefHeight="34.0"
+                                       maxWidth="Infinity"
+                                       GridPane.columnIndex="1"
+                                       GridPane.rowIndex="1" />
+
+                            <Label fx:id="lblVuelto"
+                                   text="₡0.00"
+                                   styleClass="summary-total-value"
+                                   GridPane.columnIndex="2"
+                                   GridPane.rowIndex="1" />
+
+                            <HBox alignment="CENTER_RIGHT"
+                                  spacing="8.0"
+                                  GridPane.columnIndex="3"
+                                  GridPane.rowIndex="0"
+                                  GridPane.rowSpan="2">
+
+                                <Button text="Calcular devolución"
+                                        mnemonicParsing="false"
+                                        onAction="#calcularDevolucion"
+                                        prefHeight="35.0"
+                                        styleClass="button-secondary" />
+
+                                <Button text="Confirmar devolución"
+                                        mnemonicParsing="false"
+                                        onAction="#confirmarDevolucion"
+                                        prefHeight="35.0"
+                                        styleClass="button-primary" />
+
+                                <Button text="Limpiar"
+                                        mnemonicParsing="false"
+                                        onAction="#limpiarFormulario"
+                                        prefHeight="35.0"
+                                        styleClass="button-secondary" />
+
+                            </HBox>
+
+                        </GridPane>
+
+                        <Label text="El monto recibido en efectivo debe ser múltiplo de ₡10"
+                               styleClass="page-subtitle" />
+
+                    </VBox>
+
+                    <VBox spacing="8.0"
+                          styleClass="card">
+
+                        <Label text="Alquileres activos"
+                               styleClass="section-title" />
+
+                        <TableView fx:id="tablaAlquileresActivos"
+                                   minHeight="220.0"
+                                   prefHeight="300.0">
+
+                            <columns>
+
+                                <TableColumn fx:id="colNumero"
+                                             prefWidth="80.0"
+                                             text="Número" />
+
+                                <TableColumn fx:id="colCliente"
+                                             prefWidth="180.0"
+                                             text="Cliente" />
+
+                                <TableColumn fx:id="colVehiculo"
+                                             prefWidth="190.0"
+                                             text="Vehículo" />
+
+                                <TableColumn fx:id="colFechaInicio"
+                                             prefWidth="130.0"
+                                             text="Fecha de inicio" />
+
+                                <TableColumn fx:id="colFechaEsperada"
+                                             prefWidth="140.0"
+                                             text="Fecha esperada" />
+
+                                <TableColumn fx:id="colEstado"
+                                             prefWidth="110.0"
+                                             text="Estado" />
+
+                            </columns>
+
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+
+                        </TableView>
+
+                    </VBox>
+
+                </VBox>
+
+            </content>
+
+        </ScrollPane>
 
     </center>
 
