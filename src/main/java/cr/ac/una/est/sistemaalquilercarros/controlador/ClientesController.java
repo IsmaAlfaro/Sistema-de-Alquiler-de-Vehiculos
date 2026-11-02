@@ -5,6 +5,8 @@ import cr.ac.una.est.sistemaalquilercarros.servicio.ClienteServicio;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -26,6 +28,9 @@ public class ClientesController {
     private TextField txtCorreo;
 
     @FXML
+    private TextField txtBuscar;
+
+    @FXML
     private TableView<Cliente> tablaClientes;
 
     @FXML
@@ -40,8 +45,11 @@ public class ClientesController {
     @FXML
     private TableColumn<Cliente, String> colCorreo;
 
-
     private ClienteServicio clienteServicio;
+
+    private ObservableList<Cliente> listaClientes;
+
+    private FilteredList<Cliente> clientesFiltrados;
 
     /*
      * Qué hace: Inicializa la pantalla de clientes configurando las columnas de la tabla y el evento que permite cargar automáticamente en el formulario los datos del cliente seleccionado
@@ -51,15 +59,18 @@ public class ClientesController {
     @FXML
     private void initialize() {
 
-       colCedula.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCedula()));
+        colCedula.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCedula()));
 
-       colNombre.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getNombreCompleto()));
+        colNombre.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getNombreCompleto()));
 
-       colTelefono.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getTelefono()));
+        colTelefono.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getTelefono()));
 
-       colCorreo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCorreo()));
+        colCorreo.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getCorreo()));
 
-       tablaClientes.setOnMouseClicked(evento -> cargarClienteSeleccionado());
+        tablaClientes.setOnMouseClicked(evento -> cargarClienteSeleccionado());
+
+        txtBuscar.textProperty().addListener((observable, textoAnterior, textoNuevo) -> filtrarClientes(textoNuevo));
+
     }
 
     /*
@@ -86,15 +97,25 @@ public class ClientesController {
         try {
 
             Cliente cliente = crearClienteDesdeFormulario();
+
             clienteServicio.registrarCliente(cliente);
 
             actualizarTabla();
+
             limpiarFormulario();
 
             mostrarInformacion("Cliente registrado correctamente");
+
         } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
+        } catch (RuntimeException e) {
+
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -108,8 +129,11 @@ public class ClientesController {
         Cliente seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
+
             mostrarError("Debe seleccionar un cliente.");
+
             return;
+
         }
 
         try {
@@ -119,12 +143,21 @@ public class ClientesController {
             clienteServicio.modificarCliente(seleccionado.getCedula(), modificado);
 
             actualizarTabla();
+
             limpiarFormulario();
 
-            mostrarInformacion("Cliente modificado correctamente");
-        }catch (IllegalArgumentException e){
+            mostrarInformacion("Cliente modificado correctamente.");
+
+        } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
+        } catch (RuntimeException e) {
+
+            mostrarError(e.getMessage());
+
         }
+
     }
 
     /*
@@ -134,11 +167,15 @@ public class ClientesController {
      */
     @FXML
     private void eliminarCliente() {
+
         Cliente seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (seleccionado == null) {
+
             mostrarError("Debe seleccionar un cliente.");
+
             return;
+
         }
 
         try {
@@ -146,11 +183,19 @@ public class ClientesController {
             clienteServicio.eliminarCliente(seleccionado.getCedula());
 
             actualizarTabla();
+
             limpiarFormulario();
 
-            mostrarInformacion("Cliente eliminado con correctamente.");
-        }catch (IllegalArgumentException e){
+            mostrarInformacion("Cliente eliminado correctamente.");
+
+        } catch (IllegalArgumentException e) {
+
             mostrarError(e.getMessage());
+
+        } catch (RuntimeException e) {
+
+            mostrarError(e.getMessage());
+
         }
 
     }
@@ -164,8 +209,11 @@ public class ClientesController {
     private void limpiarFormulario() {
 
         txtCedula.clear();
+
         txtNombre.clear();
+
         txtTelefono.clear();
+
         txtCorreo.clear();
 
         txtCedula.setDisable(false);
@@ -191,10 +239,13 @@ public class ClientesController {
      * Retorna: No retorna ningún valor
      */
     private void cargarClienteSeleccionado() {
+
         Cliente cliente = tablaClientes.getSelectionModel().getSelectedItem();
 
         if (cliente == null) {
+
             return;
+
         }
 
         txtCedula.setText(cliente.getCedula());
@@ -210,17 +261,65 @@ public class ClientesController {
     }
 
     /*
-     * Qué hace: Actualiza la tabla de clientes cargando todos los registros disponibles actualmente desde el servicio de clientes
+     * Qué hace: Actualiza la tabla de clientes cargando todos los registros disponibles actualmente desde el servicio de clientes y prepara la lista utilizada por el buscador
      * Recibe: No recibe parámetros
      * Retorna: No retorna ningún valor
      */
     private void actualizarTabla() {
 
-        if(clienteServicio == null) {
+        if (clienteServicio == null) {
+
             return;
+
         }
 
-        tablaClientes.setItems(FXCollections.observableArrayList(clienteServicio.obtenerTodos()));
+        try {
+
+            listaClientes = FXCollections.observableArrayList(clienteServicio.obtenerTodos());
+
+            clientesFiltrados = new FilteredList<>(listaClientes, cliente -> true);
+
+            tablaClientes.setItems(clientesFiltrados);
+
+            filtrarClientes(txtBuscar.getText());
+
+        } catch (RuntimeException e) {
+
+            mostrarError(e.getMessage());
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Filtra los clientes mostrados en la tabla utilizando la cédula, nombre, teléfono o correo según el texto escrito en el campo de búsqueda
+     * Recibe: El texto que el usuario desea buscar
+     * Retorna: No retorna ningún valor
+     */
+    private void filtrarClientes(String textoBusqueda) {
+
+        if (clientesFiltrados == null) {
+
+            return;
+
+        }
+
+        clientesFiltrados.setPredicate(cliente -> {
+
+            if (textoBusqueda == null || textoBusqueda.trim().isEmpty()) {
+
+                return true;
+
+            }
+
+            String busqueda = textoBusqueda.toLowerCase().trim();
+
+            return cliente.getCedula().toLowerCase().contains(busqueda)
+                    || cliente.getNombreCompleto().toLowerCase().contains(busqueda)
+                    || cliente.getTelefono().toLowerCase().contains(busqueda)
+                    || cliente.getCorreo().toLowerCase().contains(busqueda);
+
+        });
 
     }
 
@@ -230,13 +329,17 @@ public class ClientesController {
      * Retorna: No retorna ningún valor
      */
     private void mostrarError(String mensaje) {
+
         Alert alerta = new Alert(Alert.AlertType.ERROR);
 
         alerta.setTitle("Error");
+
         alerta.setHeaderText(null);
+
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
     /*
@@ -249,10 +352,13 @@ public class ClientesController {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 
         alerta.setTitle("Información");
+
         alerta.setHeaderText(null);
+
         alerta.setContentText(mensaje);
 
         alerta.showAndWait();
+
     }
 
 }

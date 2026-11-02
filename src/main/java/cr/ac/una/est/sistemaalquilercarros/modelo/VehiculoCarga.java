@@ -11,10 +11,13 @@ public class VehiculoCarga extends Vehiculo {
      * Retorna: No retorna ningún valor
      */
     public VehiculoCarga(String placa, String marca, String modelo, int anio, double tarifaDiaria, TipoVehiculo tipoVehiculo, double capacidadCarga, String tipoTraccion) {
+
         super(placa, marca, modelo, anio, tarifaDiaria, tipoVehiculo);
 
         this.capacidadCarga = capacidadCarga;
+
         this.tipoTraccion = tipoTraccion;
+
     }
 
     /*
@@ -23,7 +26,9 @@ public class VehiculoCarga extends Vehiculo {
      * Retorna: La capacidad de carga del vehículo
      */
     public double getCapacidadCarga() {
+
         return capacidadCarga;
+
     }
 
     /*
@@ -32,7 +37,9 @@ public class VehiculoCarga extends Vehiculo {
      * Retorna: No retorna ningún valor
      */
     public void setCapacidadCarga(double capacidadCarga) {
+
         this.capacidadCarga = capacidadCarga;
+
     }
 
     /*
@@ -41,7 +48,9 @@ public class VehiculoCarga extends Vehiculo {
      * Retorna: El tipo de tracción del vehículo
      */
     public String getTipoTraccion() {
+
         return tipoTraccion;
+
     }
 
     /*
@@ -50,7 +59,9 @@ public class VehiculoCarga extends Vehiculo {
      * Retorna: No retorna ningún valor
      */
     public void setTipoTraccion(String tipoTraccion) {
+
         this.tipoTraccion = tipoTraccion;
+
     }
 
     /*
@@ -60,6 +71,9 @@ public class VehiculoCarga extends Vehiculo {
      */
     @Override
     public String toString() {
+
         return getPlaca() + " - " + getMarca() + " - " + getModelo();
+
     }
+
 }

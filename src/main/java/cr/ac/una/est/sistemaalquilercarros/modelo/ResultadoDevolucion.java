@@ -12,15 +12,16 @@ public class ResultadoDevolucion {
      * Recibe: Los días de atraso, el monto de la multa, el depósito que será devuelto y el saldo pendiente
      * Retorna: No retorna ningún valor
      */
-    public ResultadoDevolucion(long diasAtraso,
-                               double multa,
-                               double depositoDevuelto,
-                               double saldoPendiente) {
+    public ResultadoDevolucion(long diasAtraso, double multa, double depositoDevuelto, double saldoPendiente) {
 
         this.diasAtraso = diasAtraso;
+
         this.multa = multa;
+
         this.depositoDevuelto = depositoDevuelto;
+
         this.saldoPendiente = saldoPendiente;
+
     }
 
     /*
@@ -29,7 +30,9 @@ public class ResultadoDevolucion {
      * Retorna: La cantidad de días de atraso registrados
      */
     public long getDiasAtraso() {
+
         return diasAtraso;
+
     }
 
     /*
@@ -38,7 +41,9 @@ public class ResultadoDevolucion {
      * Retorna: El monto de la multa aplicada
      */
     public double getMulta() {
+
         return multa;
+
     }
 
     /*
@@ -47,7 +52,9 @@ public class ResultadoDevolucion {
      * Retorna: El monto del depósito que será devuelto
      */
     public double getDepositoDevuelto() {
+
         return depositoDevuelto;
+
     }
 
     /*
@@ -56,6 +63,9 @@ public class ResultadoDevolucion {
      * Retorna: El saldo pendiente que debe pagar el cliente
      */
     public double getSaldoPendiente() {
+
         return saldoPendiente;
+
     }
+
 }

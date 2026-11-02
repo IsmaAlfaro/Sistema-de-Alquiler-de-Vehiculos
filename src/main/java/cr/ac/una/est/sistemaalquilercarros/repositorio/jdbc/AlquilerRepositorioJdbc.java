@@ -1,0 +1,465 @@
+package cr.ac.una.est.sistemaalquilercarros.repositorio.jdbc;
+
+import cr.ac.una.est.sistemaalquilercarros.modelo.Alquiler;
+import cr.ac.una.est.sistemaalquilercarros.modelo.Cliente;
+import cr.ac.una.est.sistemaalquilercarros.modelo.EstadoAlquiler;
+import cr.ac.una.est.sistemaalquilercarros.modelo.EstadoVehiculo;
+import cr.ac.una.est.sistemaalquilercarros.modelo.MetodoPago;
+import cr.ac.una.est.sistemaalquilercarros.modelo.Vehiculo;
+import cr.ac.una.est.sistemaalquilercarros.persistencia.ConexionBD;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.AlquilerRepositorio;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.ClienteRepositorio;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.VehiculoRepositorio;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AlquilerRepositorioJdbc implements AlquilerRepositorio {
+
+    private final ConexionBD conexionBD;
+    private final ClienteRepositorio clienteRepositorio;
+    private final VehiculoRepositorio vehiculoRepositorio;
+
+    /*
+     * Qué hace: Inicializa el repositorio de alquileres utilizando la conexión con la base de datos y los repositorios necesarios para recuperar clientes y vehículos relacionados
+     * Recibe: El objeto ConexionBD, el repositorio de clientes y el repositorio de vehículos
+     * Retorna: No retorna ningún valor
+     */
+    public AlquilerRepositorioJdbc(ConexionBD conexionBD, ClienteRepositorio clienteRepositorio, VehiculoRepositorio vehiculoRepositorio) {
+
+        this.conexionBD = conexionBD;
+
+        this.clienteRepositorio = clienteRepositorio;
+
+        this.vehiculoRepositorio = vehiculoRepositorio;
+
+    }
+
+    /*
+     * Qué hace: Registra un nuevo alquiler junto con la información de su pago inicial y cambia el vehículo relacionado de DISPONIBLE a ALQUILADO dentro de una misma transacción, deshaciendo los cambios si alguna operación falla
+     * Recibe: El objeto Alquiler que se desea registrar
+     * Retorna: El alquiler registrado con el número generado automáticamente por la base de datos
+     */
+    @Override
+    public Alquiler agregar(Alquiler alquiler) {
+
+        String sqlAlquiler = "INSERT INTO alquiler " + "(cedula_cliente, placa_vehiculo, fecha_inicio, " + "cantidad_dias, fecha_devolucion_real, " + "tarifa_diaria_aplicada, deposito_garantia, estado, metodo_pago, monto_pagado, monto_recibido, vuelto) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        String sqlVehiculo = "UPDATE vehiculo " + "SET estado = ? " + "WHERE placa = ? AND estado = ?";
+
+        try (Connection cn = conexionBD.obtenerConexion()) {
+
+            cn.setAutoCommit(false);
+
+            try {
+
+                int numeroAlquiler;
+
+                try (PreparedStatement ps = cn.prepareStatement(sqlAlquiler, Statement.RETURN_GENERATED_KEYS)) {
+
+                    ps.setString(1, alquiler.getCliente().getCedula());
+
+                    ps.setString(2, alquiler.getVehiculo().getPlaca());
+
+                    ps.setDate(3, Date.valueOf(alquiler.getFechaInicio()));
+
+                    ps.setInt(4, alquiler.getCantidadDias());
+
+                    ps.setNull(5, Types.DATE);
+
+                    ps.setDouble(6, alquiler.getTarifaDiariaAplicada());
+
+                    ps.setDouble(7, alquiler.getDepositoGarantia());
+
+                    ps.setString(8, alquiler.getEstado().name());
+
+                    ps.setString(9, alquiler.getMetodoPago().name());
+
+                    ps.setDouble(10, alquiler.getMontoPagado());
+
+                    if (alquiler.getMontoRecibido() != null) {
+
+                        ps.setDouble(11, alquiler.getMontoRecibido());
+
+                    } else {
+
+                        ps.setNull(11, Types.DECIMAL);
+
+                    }
+
+                    if (alquiler.getVuelto() != null) {
+
+                        ps.setDouble(12, alquiler.getVuelto());
+
+                    } else {
+
+                        ps.setNull(12, Types.DECIMAL);
+
+                    }
+
+                    ps.executeUpdate();
+
+                    try (ResultSet claves = ps.getGeneratedKeys()) {
+
+                        if (!claves.next()) {
+
+                            throw new SQLException("No se pudo generar el número del alquiler.");
+
+                        }
+
+                        numeroAlquiler = claves.getInt(1);
+
+                    }
+
+                }
+
+                try (PreparedStatement ps = cn.prepareStatement(sqlVehiculo)) {
+
+                    ps.setString(1, EstadoVehiculo.ALQUILADO.name());
+
+                    ps.setString(2, alquiler.getVehiculo().getPlaca());
+
+                    ps.setString(3, EstadoVehiculo.DISPONIBLE.name());
+
+
+                    int filas = ps.executeUpdate();
+
+                    if (filas != 1) {
+
+                        throw new SQLException("El vehículo ya no está disponible.");
+
+                    }
+
+                }
+
+                cn.commit();
+
+                return new Alquiler(numeroAlquiler, alquiler.getCliente(), alquiler.getVehiculo(), alquiler.getFechaInicio(),
+                        alquiler.getCantidadDias(), alquiler.getFechaDevolucionReal(), alquiler.getTarifaDiariaAplicada(),
+                        alquiler.getDepositoGarantia(), alquiler.getEstado(), alquiler.getMetodoPago(), alquiler.getMontoPagado(),
+                        alquiler.getMontoRecibido(), alquiler.getVuelto());
+
+            } catch (SQLException e) {
+
+                cn.rollback();
+
+                throw e;
+
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudo registrar el alquiler.", e);
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Busca un alquiler en la base de datos utilizando su número de alquiler
+     * Recibe: El número del alquiler que se desea buscar
+     * Retorna: El alquiler encontrado o null si no existe ningún alquiler con ese número
+     */
+    @Override
+    public Alquiler buscarPorNumero(int numeroAlquiler) {
+
+        String sql = "SELECT * FROM alquiler " + "WHERE numero_alquiler = ?";
+
+        try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setInt(1, numeroAlquiler);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+
+                    return crearAlquiler(rs);
+
+                }
+
+            }
+
+            return null;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudo buscar el alquiler.", e);
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Obtiene todos los alquileres registrados actualmente en la base de datos
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista que contiene todos los alquileres registrados
+     */
+    @Override
+    public List<Alquiler> obtenerTodos() {
+
+        String sql = "SELECT * FROM alquiler";
+
+        List<Alquiler> alquileres = new ArrayList<>();
+
+        try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                alquileres.add(crearAlquiler(rs));
+
+            }
+
+            return alquileres;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudieron cargar los alquileres.", e);
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Obtiene únicamente los alquileres cuyo estado actual es ACTIVO
+     * Recibe: No recibe parámetros
+     * Retorna: Una lista que contiene todos los alquileres activos
+     */
+    @Override
+    public List<Alquiler> obtenerActivos() {
+
+        String sql = "SELECT * FROM alquiler " + "WHERE estado = ?";
+
+        List<Alquiler> alquileres = new ArrayList<>();
+
+        try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, EstadoAlquiler.ACTIVO.name());
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    alquileres.add(crearAlquiler(rs));
+
+                }
+
+            }
+
+            return alquileres;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudieron cargar los alquileres activos.", e);
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Finaliza un alquiler activo registrando su fecha real de devolución, cualquier pago adicional generado durante la devolución y cambiando el vehículo relacionado de ALQUILADO a DISPONIBLE dentro de una misma transacción, deshaciendo los cambios si alguna operación falla
+     * Recibe: El objeto Alquiler que contiene los datos de la devolución y de un posible pago adicional
+     * Retorna: No retorna ningún valor
+     */
+    @Override
+    public void finalizar(Alquiler alquiler) {
+
+        String sqlAlquiler = "UPDATE alquiler " + "SET fecha_devolucion_real = ?, estado = ?, metodo_pago_devolucion = ?, " + "monto_pagado_devolucion = ?, monto_recibido_devolucion = ?, vuelto_devolucion = ? " + "WHERE numero_alquiler = ? AND estado = ?";
+
+        String sqlVehiculo = "UPDATE vehiculo " + "SET estado = ? " + "WHERE placa = ? AND estado = ?";
+
+        try (Connection cn = conexionBD.obtenerConexion()) {
+
+            cn.setAutoCommit(false);
+
+            try {
+
+                try (PreparedStatement ps = cn.prepareStatement(sqlAlquiler)) {
+
+                    ps.setDate(1, Date.valueOf(alquiler.getFechaDevolucionReal()));
+
+                    ps.setString(2, EstadoAlquiler.FINALIZADO.name());
+
+                    if (alquiler.getMetodoPagoDevolucion() != null) {
+
+                        ps.setString(3, alquiler.getMetodoPagoDevolucion().name());
+
+                    } else {
+
+                        ps.setNull(3, Types.VARCHAR);
+
+                    }
+
+                    if (alquiler.getMontoPagadoDevolucion() != null) {
+
+                        ps.setDouble(4, alquiler.getMontoPagadoDevolucion());
+
+                    } else {
+
+                        ps.setNull(4, Types.DECIMAL);
+
+                    }
+
+                    if (alquiler.getMontoRecibidoDevolucion() != null) {
+
+                        ps.setDouble(5, alquiler.getMontoRecibidoDevolucion());
+
+                    } else {
+
+                        ps.setNull(5, Types.DECIMAL);
+
+                    }
+
+                    if (alquiler.getVueltoDevolucion() != null) {
+
+                        ps.setDouble(6, alquiler.getVueltoDevolucion());
+
+                    } else {
+
+                        ps.setNull(6, Types.DECIMAL);
+
+                    }
+
+                    ps.setInt(7, alquiler.getNumeroAlquiler());
+
+                    ps.setString(8, EstadoAlquiler.ACTIVO.name());
+
+                    int filas = ps.executeUpdate();
+
+                    if (filas != 1) {
+
+                        throw new SQLException("El alquiler ya no está activo.");
+
+                    }
+
+                }
+
+                try (PreparedStatement ps = cn.prepareStatement(sqlVehiculo)) {
+
+                    ps.setString(1, EstadoVehiculo.DISPONIBLE.name());
+
+                    ps.setString(2, alquiler.getVehiculo().getPlaca());
+
+                    ps.setString(3, EstadoVehiculo.ALQUILADO.name());
+
+                    int filas = ps.executeUpdate();
+
+                    if (filas != 1) {
+
+                        throw new SQLException("No se pudo liberar el vehículo.");
+
+                    }
+
+                }
+
+                cn.commit();
+
+            } catch (SQLException e) {
+
+                cn.rollback();
+
+                throw e;
+
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudo finalizar el alquiler.", e);
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Elimina de la base de datos el alquiler identificado por su número de alquiler
+     * Recibe: El número del alquiler que se desea eliminar
+     * Retorna: true si se eliminó un alquiler y false si no se encontró ningún registro para eliminar
+     */
+    @Override
+    public boolean eliminar(int numeroAlquiler) {
+
+        String sql = "DELETE FROM alquiler " + "WHERE numero_alquiler = ?";
+
+        try (Connection cn = conexionBD.obtenerConexion(); PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setInt(1, numeroAlquiler);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException("No se pudo eliminar el alquiler.", e);
+
+        }
+
+    }
+
+    /*
+     * Qué hace: Construye un objeto Alquiler utilizando los datos obtenidos de una consulta y recupera los objetos Cliente y Vehiculo relacionados por medio de sus respectivos repositorios, incluyendo la información del pago inicial y de un posible pago adicional realizado durante la devolución
+     * Recibe: El ResultSet ubicado en el registro del alquiler que se desea convertir
+     * Retorna: El objeto Alquiler construido con la información obtenida de la base de datos
+     */
+    private Alquiler crearAlquiler(ResultSet rs) throws SQLException {
+
+        Cliente cliente = clienteRepositorio.buscarPorCedula(rs.getString("cedula_cliente"));
+
+        Vehiculo vehiculo = vehiculoRepositorio.buscarPorPlaca(rs.getString("placa_vehiculo"));
+
+        Date fechaReal = rs.getDate("fecha_devolucion_real");
+
+        LocalDate fechaDevolucionReal = fechaReal == null ? null : fechaReal.toLocalDate();
+
+        String metodoPagoBD = rs.getString("metodo_pago");
+
+        MetodoPago metodoPago = metodoPagoBD == null ? null : MetodoPago.valueOf(metodoPagoBD);
+
+        Number montoPagadoBD = (Number) rs.getObject("monto_pagado");
+
+        Double montoPagado = montoPagadoBD == null ? null : montoPagadoBD.doubleValue();
+
+        Number montoRecibidoBD = (Number) rs.getObject("monto_recibido");
+
+        Double montoRecibido = montoRecibidoBD == null ? null : montoRecibidoBD.doubleValue();
+
+        Number vueltoBD = (Number) rs.getObject("vuelto");
+
+        Double vuelto = vueltoBD == null ? null : vueltoBD.doubleValue();
+
+        String metodoPagoDevolucionBD = rs.getString("metodo_pago_devolucion");
+
+        MetodoPago metodoPagoDevolucion = metodoPagoDevolucionBD == null ? null : MetodoPago.valueOf(metodoPagoDevolucionBD);
+
+        Number montoPagadoDevolucionBD = (Number) rs.getObject("monto_pagado_devolucion");
+
+        Double montoPagadoDevolucion = montoPagadoDevolucionBD == null ? null : montoPagadoDevolucionBD.doubleValue();
+
+        Number montoRecibidoDevolucionBD = (Number) rs.getObject("monto_recibido_devolucion");
+
+        Double montoRecibidoDevolucion = montoRecibidoDevolucionBD == null ? null : montoRecibidoDevolucionBD.doubleValue();
+
+        Number vueltoDevolucionBD = (Number) rs.getObject("vuelto_devolucion");
+
+        Double vueltoDevolucion = vueltoDevolucionBD == null ? null : vueltoDevolucionBD.doubleValue();
+
+        Alquiler alquiler = new Alquiler(rs.getInt("numero_alquiler"), cliente, vehiculo, rs.getDate("fecha_inicio").toLocalDate(),
+                rs.getInt("cantidad_dias"), fechaDevolucionReal, rs.getDouble("tarifa_diaria_aplicada"), rs.getDouble("deposito_garantia"),
+                EstadoAlquiler.valueOf(rs.getString("estado")), metodoPago, montoPagado, montoRecibido, vuelto);
+
+        if (metodoPagoDevolucion != null) {
+
+            alquiler.registrarPagoDevolucion(metodoPagoDevolucion, montoPagadoDevolucion, montoRecibidoDevolucion, vueltoDevolucion);
+
+        }
+
+        return alquiler;
+
+    }
+
+}

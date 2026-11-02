@@ -1,40 +1,23 @@
 package cr.ac.una.est.sistemaalquilercarros.servicio;
 
-import cr.ac.una.est.sistemaalquilercarros.modelo.CategoriaVehiculo;
 import cr.ac.una.est.sistemaalquilercarros.modelo.TipoVehiculo;
-import cr.ac.una.est.sistemaalquilercarros.persistencia.DatosSistema;
-import cr.ac.una.est.sistemaalquilercarros.persistencia.PersistenciaDatos;
-import cr.ac.una.est.sistemaalquilercarros.repositorio.Repositorio;
+import cr.ac.una.est.sistemaalquilercarros.repositorio.TipoVehiculoRepositorio;
 
 import java.util.List;
 
 public class TipoVehiculoServicio {
 
-    private final Repositorio<TipoVehiculo> repositorioTipos;
-    private final DatosSistema datosSistema;
-    private final PersistenciaDatos persistencia;
+    private final TipoVehiculoRepositorio tipoVehiculoRepositorio;
 
     /*
-     * Qué hace: Inicializa el servicio encargado de administrar los tipos de vehículo, carga los tipos previamente almacenados y, si todavía no existe ninguno, crea automáticamente los tipos iniciales definidos por el sistema
-     * Recibe: El objeto DatosSistema y el servicio encargado de guardar la información
+     * Qué hace: Inicializa el servicio encargado de administrar los tipos de vehículo y establece el repositorio que se utilizará para realizar las operaciones de almacenamiento y consulta
+     * Recibe: El repositorio encargado de administrar los tipos de vehículo
      * Retorna: No retorna ningún valor
      */
-    public TipoVehiculoServicio(DatosSistema datosSistema, PersistenciaDatos persistencia) {
+    public TipoVehiculoServicio(TipoVehiculoRepositorio tipoVehiculoRepositorio) {
 
-        this.datosSistema = datosSistema;
-        this.persistencia = persistencia;
+        this.tipoVehiculoRepositorio = tipoVehiculoRepositorio;
 
-        repositorioTipos = new Repositorio<>();
-
-        if (datosSistema.getTiposVehiculo() != null) {
-            repositorioTipos.reemplazarTodos(
-                    datosSistema.getTiposVehiculo()
-            );
-        }
-
-        if (repositorioTipos.estaVacio()) {
-            crearTiposIniciales();
-        }
     }
 
     /*
@@ -47,12 +30,13 @@ public class TipoVehiculoServicio {
         validarTipo(tipo);
 
         if (buscarPorNombre(tipo.getNombre()) != null) {
-            throw new IllegalArgumentException("Ya existe un tipo de vehículo con ese nombre");
+
+            throw new IllegalArgumentException("Ya existe un tipo de vehículo con ese nombre.");
+
         }
 
-        repositorioTipos.agregar(tipo);
+        tipoVehiculoRepositorio.agregar(tipo);
 
-        guardarCambios();
     }
 
     /*
@@ -63,17 +47,13 @@ public class TipoVehiculoServicio {
     public TipoVehiculo buscarPorNombre(String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
+
             return null;
+
         }
 
-        for (TipoVehiculo tipo : repositorioTipos.obtenerTodos()) {
+        return tipoVehiculoRepositorio.buscarPorNombre(nombre.trim());
 
-            if (tipo.getNombre().equalsIgnoreCase(nombre.trim())) {
-                return tipo;
-            }
-        }
-
-        return null;
     }
 
     /*
@@ -82,11 +62,32 @@ public class TipoVehiculoServicio {
      * Retorna: La lista completa de tipos de vehículo registrados
      */
     public List<TipoVehiculo> obtenerTodos() {
-        return repositorioTipos.obtenerTodos();
+
+        return tipoVehiculoRepositorio.obtenerTodos();
+
     }
 
     /*
-     * Qué hace: Busca un tipo de vehículo por su nombre y, si existe, lo elimina del repositorio y guarda posteriormente los cambios realizados
+     * Qué hace: Modifica los datos de un tipo de vehículo existente después de validar su información y comprobar que se encuentre registrado en el sistema
+     * Recibe: El objeto TipoVehiculo que contiene los datos que se desean modificar
+     * Retorna: No retorna ningún valor
+     */
+    public void modificarTipo(TipoVehiculo tipo) {
+
+        validarTipo(tipo);
+
+        if (buscarPorNombre(tipo.getNombre()) == null) {
+
+            throw new IllegalArgumentException("El tipo de vehículo no existe.");
+
+        }
+
+        tipoVehiculoRepositorio.modificar(tipo);
+
+    }
+
+    /*
+     * Qué hace: Busca un tipo de vehículo por su nombre y, si existe, solicita su eliminación mediante el repositorio correspondiente
      * Recibe: El nombre del tipo de vehículo que se desea eliminar
      * Retorna: No retorna ningún valor
      */
@@ -95,12 +96,13 @@ public class TipoVehiculoServicio {
         TipoVehiculo tipo = buscarPorNombre(nombre);
 
         if (tipo == null) {
-            throw new IllegalArgumentException("El tipo de vehículo no existe");
+
+            throw new IllegalArgumentException("El tipo de vehículo no existe.");
+
         }
 
-        repositorioTipos.eliminar(tipo);
+        tipoVehiculoRepositorio.eliminar(nombre);
 
-        guardarCambios();
     }
 
     /*
@@ -111,47 +113,23 @@ public class TipoVehiculoServicio {
     private void validarTipo(TipoVehiculo tipo) {
 
         if (tipo == null) {
-            throw new IllegalArgumentException("El tipo de vehículo no puede ser nulo");
+
+            throw new IllegalArgumentException("El tipo de vehículo no puede ser nulo.");
+
         }
 
         if (tipo.getNombre() == null || tipo.getNombre().trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del tipo es obligatorio");
+
+            throw new IllegalArgumentException("El nombre del tipo es obligatorio.");
+
         }
 
         if (tipo.getCategoria() == null) {
-            throw new IllegalArgumentException("La categoría del vehículo es obligatoria");}}
 
-    /*
-     * Qué hace: Crea y registra automáticamente los tipos de vehículo iniciales del sistema, incluyendo Sedán, SUV, Minivan, CUV, Deportivo y Pickup, con sus respectivas categorías y características requeridas
-     * Recibe: No recibe parámetros
-     * Retorna: No retorna ningún valor
-     */
-    private void crearTiposIniciales() {
+            throw new IllegalArgumentException("La categoría del vehículo es obligatoria.");
 
-        repositorioTipos.agregar(new TipoVehiculo("Sedán", CategoriaVehiculo.PASAJEROS, true, false, false));
+        }
 
-        repositorioTipos.agregar(new TipoVehiculo("SUV", CategoriaVehiculo.PASAJEROS, true, true, false));
-
-        repositorioTipos.agregar(new TipoVehiculo("Minivan", CategoriaVehiculo.PASAJEROS, true, true, false));
-
-        repositorioTipos.agregar(new TipoVehiculo("CUV", CategoriaVehiculo.PASAJEROS, true, true, false));
-
-        repositorioTipos.agregar(new TipoVehiculo("Deportivo", CategoriaVehiculo.PASAJEROS, true, true, false));
-
-        repositorioTipos.agregar(new TipoVehiculo("Pickup", CategoriaVehiculo.CARGA, false, true, true));
-
-        guardarCambios();
     }
 
-    /*
-     * Qué hace: Actualiza en DatosSistema la lista actual de tipos de vehículo y posteriormente guarda toda la información mediante el mecanismo de persistencia
-     * Recibe: No recibe parámetros
-     * Retorna: No retorna ningún valor
-     */
-    private void guardarCambios() {
-
-        datosSistema.setTiposVehiculo(repositorioTipos.obtenerTodos());
-
-        persistencia.guardar(datosSistema);
-    }
 }
